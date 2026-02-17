@@ -1,5 +1,5 @@
 <script lang="ts">
-	let { text, lightColor, darkColor } = $props();
+	let { text } = $props();
 </script>
 
 <!------------------------------------------>
@@ -18,7 +18,7 @@
 		flex justify-center items-center
 		transition-std
 		rounded-md border-3
-		border-(--value(lightColor)) hover:bg-(--value(lightColor))
-		dark:border-(--value(darkColor)) dark:hover:bg-(--value(darkColor));
+		border-(--light-color) hover:bg-(--light-color)
+		dark:border-(--dark-color) dark:hover:bg-(--dark-color);
 	}
 </style>

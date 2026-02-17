@@ -20,7 +20,8 @@
 
 		<a href="." onclick={buy} class="w-1/3 h-full text-text">
 			<Button
-				className="border-slate-500 hover:bg-slate-500 dark:border-slate-500 dark:hover:bg-slate-500"
+				--light-color="var(--color-green-500)"
+				--dark-color="var(--color-green-600)"
 				text="Add To Cart"
 			/>
 		</a>

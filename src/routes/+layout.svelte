@@ -25,8 +25,8 @@
 		{#each Object.entries(btn) as [txt, hrf]}
 			<a href={hrf} class="h-full aspect-2/1">
 				<Button
-					lightColor="--color-slate-600"
-					darkColor="--color-slate-500"
+					--light-color="var(--color-slate-600)"
+					--dark-color="var(--color-slate-500)"
 					text={txt}
 				/>
 			</a>
