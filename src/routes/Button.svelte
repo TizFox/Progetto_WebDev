@@ -14,7 +14,7 @@
 	@import "./theme.css";
 
 	.std-btn {
-		@apply w-full h-full
+		@apply w-full h-full p-2
 		flex justify-center items-center
 		transition-std
 		rounded-md border-3

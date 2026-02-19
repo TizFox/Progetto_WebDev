@@ -18,7 +18,7 @@
 	<div class="item-info">
 		<p class="price-tag">{item.cost} €</p>
 
-		<a href="." onclick={buy} class="w-1/3 h-full text-text">
+		<a href="." onclick={buy} class="h-full text-text">
 			<Button
 				--light-color="var(--color-green-500)"
 				--dark-color="var(--color-green-600)"
@@ -40,7 +40,9 @@
 		bg-slate-200 dark:bg-slate-700 rounded-xl z-1;
 	}
 	.item-name {
-		@apply w-full
+		@apply w-full p-3
+		flex flex-row justify-center items-center
+		bg-slate-300 dark:bg-slate-600 rounded-lg
 		text-center text-xl;
 	}
 	.item-img {
