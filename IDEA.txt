@@ -1,0 +1,9 @@
+Creare uno shop online (https://developers.google.com/workspace/sheets/api/reference/rest)
+	Recuperare dati da Amazon (Canopy www.canopyapi.co)
+
+We-Transfer (GoFile gofile.io, File.io https://www.file.io/developers)
+Earthquake Detector (https://earthquake.usgs.gov/fdsnws/event/1/)
+
+
+Utili:
+- https://goqr.me/api/

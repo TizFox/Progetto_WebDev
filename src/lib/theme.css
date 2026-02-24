@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@plugin '@tailwindcss/forms';
+
+@theme {
+	--navbar-size: 10vh;
+	--main-size: 80vh;
+	--footer-size: 10vh;
+
+	--item-size: 30vh;
+
+	--transition-std: all 200ms ease-in-out;
+
+	--color-tx-light: var(--color-slate-950);
+	--color-tx-dark: var(--color-slate-50);
+
+	--color-bg-light: var(--color-slate-100);
+	--color-bg-dark: var(--color-slate-900);
+
+	--color-lcta: var(--color-yellow-600);
+	--color-dcta: var(--color-yellow-500);
+}
+
+@layer base {
+	body {
+		@apply overflow-x-hidden
+		bg-bg-light dark:bg-bg-dark
+		text-tx-light dark:text-tx-dark;
+	}
+}
+
+@utility transition-* {
+	transition: --value(--transition-*);
+}
+
+@layer components {
+	.std-btn {
+		@apply p-2
+		flex justify-center items-center
+		transition-std
+		rounded-md border
+		hover:text-tx-dark hover:dark:text-tx-light
+		border-tx-light dark:border-tx-dark
+
+		hover:border-lcta hover:bg-lcta
+		hover:dark:border-dcta hover:dark:bg-dcta;
+	}
+
+	.form {
+		@apply flex flex-col justify-center items-center
+		gap-5 p-10
+		bg-slate-200 dark:bg-slate-700 rounded-xl;
+
+		h1 {
+			@apply text-4xl;
+		}
+
+		.floating-input {
+			@apply block px-2.5 pb-2.5 pt-4 w-full
+				rounded-md border transition-std
+				focus:outline-none focus:ring-0
+				bg-transparent
+				invalid:text-red-600
+				border-tx-light focus:border-lcta invalid:border-red-600
+				dark:invalid:text-red-400
+				dark:border-tx-dark dark:focus:border-dcta dark:invalid:border-red-400;
+		}
+		.floating-label {
+			@apply absolute top-2 px-2 z-5 cursor-text
+				transition-std -translate-y-4 scale-75 text-sm
+				bg-slate-200 dark:bg-slate-700
+				peer-focus:text-lcta peer-invalid:text-red-600
+				peer-focus:dark:text-dcta dark:peer-invalid:text-red-400;
+		}
+		.std-btn {
+			@apply w-1/2 h-fit;
+		}
+	}
+}
