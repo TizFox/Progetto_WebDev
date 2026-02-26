@@ -1,8 +1,10 @@
-import { supabase } from "$lib/supabaseClient";
+import { supabaseClient } from "$lib/supabase";
 
 export async function load() {
-	const { data } = await supabase.from("wishlist").select("*"); // Dove user == loggedUser
+	const { data } = await supabaseClient
+		.from("wishlist")
+		.select("*, products(*)");
 	return {
-		products: data ?? [],
+		wishlist: data ?? [],
 	};
 }

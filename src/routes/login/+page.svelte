@@ -6,6 +6,8 @@
 	let registerPassword1 = $state("");
 	let registerPassword2 = $state("");
 
+	let loading = $state(false);
+
 	const handleLogin = async () => {
 		console.log("LOGIN: " + loginEmail + " - " + loginPassword);
 

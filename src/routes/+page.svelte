@@ -1,6 +1,7 @@
 <script>
 	import Item from "$lib/components/Item.svelte";
-	export let data;
+
+	let { data } = $props();
 </script>
 
 <!------------------------------------------>

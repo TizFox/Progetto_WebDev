@@ -1,14 +1,8 @@
-import type { LayoutServerLoad } from "./$types";
+import { supabaseClient } from "$lib/supabase";
 
-export const load: LayoutServerLoad = async ({
-	locals: { safeGetSession },
-	cookies,
-}) => {
-	const { session, user } = await safeGetSession();
-
+export async function load() {
+	const { data } = await supabaseClient.from("products").select("*");
 	return {
-		session,
-		user,
-		cookies: cookies.getAll(),
+		products: data ?? [],
 	};
-};
+}

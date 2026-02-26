@@ -1,6 +1,6 @@
 // See https://svelte.dev/docs/kit/types#app.d.ts
 
-import type { SupabaseClient } from "@supabase/supabase-js/dist/index.cjs";
+import type { SupabaseClient, Session, User } from "@supabase/supabase-js";
 
 // for information about these interfaces
 declare global {
@@ -10,12 +10,12 @@ declare global {
 			supabase: SupabaseClient;
 			safeGetSession(): Promise<{
 				session: Session | null;
-				user?: Session["user"] | null;
+				user: User | null;
 			}>;
 		}
 		interface PageData {
 			session: Session | null;
-			user?: Session["user"] | null;
+			user?: User | null;
 		}
 		// interface PageState {}
 		// interface Platform {}

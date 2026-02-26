@@ -1,8 +1,8 @@
-import { supabase } from "$lib/supabaseClient";
+import { supabaseClient } from "$lib/supabase";
 
 export async function load() {
-	const { data } = await supabase.from("cart").select("*"); // Dove user == loggedUser
+	const { data } = await supabaseClient.from("cart").select("*, products(*)");
 	return {
-		products: data ?? [],
+		cart: data ?? [],
 	};
 }

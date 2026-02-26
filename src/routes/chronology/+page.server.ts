@@ -1,8 +1,10 @@
-import { supabase } from "$lib/supabaseClient";
+import { supabaseClient } from "$lib/supabase";
 
 export async function load() {
-	const { data } = await supabase.from("chronology").select("*"); // Dove user == loggedUser
+	const { data } = await supabaseClient
+		.from("chronology")
+		.select("*, products(*)");
 	return {
-		products: data ?? [],
+		chronology: data ?? [],
 	};
 }
