@@ -1,11 +1,10 @@
 <script>
-	import Carousel from "./Carousel.svelte";
+	import { addToCart, removeFromCart } from "$lib/cart";
+	import { removeFromWishlist } from "$lib/wishlist";
 
-	let { item } = $props();
+	import Carousel from "$lib/components/Carousel.svelte";
 
-	const buy = () => {
-		alert("BUYING: " + item.name);
-	};
+	let { item, type } = $props();
 </script>
 
 <!------------------------------------------>
@@ -20,7 +19,14 @@
 			{item.cost - item.cost * (item.discount ?? 0)} €
 		</p>
 
-		<button onclick={buy} class="std-btn">View More</button>
+		{#if type === "home"}
+			<a href="/product{item.id}" class="std-btn">View More</a>
+		{:else if type === "cart"}
+			<button onclick={removeFromCart} class="std-btn">Remove</button>
+		{:else if type === "wishlist"}
+			<button onclick={addToCart} class="std-btn">Add To Cart</button>
+			<button onclick={removeFromWishlist} class="std-btn">Remove</button>
+		{/if}
 	</div>
 </div>
 
@@ -47,13 +53,6 @@
 		bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
 
-	.price-tag {
-		@apply pl-5 pr-10 py-3
-		text-tx-light
-		bg-lcta dark:bg-dcta rounded-md
-		transition-std hover:-rotate-5;
-		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
-	}
 	.std-btn {
 		@apply w-1/3 h-full;
 	}

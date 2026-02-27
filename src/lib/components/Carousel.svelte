@@ -12,6 +12,8 @@
 	};
 </script>
 
+<!------------------------------------------>
+
 <div class="imgs-container">
 	{#each imgs as img, i}
 		<img
@@ -30,6 +32,8 @@
 		<i class="fa-solid fa-angle-right fa-xl"></i>
 	</button>
 </div>
+
+<!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";

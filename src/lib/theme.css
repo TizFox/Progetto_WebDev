@@ -32,6 +32,13 @@
 	transition: --value(--transition-*);
 }
 
+@utility page {
+	@apply w-full max-w-7xl min-h-(--main-size) p-5;
+}
+@utility items {
+	@apply grid auto-rows-fr grid-cols-12 gap-5;
+}
+
 @layer components {
 	.std-btn {
 		@apply p-2
@@ -44,10 +51,16 @@
 		hover:border-lcta hover:bg-lcta
 		hover:dark:border-dcta hover:dark:bg-dcta;
 	}
+	.price-tag {
+		@apply pl-5 pr-10 py-3
+		text-tx-light
+		bg-lcta dark:bg-dcta rounded-md
+		transition-std hover:-rotate-5;
+		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
+	}
 
 	.form {
-		@apply flex flex-col justify-center items-center
-		gap-5 p-10
+		@apply flex flex-col justify-center items-center gap-5 p-5
 		bg-slate-200 dark:bg-slate-700 rounded-xl;
 
 		h1 {

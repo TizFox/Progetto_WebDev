@@ -4,14 +4,33 @@
 
 	import User from "$lib/components/User.svelte";
 
-	let { children } = $props();
+	import { goto, invalidate } from "$app/navigation";
+	import { onMount } from "svelte";
+
+	let { data, children } = $props();
+	let { supabase, session, user, products } = $derived(data);
+
+	// Chiama la funzione di Logout e riporta l'utente nella pagina home
+
+	// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")
+	onMount(() => {
+		supabase.auth.getUser();
+		const {
+			data: { subscription },
+		} = data.supabase.auth.onAuthStateChange((event, _session) => {
+			if (_session?.expires_at != session?.expires_at) {
+				invalidate("supabase:auth");
+			}
+		});
+
+		return () => subscription.unsubscribe();
+	});
 </script>
 
 <!------------------------------------------>
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-	<title>Rolling Emporium</title>
 
 	<script
 		src="https://kit.fontawesome.com/ba06ebf7f1.js"
@@ -28,15 +47,23 @@
 		<a href="/" class="std-btn">Home</a>
 
 		<div class="user-actions">
-			<a href="/login" class="std-btn">Login</a>
-			<User />
+			<a href="/cart">Cart</a>
+			<a href="/wishlist">Wishlist</a>
+			<a href="/chronology">Chronology</a>
+			{#if user}
+				<User img={user.user_metadata.image} />
+			{:else}
+				<a href="/login" class="std-btn">Login</a>
+			{/if}
 		</div>
 	</div>
 </nav>
 
 <section class="divider"></section>
 
-{@render children()}
+<main class="flex justify-center items-center">
+	{@render children()}
+</main>
 
 <footer class="footer-container">
 	<div class="footer">END</div>
@@ -63,6 +90,10 @@
 		.user-actions {
 			@apply w-full h-full
 			flex flex-row justify-end items-center gap-5;
+
+			a {
+				@apply hover:underline;
+			}
 		}
 	}
 

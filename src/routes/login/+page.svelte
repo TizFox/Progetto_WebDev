@@ -1,7 +1,13 @@
 <script lang="ts">
+	import { goto } from "$app/navigation";
+
+	let { data } = $props();
+	let { supabase } = $derived(data);
+
 	let loginEmail = $state("");
 	let loginPassword = $state("");
 
+	let registerNickname = $state("");
 	let registerEmail = $state("");
 	let registerPassword1 = $state("");
 	let registerPassword2 = $state("");
@@ -9,29 +15,35 @@
 	let loading = $state(false);
 
 	const handleLogin = async () => {
+		if (loading) return;
+
 		console.log("LOGIN: " + loginEmail + " - " + loginPassword);
 
-		if (loginEmail == "" || loginPassword == "") {
+		if (!loginEmail || !loginPassword) {
 			alert("Invalid Inputs");
 			return;
 		}
 
-		/*try {
-			const { error } = await supabaseClient.auth.signInWithPassword({
-				email: loginEmail,
-				password: loginPassword,
-			});
-			if (error) throw error;
-		} catch (error) {
-			if (error instanceof Error) {
-				alert(error.message);
-			}
-		}*/
+		loading = true;
+		const { error } = await supabase.auth.signInWithPassword({
+			email: loginEmail,
+			password: loginPassword,
+		});
+		if (error) {
+			alert(error.message);
+			loading = false;
+		} else {
+			goto("/");
+		}
 	};
 
 	const handleRegister = async () => {
+		if (loading) return;
+
 		console.log(
 			"REGISTER: " +
+				registerNickname +
+				" : " +
 				registerEmail +
 				" - " +
 				registerPassword1 +
@@ -40,6 +52,7 @@
 		);
 
 		if (
+			registerNickname == "" ||
 			registerEmail == "" ||
 			registerPassword1 == "" ||
 			registerPassword2 == "" ||
@@ -49,23 +62,37 @@
 			return;
 		}
 
-		/*	try {
-			const { data, error } = await supabase.auth.signUp({
-				email: registerEmail,
-				password: registerPassword1,
-			});
-			if (error) throw error;
-
-			console.log(data);
-		} catch (error) {
-			if (error instanceof Error) {
-				alert(error.message);
-			}
-			}*/
+		loading = true;
+		const { data, error } = await supabase.auth.signUp({
+			email: registerEmail,
+			password: registerPassword1,
+			options: {
+				data: {
+					nickname: registerNickname,
+					image: "",
+				},
+			},
+		});
+		if (error) {
+			alert(error.message);
+			loading = false;
+		} else {
+			alert("Check your Email! (Not Active 2 email/h)");
+			goto("/");
+			loading = false;
+		}
 	};
 </script>
 
-<div class="form-container">
+<!------------------------------------------>
+
+<svelte:head>
+	<title>Login - Rolling Emporium</title>
+</svelte:head>
+
+<!------------------------------------------>
+
+<section class="form-container">
 	<div class="form">
 		<h1>Login</h1>
 
@@ -74,7 +101,7 @@
 				id="email"
 				class="floating-input peer"
 				type="email"
-				placeholder=""
+				placeholder="..."
 				autocomplete="off"
 				bind:value={loginEmail}
 			/>
@@ -86,24 +113,39 @@
 				id="password"
 				class="floating-input peer"
 				type="password"
-				placeholder=""
+				placeholder="..."
 				autocomplete="off"
 				bind:value={loginPassword}
 			/>
 			<label class="floating-label" for="password">Password</label>
 		</div>
 
-		<button class="std-btn" onclick={handleLogin}>Login</button>
+		<button type="submit" class="std-btn" onclick={handleLogin}>
+			{loading ? "Loading..." : "Login"}
+		</button>
 	</div>
 	<div class="form">
 		<h1>Register</h1>
 
 		<div class="relative">
 			<input
+				id="registerNickname"
+				class="floating-input peer"
+				type="text"
+				placeholder="..."
+				autocomplete="off"
+				bind:value={registerNickname}
+			/>
+			<label class="floating-label" for="registerNickname">Nickname</label
+			>
+		</div>
+
+		<div class="relative">
+			<input
 				id="registerEmail"
 				class="floating-input peer"
 				type="email"
-				placeholder=""
+				placeholder="..."
 				autocomplete="off"
 				bind:value={registerEmail}
 			/>
@@ -115,7 +157,7 @@
 				id="registerPassword1"
 				class="floating-input peer"
 				type="password"
-				placeholder=""
+				placeholder="..."
 				autocomplete="off"
 				bind:value={registerPassword1}
 			/>
@@ -129,7 +171,7 @@
 				id="registerPassword2"
 				class="floating-input peer"
 				type="password"
-				placeholder=""
+				placeholder="..."
 				autocomplete="off"
 				bind:value={registerPassword2}
 			/>
@@ -138,15 +180,20 @@
 			</label>
 		</div>
 
-		<button class="std-btn" onclick={handleRegister}>Register</button>
+		<button class="std-btn" onclick={handleRegister}>
+			{loading ? "Loading..." : "Register"}
+		</button>
 	</div>
-</div>
+</section>
+
+<!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
 
 	.form-container {
-		@apply h-(--main-size) flex justify-center items-center p-10 gap-20
+		@apply page
+		flex justify-center items-center gap-10
 		flex-col md:flex-row;
 	}
 </style>
