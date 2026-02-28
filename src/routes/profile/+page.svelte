@@ -4,20 +4,24 @@
 	import { goto } from "$app/navigation";
 
 	let { data } = $props();
-	let { supabase, session, user } = $derived(data);
+	let { supabase, user } = $derived(data);
 
 	let img = $derived(user?.user_metadata.image);
 	let nickname = $derived(user?.user_metadata.nickname);
 	let email = $derived(user?.email);
 	let created_at = $derived(user?.created_at);
 
-	let newImage = $state(<FileList>{});
+	let newImage = $state(<File>{});
 	let newNickname = $state("");
 	let newEmail = $state("");
 	let newPassword = $state("");
 
+	const onFileSelected = (e: Event) => {
+		const target = e.target as unknown as { files: File[] };
+		newImage = target?.files[0];
+	};
 	const changeImage = async () => {
-		console.log(newImage.item(0));
+		console.log(newImage);
 	};
 
 	const changeNickname = async () => {};
@@ -29,7 +33,7 @@
 	const logout = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) {
-			alert("SignOut Error");
+			alert(error.message);
 		} else {
 			goto("/");
 		}
@@ -48,7 +52,7 @@ Type "I want to delete my account" to confirm.`,
 
 		const { data, error } = await supabase.auth.admin.deleteUser(user.id);
 		if (error) {
-			alert("DeleteUser Error");
+			alert(error.message);
 		} else {
 			goto("/");
 		}
@@ -76,7 +80,7 @@ Type "I want to delete my account" to confirm.`,
 		<span>{created_at}</span>
 	</div>
 
-	<div class="form items">
+	<div class="form page-grid">
 		<div class="input-field">
 			<input
 				id="newNickname"
@@ -100,7 +104,7 @@ Type "I want to delete my account" to confirm.`,
 				class="floating-input peer"
 				type="file"
 				accept="image/*"
-				bind:files={newImage}
+				onchange={onFileSelected}
 			/>
 			<label class="floating-label" for="newNickname"> New Image </label>
 			<button type="button" onclick={changeImage} class="std-btn">
@@ -156,11 +160,10 @@ Type "I want to delete my account" to confirm.`,
 	@import "$lib/theme.css";
 
 	.profile-container {
-		@apply page
-		flex justify-center items-center flex-col gap-5;
+		@apply page page-flex;
 
 		.profile-picture {
-			@apply w-1/2 aspect-square rounded-full
+			@apply w-1/3 aspect-square rounded-full
 			border border-bg-dark dark:border-bg-light;
 		}
 

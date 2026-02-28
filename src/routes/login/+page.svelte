@@ -20,7 +20,7 @@
 		console.log("LOGIN: " + loginEmail + " - " + loginPassword);
 
 		if (!loginEmail || !loginPassword) {
-			alert("Invalid Inputs");
+			alert("Error: Invalid Inputs");
 			return;
 		}
 
@@ -58,9 +58,13 @@
 			registerPassword2 == "" ||
 			registerPassword1 != registerPassword2
 		) {
-			alert("Invalid Inputs");
+			alert("Error: Invalid Inputs");
 			return;
 		}
+
+		// Load the Image in the bucked and take the url
+		let imageUrl =
+			"https://cqvkscgotmwgvwvpvjcp.supabase.co/storage/v1/object/public/product_images/albumbig.png";
 
 		loading = true;
 		const { data, error } = await supabase.auth.signUp({
@@ -69,7 +73,7 @@
 			options: {
 				data: {
 					nickname: registerNickname,
-					image: "",
+					image: imageUrl,
 				},
 			},
 		});
@@ -78,8 +82,8 @@
 			loading = false;
 		} else {
 			alert("Check your Email! (Not Active 2 email/h)");
-			goto("/");
 			loading = false;
+			goto("/");
 		}
 	};
 </script>
@@ -192,8 +196,6 @@
 	@import "$lib/theme.css";
 
 	.form-container {
-		@apply page
-		flex justify-center items-center gap-10
-		flex-col md:flex-row;
+		@apply page page-flex page-flex-md;
 	}
 </style>

@@ -1,12 +1,12 @@
 <script lang="ts">
-	import { addToCart } from "$lib/cart";
-	import { addToWishlist } from "$lib/wishlist";
-
 	import Carousel from "$lib/components/Carousel.svelte";
 
-	let { data } = $props();
+	import { addToCart, addToWishlist, removeFromWishlist } from "$lib/actions";
 
-	let item = $derived(data.products?.find((i) => i.id == data.itemId));
+	let { data } = $props();
+	let { supabase, user, products, itemId, cart, wishlist } = $derived(data);
+
+	let item = $derived(products?.find((i: any) => i.id == itemId));
 </script>
 
 <!------------------------------------------>
@@ -17,24 +17,68 @@
 
 <!------------------------------------------>
 
-<section class="item-specifics">
-	<h1>{item.name}</h1>
-
+<section class="item-info">
 	<Carousel imgs={item.images} alt="Images of {item.name}" />
 
-	<p>{item.description}</p>
+	<div class="item-specifics">
+		<h1>{item.name}</h1>
+		<p>{item.description}</p>
 
-	<p class="price-tag">
-		{item.cost - item.cost * (item.discount ?? 0)} €
-	</p>
-	{#if data.user}
-		<div>
-			<button class="std-btn" onclick={addToCart}>Add To Cart</button>
-			<button class="std-btn" onclick={addToWishlist}>
-				Add To Wishlist
-			</button>
-		</div>
-	{/if}
+		{#if user}
+			<div class="item-cost">
+				<p class="price-tag">
+					{item.cost - item.cost * (item.discount ?? 0)} €
+				</p>
+				<div class="add-to-cart">
+					{#if cart?.length != 0}
+						<p>Already in Cart (x{cart?.length})</p>
+					{/if}
+					<button
+						class="std-btn"
+						onclick={() =>
+							addToCart({
+								supabase,
+								userId: user?.id,
+								itemId: item.id,
+								itemName: item.name,
+							})}>Add To Cart</button
+					>
+				</div>
+			</div>
+
+			{#if wishlist?.length == 0}
+				<button
+					class="std-btn w-full"
+					onclick={() =>
+						addToWishlist({
+							supabase,
+							userId: user?.id,
+							itemId: item.id,
+							itemName: item.name,
+						})}
+				>
+					Add To Wishlist
+				</button>
+			{:else}
+				<button
+					class="std-btn w-full"
+					onclick={() =>
+						removeFromWishlist({
+							supabase,
+							userId: user?.id,
+							itemId: item.id,
+							itemName: item.name,
+						})}
+				>
+					Remove From Wishlist
+				</button>
+			{/if}
+		{:else}
+			<p class="price-tag">
+				{item.cost - item.cost * (item.discount ?? 0)} €
+			</p>
+		{/if}
+	</div>
 </section>
 
 <!------------------------------------------>
@@ -42,7 +86,18 @@
 <style lang="postcss">
 	@import "$lib/theme.css";
 
+	.item-info {
+		@apply page page-flex page-flex-md;
+	}
 	.item-specifics {
-		@apply page;
+		@apply w-full md:max-w-[33vw] gap-5
+		flex flex-col justify-start items-start;
+	}
+	.item-cost {
+		@apply w-full h-fit
+		flex flex-row justify-between;
+	}
+	.add-to-cart {
+		@apply flex flex-row gap-3 justify-center items-center;
 	}
 </style>

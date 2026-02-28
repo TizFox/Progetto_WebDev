@@ -4,13 +4,11 @@
 
 	import User from "$lib/components/User.svelte";
 
-	import { goto, invalidate } from "$app/navigation";
+	import { invalidate } from "$app/navigation";
 	import { onMount } from "svelte";
 
 	let { data, children } = $props();
-	let { supabase, session, user, products } = $derived(data);
-
-	// Chiama la funzione di Logout e riporta l'utente nella pagina home
+	let { supabase, session, user } = $derived(data);
 
 	// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")
 	onMount(() => {

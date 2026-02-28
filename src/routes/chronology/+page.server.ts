@@ -10,7 +10,6 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 	const { data: chronology } = await supabase
 		.from("chronology")
 		.select("*, products(*)");
-	//.eq("user_id", user.id);
 	return {
 		chronology: chronology ?? [],
 	};

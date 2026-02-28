@@ -10,7 +10,6 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 	const { data: wishlist } = await supabase
 		.from("wishlist")
 		.select("*, products(*)");
-	//.eq("user_id", user.id);
 	return {
 		wishlist: wishlist ?? [],
 	};

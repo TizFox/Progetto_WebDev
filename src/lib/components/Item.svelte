@@ -1,16 +1,19 @@
 <script>
-	import { addToCart, removeFromCart } from "$lib/cart";
-	import { removeFromWishlist } from "$lib/wishlist";
-
 	import Carousel from "$lib/components/Carousel.svelte";
 
-	let { item, type } = $props();
+	import {
+		addToCart,
+		removeFromCart,
+		removeFromWishlist,
+	} from "$lib/actions";
+
+	let { supabase, userId, item, type } = $props();
 </script>
 
 <!------------------------------------------>
 
 <div class="item">
-	<h1 class="item-name">{item.name}</h1>
+	<h2 class="item-name">{item.name}</h2>
 
 	<Carousel imgs={item.images} alt="Images of {item.name}" />
 
@@ -22,10 +25,39 @@
 		{#if type === "home"}
 			<a href="/product{item.id}" class="std-btn">View More</a>
 		{:else if type === "cart"}
-			<button onclick={removeFromCart} class="std-btn">Remove</button>
+			<a href="/product{item.id}" class="std-btn">View More</a>
+			<button
+				onclick={() =>
+					removeFromCart({
+						supabase,
+						userId: userId,
+						itemId: item.id,
+						itemName: item.name,
+					})}
+				class="std-btn">Remove</button
+			>
 		{:else if type === "wishlist"}
-			<button onclick={addToCart} class="std-btn">Add To Cart</button>
-			<button onclick={removeFromWishlist} class="std-btn">Remove</button>
+			<a href="/product{item.id}" class="std-btn">View More</a>
+			<button
+				onclick={() =>
+					addToCart({
+						supabase,
+						userId: userId,
+						itemId: item.id,
+						itemName: item.name,
+					})}
+				class="std-btn">Add To Cart</button
+			>
+			<button
+				onclick={() =>
+					removeFromWishlist({
+						supabase,
+						userId: userId,
+						itemId: item.id,
+						itemName: item.name,
+					})}
+				class="std-btn">Remove</button
+			>
 		{/if}
 	</div>
 </div>
@@ -38,18 +70,16 @@
 	.item {
 		@apply w-full h-fit p-3
 		flex flex-col gap-3
-		col-span-12 md:col-span-6 lg:col-span-4 xl:col-span-3
-		bg-slate-200 dark:bg-slate-700 rounded-xl z-1;
+		col-span-12 md:col-span-6 lg:col-span-4
+		bg-slate-200 dark:bg-slate-700 rounded-xl;
 	}
 	.item-name {
-		@apply w-full p-3
-		flex flex-row justify-center items-center
-		bg-slate-300 dark:bg-slate-600 rounded-lg
-		text-center text-xl;
+		@apply w-full p-3 text-center
+		bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
 	.item-info {
 		@apply w-full h-fit p-3
-		flex flex-row justify-between items-center gap-5
+		flex flex-row justify-between items-center
 		bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
 

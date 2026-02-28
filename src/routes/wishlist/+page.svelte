@@ -3,6 +3,7 @@
 	import Empty from "$lib/components/Empty.svelte";
 
 	let { data } = $props();
+	let { supabase, user, wishlist } = $derived(data);
 </script>
 
 <!------------------------------------------>
@@ -13,20 +14,24 @@
 
 <!------------------------------------------>
 
-<section class="items-container">
-	{#each data.wishlist as i}
-		<Item item={i.products} type="wishlist" />
+<section class="page page-grid">
+	{#if wishlist.length != 0}
+		<h1 class="w-full h-fit text-center col-span-12">Wishlist</h1>
+		{#each wishlist as i}
+			<Item
+				item={i.products}
+				type="wishlist"
+				{supabase}
+				userId={user?.id}
+			/>
+		{/each}
 	{:else}
 		<Empty msg="Empty Wishlist" />
-	{/each}
+	{/if}
 </section>
 
 <!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.items-container {
-		@apply page items;
-	}
 </style>

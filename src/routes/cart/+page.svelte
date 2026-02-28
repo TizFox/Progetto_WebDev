@@ -3,6 +3,7 @@
 	import Empty from "$lib/components/Empty.svelte";
 
 	let { data } = $props();
+	let { supabase, user, cart } = $derived(data);
 </script>
 
 <!------------------------------------------>
@@ -13,20 +14,22 @@
 
 <!------------------------------------------>
 
-<section class="items-container">
-	{#each data.cart as i}
-		<Item item={i.products} type="cart" />
+<section class="page page-grid">
+	{#if cart.length != 0}
+		<h1 class="w-full text-center col-span-12">Cart</h1>
+		{#each cart as i}
+			<Item item={i.products} type="cart" {supabase} userId={user?.id} />
+		{/each}
+		<button class="std-btn col-span-12" onclick={() => alert("BUY")}
+			>--- BUY ---</button
+		>
 	{:else}
 		<Empty msg="Empty Cart" />
-	{/each}
+	{/if}
 </section>
 
 <!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.items-container {
-		@apply page items;
-	}
 </style>

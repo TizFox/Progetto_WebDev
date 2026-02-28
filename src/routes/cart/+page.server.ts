@@ -8,7 +8,6 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 	}
 
 	const { data: cart } = await supabase.from("cart").select("*, products(*)");
-	//.eq("user_id", user.id);
 	return {
 		cart: cart ?? [],
 	};

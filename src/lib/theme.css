@@ -20,23 +20,52 @@
 	--color-dcta: var(--color-yellow-500);
 }
 
+@utility transition-* {
+	transition: --value(--transition-*);
+}
+
+@utility title-text {
+	@apply font-light text-2xl md:text-3xl;
+}
+@utility subtitle-text {
+	@apply font-light text-xl md:text-2xl;
+}
+@utility important-text {
+	@apply font-medium text-base md:text-lg;
+}
+@utility base-text {
+	@apply font-light text-base md:text-lg;
+}
+
 @layer base {
 	body {
 		@apply overflow-x-hidden
 		bg-bg-light dark:bg-bg-dark
-		text-tx-light dark:text-tx-dark;
+		text-tx-light dark:text-tx-dark
+		base-text;
 	}
-}
 
-@utility transition-* {
-	transition: --value(--transition-*);
+	h1 {
+		@apply title-text;
+	}
+	h2 {
+		@apply subtitle-text;
+	}
 }
 
 @utility page {
 	@apply w-full max-w-7xl min-h-(--main-size) p-5;
 }
-@utility items {
-	@apply grid auto-rows-fr grid-cols-12 gap-5;
+@utility page-grid {
+	@apply grid gap-5
+	auto-rows-fr grid-cols-12;
+}
+@utility page-flex {
+	@apply mt-10 flex gap-5
+	flex-col justify-start items-center;
+}
+@utility page-flex-md {
+	@apply md:flex-row md:justify-center md:items-start;
 }
 
 @layer components {
@@ -47,13 +76,14 @@
 		rounded-md border
 		hover:text-tx-dark hover:dark:text-tx-light
 		border-tx-light dark:border-tx-dark
+		important-text
 
 		hover:border-lcta hover:bg-lcta
 		hover:dark:border-dcta hover:dark:bg-dcta;
 	}
 	.price-tag {
 		@apply pl-5 pr-10 py-3
-		text-tx-light
+		text-tx-light important-text
 		bg-lcta dark:bg-dcta rounded-md
 		transition-std hover:-rotate-5;
 		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
@@ -62,10 +92,6 @@
 	.form {
 		@apply flex flex-col justify-center items-center gap-5 p-5
 		bg-slate-200 dark:bg-slate-700 rounded-xl;
-
-		h1 {
-			@apply text-4xl;
-		}
 
 		.floating-input {
 			@apply block px-2.5 pb-2.5 pt-4 w-full

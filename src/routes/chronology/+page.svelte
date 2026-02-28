@@ -3,6 +3,7 @@
 	import Empty from "$lib/components/Empty.svelte";
 
 	let { data } = $props();
+	let { supabase, user, chronology } = $derived(data);
 </script>
 
 <!------------------------------------------>
@@ -13,20 +14,24 @@
 
 <!------------------------------------------>
 
-<section class="items-container">
-	{#each data.chronology as i}
-		<Item item={i.products} type="chronology" />
+<section class="page page-grid">
+	{#if chronology.length != 0}
+		<h1 class="w-full text-center col-span-12">Chronology</h1>
+		{#each chronology as i}
+			<Item
+				item={i.products}
+				type="chronology"
+				{supabase}
+				userId={user?.id}
+			/>
+		{/each}
 	{:else}
 		<Empty msg="Empty Chronology" />
-	{/each}
+	{/if}
 </section>
 
 <!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.items-container {
-		@apply page items;
-	}
 </style>

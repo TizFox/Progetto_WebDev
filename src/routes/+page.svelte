@@ -25,6 +25,6 @@
 	@import "$lib/theme.css";
 
 	.items-container {
-		@apply page items;
+		@apply page page-grid;
 	}
 </style>
