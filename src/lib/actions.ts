@@ -32,18 +32,44 @@ const addTo = async (
 ) => {
 	if (!userId) return;
 
-	let { error } = await supabase.from(table).insert([
-		{
-			product_id: itemId,
-			user_id: userId,
-		},
-	]);
+	let { data: item } = await supabase
+		.from(table)
+		.select("*")
+		.eq("product_id", itemId)
+		.eq("user_id", userId);
 
-	if (error) {
-		alert(error.message);
-	} else {
-		alert(`Product (${itemName}) added to ${table.toUpperCase()}`);
-		await invalidateAll();
+	if (!item || !item[0]) {
+		let { error } = await supabase.from(table).insert([
+			{
+				product_id: itemId,
+				user_id: userId,
+			},
+		]);
+
+		if (error) {
+			alert(
+				`Product (${itemName}) already in ${table.toUpperCase()}\n\n` +
+					error.message,
+			);
+		} else {
+			alert(`Product (${itemName}) inserted to ${table.toUpperCase()}`);
+			await invalidateAll();
+		}
+	} else if (table === "cart") {
+		let { error } = await supabase
+			.from(table)
+			.update({ count: item[0].count + 1 })
+			.eq("product_id", itemId)
+			.eq("user_id", userId);
+
+		if (error) {
+			alert(error.message);
+		} else {
+			alert(
+				`Product (${itemName}) updated (+1) to ${table.toUpperCase()}`,
+			);
+			await invalidateAll();
+		}
 	}
 };
 const removeFrom = async (
@@ -52,16 +78,42 @@ const removeFrom = async (
 ) => {
 	if (!userId) return;
 
-	let { error } = await supabase
+	let { data: item } = await supabase
 		.from(table)
-		.delete()
+		.select("*")
 		.eq("product_id", itemId)
 		.eq("user_id", userId);
 
-	if (error) {
-		alert(error.message);
-	} else {
-		alert(`Product (${itemName}) removed from your ${table.toUpperCase()}`);
-		await invalidateAll();
-	}
+	if (item && item[0])
+		if (table == "cart" && item[0].count > 1) {
+			let { error } = await supabase
+				.from(table)
+				.update({ count: item[0].count - 1 })
+				.eq("product_id", itemId)
+				.eq("user_id", userId);
+
+			if (error) {
+				alert(error.message);
+			} else {
+				alert(
+					`Product (${itemName}) updated (-1) from your ${table.toUpperCase()}`,
+				);
+				await invalidateAll();
+			}
+		} else {
+			let { error } = await supabase
+				.from(table)
+				.delete()
+				.eq("product_id", itemId)
+				.eq("user_id", userId);
+
+			if (error) {
+				alert(error.message);
+			} else {
+				alert(
+					`Product (${itemName}) removed from your ${table.toUpperCase()}`,
+				);
+				await invalidateAll();
+			}
+		}
 };

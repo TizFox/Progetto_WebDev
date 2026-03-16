@@ -4,7 +4,8 @@
 	import { addToCart, addToWishlist, removeFromWishlist } from "$lib/actions";
 
 	let { data } = $props();
-	let { supabase, user, products, itemId, cart, wishlist } = $derived(data);
+	let { supabase, user, products, itemId, cartItem, wishlistItem } =
+		$derived(data);
 
 	let item = $derived(products?.find((i: any) => i.id == itemId));
 </script>
@@ -30,8 +31,8 @@
 					{item.cost - item.cost * (item.discount ?? 0)} €
 				</p>
 				<div class="add-to-cart">
-					{#if cart?.length != 0}
-						<p>Already in Cart (x{cart?.length})</p>
+					{#if cartItem}
+						<p>Already in Cart (x{cartItem.count})</p>
 					{/if}
 					<button
 						class="std-btn"
@@ -46,7 +47,7 @@
 				</div>
 			</div>
 
-			{#if wishlist?.length == 0}
+			{#if !wishlistItem}
 				<button
 					class="std-btn w-full"
 					onclick={() =>

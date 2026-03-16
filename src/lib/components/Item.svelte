@@ -7,7 +7,7 @@
 		removeFromWishlist,
 	} from "$lib/actions";
 
-	let { supabase, userId, item, type } = $props();
+	let { supabase, userId, item, count = 0, type } = $props();
 </script>
 
 <!------------------------------------------>
@@ -19,7 +19,10 @@
 
 	<div class="item-info">
 		<p class="price-tag">
-			{item.cost - item.cost * (item.discount ?? 0)} €
+			{item.cost - item.cost * (item.discount ?? 0)} € <br />
+			{#if count != 0}
+				x{count}
+			{/if}
 		</p>
 
 		{#if type === "home"}

@@ -29,11 +29,6 @@
 
 <svelte:head>
 	<link rel="icon" href={favicon} />
-
-	<script
-		src="https://kit.fontawesome.com/ba06ebf7f1.js"
-		crossorigin="anonymous"
-	></script>
 </svelte:head>
 
 <!------------------------------------------>

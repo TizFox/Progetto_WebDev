@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
+
 	let { imgs = [], alt = "Image of Product" } = $props();
 
 	let currI = $state(0);
@@ -25,11 +27,17 @@
 		/>
 	{/each}
 
-	<button class="prev" aria-label="Prev Button" onclick={prev}>
-		<i class="fa-solid fa-angle-left fa-xl"></i>
+	<button class="prev group" aria-label="Prev Button" onclick={prev}>
+		<ArrowBigLeft
+			size="36"
+			class="transition-std group-hover:-translate-x-1"
+		/>
 	</button>
-	<button class="next" aria-label="Next Button" onclick={next}>
-		<i class="fa-solid fa-angle-right fa-xl"></i>
+	<button class="next group" aria-label="Next Button" onclick={next}>
+		<ArrowBigRight
+			size="36"
+			class="transition-std group-hover:translate-x-1"
+		/>
 	</button>
 </div>
 
@@ -52,25 +60,15 @@
 	}
 
 	button {
-		@apply absolute top-1/2 -translate-y-1/2 z-10 p-4
+		@apply absolute top-1/2 -translate-y-1/2 z-1 p-4
 		cursor-pointer;
 
 		&.prev {
 			@apply left-0;
-			&:hover i {
-				@apply -translate-x-1;
-			}
 		}
 
 		&.next {
 			@apply right-0;
-			&:hover i {
-				@apply translate-x-1;
-			}
-		}
-
-		i {
-			@apply transition-std;
 		}
 	}
 </style>

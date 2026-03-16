@@ -18,7 +18,13 @@
 	{#if cart.length != 0}
 		<h1 class="w-full text-center col-span-12">Cart</h1>
 		{#each cart as i}
-			<Item item={i.products} type="cart" {supabase} userId={user?.id} />
+			<Item
+				item={i.products}
+				count={i.count}
+				type="cart"
+				{supabase}
+				userId={user?.id}
+			/>
 		{/each}
 		<button class="std-btn col-span-12" onclick={() => alert("BUY")}
 			>--- BUY ---</button

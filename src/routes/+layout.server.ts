@@ -10,6 +10,7 @@ export const load: LayoutServerLoad = async ({
 	const { session, user } = await safeGetSession();
 
 	const { data: products } = await supabase.from("products").select("*");
+
 	return {
 		session,
 		user,

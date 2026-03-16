@@ -1,6 +1,7 @@
-- Finire il profilo, con relativi cambi di info
-- Fixare gli h1 in cart, wishlist e chronology
+- Finire il profilo, con relativi cambi di info (soprattutto l'immagine di profilo: prima upload nello storage e poi uso del link per la modifica del record di auth.users)
+- Fixare la dimensione di h1 (auto-row-fr) in cart, wishlist e chronology
 - Implementare pagamento cart (PayPal)
 - Implementare passaggio da cart a chronology
 - Risistemare il css (soprattutto i page-grid per via dei bottoni)
 - Fare dropdown menu sulla navbar
+- Rimozione dal Cart rimuove tutti gli item di quel tipo e non solo uno
