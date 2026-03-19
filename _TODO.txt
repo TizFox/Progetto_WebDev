@@ -4,4 +4,3 @@
 - Implementare passaggio da cart a chronology
 - Risistemare il css (soprattutto i page-grid per via dei bottoni)
 - Fare dropdown menu sulla navbar
-- Rimozione dal Cart rimuove tutti gli item di quel tipo e non solo uno
