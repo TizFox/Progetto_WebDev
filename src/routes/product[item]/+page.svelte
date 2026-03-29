@@ -19,65 +19,61 @@
 <!------------------------------------------>
 
 <section class="item-info">
-	<Carousel imgs={item.images} alt="Images of {item.name}" />
+	<div class="carousel-wrapper">
+		<Carousel imgs={item.images} alt="Images of {item.name}" />
+	</div>
 
 	<div class="item-specifics">
-		<div class="w-full flex flex-row items-center justify-between">
-			<div class="h-full">
-				<h1>{item.name}</h1>
-				<p>{item.description}</p>
-			</div>
+		<div class="side-by-side">
+			<h1>{item.name}</h1>
 			<p class="inverted-price-tag">
 				€{item.cost - item.cost * (item.discount ?? 0)}
 			</p>
 		</div>
+		<p>{item.description}</p>
 
 		{#if user}
-			<div class="w-full flex flex-row justify-between">
-				<div class="add-to-cart">
-					<button
-						class="std-btn"
-						onclick={() =>
-							addToCart({
-								supabase,
-								userId: user?.id,
-								itemId: item.id,
-								itemName: item.name,
-							})}>Add To Cart</button
-					>
-					{#if cartItem}
-						<p>Already in Cart (x{cartItem.count})</p>
-					{/if}
-				</div>
+			<div class="side-by-side">
+				<button
+					class="std-btn"
+					onclick={() =>
+						addToCart({
+							supabase,
+							userId: user?.id,
+							itemId: item.id,
+							itemName: item.name,
+						})}>Add To Cart</button
+				>
+				{#if cartItem}
+					<p>Already in Cart (x{cartItem.count})</p>
+				{/if}
 			</div>
 
-			{#if !wishlistItem}
-				<button
-					class="std-btn w-full"
-					onclick={() =>
+			<button
+				class="std-btn w-full"
+				onclick={() => {
+					if (!wishlistItem)
 						addToWishlist({
 							supabase,
 							userId: user?.id,
 							itemId: item.id,
 							itemName: item.name,
-						})}
-				>
-					Add To Wishlist
-				</button>
-			{:else}
-				<button
-					class="std-btn w-full"
-					onclick={() =>
+						});
+					else
 						removeFromWishlist({
 							supabase,
 							userId: user?.id,
 							itemId: item.id,
 							itemName: item.name,
-						})}
-				>
-					Remove From Wishlist
-				</button>
-			{/if}
+						});
+				}}
+			>
+				{#if !wishlistItem}
+					Add To
+				{:else}
+					Remove From
+				{/if} Wishlist
+			</button>
 		{/if}
 	</div>
 </section>
@@ -90,11 +86,12 @@
 	.item-info {
 		@apply page page-col page-row-md;
 	}
+	.carousel-wrapper {
+		@apply w-full h-full rounded-xl
+		bg-slate-200 dark:bg-slate-700 shadow-2xl;
+	}
 	.item-specifics {
 		@apply w-full md:max-w-[33vw] gap-5
 		flex flex-col justify-start items-start;
-	}
-	.add-to-cart {
-		@apply flex flex-row gap-3 items-center justify-center;
 	}
 </style>

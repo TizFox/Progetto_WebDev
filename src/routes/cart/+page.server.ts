@@ -11,11 +11,11 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 
 	let total = 0;
 	for (const item of cart ?? []) {
-		total += item.products.cost * item.products.count;
+		total += item.products.cost * item.count;
 	}
 
 	return {
 		cart: cart ?? [],
-		total: total,
+		total: total.toFixed(2),
 	};
 }

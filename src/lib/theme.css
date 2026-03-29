@@ -70,6 +70,9 @@
 @utility page-row-md {
 	@apply md:flex-row md:justify-center md:items-start;
 }
+@utility side-by-side {
+	@apply w-full flex flex-row items-center justify-between;
+}
 
 @layer components {
 	.std-btn {
@@ -86,16 +89,16 @@
 	}
 	.price-tag {
 		@apply pl-5 pr-10 py-3
-		text-tx-dark dark:text-tx-light sm-important-text
+		text-tx-dark dark:text-tx-light important-text
 		bg-lcta dark:bg-dcta rounded-md
 		transition-std hover:-rotate-5;
 		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
 	}
 	.inverted-price-tag {
 		@apply pr-5 pl-10 py-3
-		text-tx-dark dark:text-tx-light sm-important-text
+		text-tx-dark dark:text-tx-light important-text
 		bg-lcta dark:bg-dcta rounded-md
-		transition-std hover:-rotate-5;
+		transition-std hover:rotate-5;
 		clip-path: polygon(0% 50%, 35% 0%, 100% 0%, 100% 100%, 35% 100%);
 	}
 

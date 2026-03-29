@@ -13,20 +13,21 @@
 <!------------------------------------------>
 
 <div class="item" class:cart-col-span={type === "cart"}>
-	<h2 class="item-name">
-		{item.name}
-		{#if count != 0}
-			(x{count})
-		{/if}
-	</h2>
+	<div class="item-name">
+		<h1>
+			{item.name}
+			{#if count != 0}
+				(x{count})
+			{/if}
+		</h1>
+		<p class="inverted-price-tag">
+			€{item.cost - item.cost * (item.discount ?? 0)}
+		</p>
+	</div>
 
 	<Carousel imgs={item.images} alt="Images of {item.name}" />
 
 	<div class="item-info">
-		<p class="price-tag">
-			€{item.cost - item.cost * (item.discount ?? 0)}
-		</p>
-
 		<a href="/product{item.id}" class="std-btn">View More</a>
 		{#if type === "cart"}
 			<button
@@ -79,16 +80,15 @@
 		@apply col-span-12 md:col-span-6;
 	}
 	.item-name {
-		@apply w-full p-3 text-center
-		bg-slate-300 dark:bg-slate-600 rounded-lg;
+		@apply side-by-side p-3 bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
 	.item-info {
-		@apply w-full h-fit p-3
+		@apply w-full h-fit p-3 gap-3
 		flex flex-row justify-between items-center
 		bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
 
 	.std-btn {
-		@apply w-1/3 h-full;
+		@apply h-full;
 	}
 </style>
