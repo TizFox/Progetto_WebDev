@@ -11,7 +11,7 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 
 	let total = 0;
 	for (const item of cart ?? []) {
-		total += item.products.cost;
+		total += item.products.cost * item.products.count;
 	}
 
 	return {

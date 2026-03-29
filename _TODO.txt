@@ -3,3 +3,4 @@
 - Implementare passaggio da cart a chronology
 - Risistemare il css (soprattutto i page-grid per via dei bottoni)
 - Fare dropdown menu sulla navbar (forse non necessario)
+- Aggungere bg al carousel il /product[item]
