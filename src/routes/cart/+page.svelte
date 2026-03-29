@@ -60,8 +60,9 @@
 		@apply p-5 flex-1 h-fit flex flex-col gap-5
 		rounded-xl border-3 border-lcta dark:border-dcta
 		bg-slate-400 dark:bg-slate-600 shadow-2xl;
-	}
-	.info-check-out {
-		@apply w-full flex flex-row items-center justify-between md:flex-col md:items-start;
+
+		.info-check-out {
+			@apply w-full flex flex-row items-center justify-between md:flex-col md:items-start;
+		}
 	}
 </style>

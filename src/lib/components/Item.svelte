@@ -87,8 +87,4 @@
 		flex flex-row justify-between items-center
 		bg-slate-300 dark:bg-slate-600 rounded-lg;
 	}
-
-	.std-btn {
-		@apply h-full;
-	}
 </style>

@@ -35,7 +35,9 @@
 
 <nav class="navbar-container">
 	<div class="navbar">
-		<img src={navbarLogo} alt="Logo" class="h-full" />
+		<a href="/" class="h-full"
+			><img src={navbarLogo} alt="Logo" class="h-full" /></a
+		>
 
 		<div class="user-actions">
 			<a href="/">Home</a>
@@ -45,7 +47,7 @@
 			{#if user}
 				<User img={user.user_metadata.image} />
 			{:else}
-				<a href="/login" class="std-btn">Login</a>
+				<a href="/login" class="std-btn p-5">Login</a>
 			{/if}
 		</div>
 	</div>
@@ -58,13 +60,23 @@
 </main>
 
 <footer class="footer-container">
-	<div class="footer">END</div>
+	<div class="footer">
+		<a href="/" class="h-full"
+			><img src={navbarLogo} alt="Logo" class="h-full" /></a
+		>
+		<h1>Rolling Emporium</h1>
+		<p>By <a target="_blank" href="https://github.com/TizFox">TizFox</a></p>
+	</div>
 </footer>
 
 <!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
+
+	a {
+		@apply hover:underline;
+	}
 
 	.navbar-container {
 		@apply w-full h-(--navbar-size) z-10
@@ -75,17 +87,9 @@
 		flex flex-row justify-start items-center gap-5
 		bg-slate-400 dark:bg-slate-600 shadow-2xl;
 
-		.std-btn {
-			@apply h-full aspect-2/1;
-		}
-
 		.user-actions {
 			@apply w-full h-full
 			flex flex-row justify-end items-center gap-5;
-
-			a {
-				@apply hover:underline;
-			}
 		}
 	}
 
@@ -94,11 +98,11 @@
 	}
 
 	.footer-container {
-		@apply w-full h-(--footer-size) z-10;
+		@apply w-full z-10;
 	}
 	.footer {
-		@apply w-full h-full z-10
-		flex flex-row items-center justify-center
+		@apply w-full h-fit p-5 gap-3
+		flex flex-col items-center justify-center
 		bg-slate-400 dark:bg-slate-600 shadow-2xl;
 	}
 </style>

@@ -85,13 +85,15 @@
 
 	.item-info {
 		@apply page page-col page-row-md;
-	}
-	.carousel-wrapper {
-		@apply w-full h-full rounded-xl
-		bg-slate-200 dark:bg-slate-700 shadow-2xl;
-	}
-	.item-specifics {
-		@apply w-full md:max-w-[33vw] gap-5
-		flex flex-col justify-start items-start;
+
+		.carousel-wrapper {
+			@apply w-full h-full rounded-xl
+			bg-slate-200 dark:bg-slate-700 shadow-2xl;
+		}
+
+		.item-specifics {
+			@apply w-full md:max-w-[33vw] gap-5
+			flex flex-col justify-start items-start;
+		}
 	}
 </style>
