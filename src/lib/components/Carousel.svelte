@@ -30,13 +30,17 @@
 	<button class="prev group" aria-label="Prev Button" onclick={prev}>
 		<ArrowBigLeft
 			size="36"
-			class="transition-std group-hover:-translate-x-1"
+			class="transition-std group-hover:-translate-x-1
+			rounded-full border-2 border-lcta dark:border-dcta
+			text-lcta dark:text-dcta bg-bg-light dark:bg-bg-dark"
 		/>
 	</button>
 	<button class="next group" aria-label="Next Button" onclick={next}>
 		<ArrowBigRight
 			size="36"
-			class="transition-std group-hover:translate-x-1"
+			class="transition-std group-hover:translate-x-1
+			rounded-full border-2 border-lcta dark:border-dcta
+			text-lcta dark:text-dcta bg-bg-light dark:bg-bg-dark"
 		/>
 	</button>
 </div>

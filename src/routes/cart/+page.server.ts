@@ -8,7 +8,14 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 	}
 
 	const { data: cart } = await supabase.from("cart").select("*, products(*)");
+
+	let total = 0;
+	for (const item of cart ?? []) {
+		total += item.products.cost;
+	}
+
 	return {
 		cart: cart ?? [],
+		total: total,
 	};
 }

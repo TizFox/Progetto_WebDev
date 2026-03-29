@@ -160,7 +160,7 @@ Type "I want to delete my account" to confirm.`,
 	@import "$lib/theme.css";
 
 	.profile-container {
-		@apply page page-flex;
+		@apply page page-col;
 
 		.profile-picture {
 			@apply w-1/3 aspect-square rounded-full

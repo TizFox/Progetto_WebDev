@@ -14,9 +14,9 @@
 
 <!------------------------------------------>
 
-<section class="page page-grid">
-	{#if chronology.length != 0}
-		<h1 class="w-full text-center col-span-12">Chronology</h1>
+<section class="page">
+	<h1 class="text-center p-5">CHRONOLOGY</h1>
+	<div class="page-grid">
 		{#each chronology as i}
 			<Item
 				item={i.products}
@@ -24,10 +24,10 @@
 				{supabase}
 				userId={user?.id}
 			/>
+		{:else}
+			<Empty msg="Empty Chronology" />
 		{/each}
-	{:else}
-		<Empty msg="Empty Chronology" />
-	{/if}
+	</div>
 </section>
 
 <!------------------------------------------>

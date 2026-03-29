@@ -37,9 +37,8 @@
 	<div class="navbar">
 		<img src={navbarLogo} alt="Logo" class="h-full" />
 
-		<a href="/" class="std-btn">Home</a>
-
 		<div class="user-actions">
+			<a href="/">Home</a>
 			<a href="/cart">Cart</a>
 			<a href="/wishlist">Wishlist</a>
 			<a href="/chronology">Chronology</a>
@@ -54,7 +53,7 @@
 
 <section class="divider"></section>
 
-<main class="flex justify-center items-center">
+<main class="flex flex-col items-center justify-center">
 	{@render children()}
 </main>
 
@@ -99,7 +98,7 @@
 	}
 	.footer {
 		@apply w-full h-full z-10
-		flex flex-row justify-center items-center
+		flex flex-row items-center justify-center
 		bg-slate-400 dark:bg-slate-600 shadow-2xl;
 	}
 </style>

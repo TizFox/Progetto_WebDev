@@ -7,28 +7,28 @@
 		removeFromWishlist,
 	} from "$lib/actions";
 
-	let { supabase, userId, item, count = 0, type } = $props();
+	let { supabase = null, userId = null, item, count = 0, type } = $props();
 </script>
 
 <!------------------------------------------>
 
-<div class="item">
-	<h2 class="item-name">{item.name}</h2>
+<div class="item" class:cart-col-span={type === "cart"}>
+	<h2 class="item-name">
+		{item.name}
+		{#if count != 0}
+			(x{count})
+		{/if}
+	</h2>
 
 	<Carousel imgs={item.images} alt="Images of {item.name}" />
 
 	<div class="item-info">
 		<p class="price-tag">
-			{item.cost - item.cost * (item.discount ?? 0)} € <br />
-			{#if count != 0}
-				x{count}
-			{/if}
+			€{item.cost - item.cost * (item.discount ?? 0)}
 		</p>
 
-		{#if type === "home"}
-			<a href="/product{item.id}" class="std-btn">View More</a>
-		{:else if type === "cart"}
-			<a href="/product{item.id}" class="std-btn">View More</a>
+		<a href="/product{item.id}" class="std-btn">View More</a>
+		{#if type === "cart"}
 			<button
 				onclick={() =>
 					removeFromCart({
@@ -40,7 +40,6 @@
 				class="std-btn">Remove</button
 			>
 		{:else if type === "wishlist"}
-			<a href="/product{item.id}" class="std-btn">View More</a>
 			<button
 				onclick={() =>
 					addToCart({
@@ -75,6 +74,9 @@
 		flex flex-col gap-3
 		col-span-12 md:col-span-6 lg:col-span-4
 		bg-slate-200 dark:bg-slate-700 rounded-xl;
+	}
+	.cart-col-span {
+		@apply col-span-12 md:col-span-6;
 	}
 	.item-name {
 		@apply w-full p-3 text-center

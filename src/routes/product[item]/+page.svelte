@@ -22,18 +22,19 @@
 	<Carousel imgs={item.images} alt="Images of {item.name}" />
 
 	<div class="item-specifics">
-		<h1>{item.name}</h1>
-		<p>{item.description}</p>
+		<div class="w-full flex flex-row items-center justify-between">
+			<div class="h-full">
+				<h1>{item.name}</h1>
+				<p>{item.description}</p>
+			</div>
+			<p class="inverted-price-tag">
+				€{item.cost - item.cost * (item.discount ?? 0)}
+			</p>
+		</div>
 
 		{#if user}
-			<div class="item-cost">
-				<p class="price-tag">
-					{item.cost - item.cost * (item.discount ?? 0)} €
-				</p>
+			<div class="w-full flex flex-row justify-between">
 				<div class="add-to-cart">
-					{#if cartItem}
-						<p>Already in Cart (x{cartItem.count})</p>
-					{/if}
 					<button
 						class="std-btn"
 						onclick={() =>
@@ -44,6 +45,9 @@
 								itemName: item.name,
 							})}>Add To Cart</button
 					>
+					{#if cartItem}
+						<p>Already in Cart (x{cartItem.count})</p>
+					{/if}
 				</div>
 			</div>
 
@@ -74,10 +78,6 @@
 					Remove From Wishlist
 				</button>
 			{/if}
-		{:else}
-			<p class="price-tag">
-				{item.cost - item.cost * (item.discount ?? 0)} €
-			</p>
 		{/if}
 	</div>
 </section>
@@ -88,17 +88,13 @@
 	@import "$lib/theme.css";
 
 	.item-info {
-		@apply page page-flex page-flex-md;
+		@apply page page-col page-row-md;
 	}
 	.item-specifics {
 		@apply w-full md:max-w-[33vw] gap-5
 		flex flex-col justify-start items-start;
 	}
-	.item-cost {
-		@apply w-full h-fit
-		flex flex-row justify-between;
-	}
 	.add-to-cart {
-		@apply flex flex-row gap-3 justify-center items-center;
+		@apply flex flex-row gap-3 items-center justify-center;
 	}
 </style>

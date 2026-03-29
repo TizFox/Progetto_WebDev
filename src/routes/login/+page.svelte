@@ -64,7 +64,7 @@
 
 		// Load the Image in the bucked and take the url
 		let imageUrl =
-			"https://cqvkscgotmwgvwvpvjcp.supabase.co/storage/v1/object/public/product_images/albumbig.png";
+			"https://cqvkscgotmwgvwvpvjcp.supabase.co/storage/v1/object/public/user_images/blankuser.svg";
 
 		loading = true;
 		const { data, error } = await supabase.auth.signUp({
@@ -196,6 +196,6 @@
 	@import "$lib/theme.css";
 
 	.form-container {
-		@apply page page-flex page-flex-md;
+		@apply page page-col page-row-md;
 	}
 </style>

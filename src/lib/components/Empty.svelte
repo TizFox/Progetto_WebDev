@@ -18,6 +18,6 @@
 
 	.sad-message {
 		@apply absolute top-0 left-0 w-screen h-screen
-		flex justify-center items-center gap-10;
+		flex items-center justify-center gap-10;
 	}
 </style>

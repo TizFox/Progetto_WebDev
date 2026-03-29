@@ -33,6 +33,9 @@
 @utility important-text {
 	@apply font-medium text-base md:text-lg;
 }
+@utility sm-important-text {
+	@apply font-medium text-sm md:text-base;
+}
 @utility base-text {
 	@apply font-light text-base md:text-lg;
 }
@@ -60,18 +63,18 @@
 	@apply grid gap-5
 	auto-rows-fr grid-cols-12;
 }
-@utility page-flex {
+@utility page-col {
 	@apply mt-10 flex gap-5
 	flex-col justify-start items-center;
 }
-@utility page-flex-md {
+@utility page-row-md {
 	@apply md:flex-row md:justify-center md:items-start;
 }
 
 @layer components {
 	.std-btn {
 		@apply p-2
-		flex justify-center items-center
+		flex items-center justify-center
 		transition-std
 		rounded-md border
 		hover:text-tx-dark hover:dark:text-tx-light
@@ -83,14 +86,21 @@
 	}
 	.price-tag {
 		@apply pl-5 pr-10 py-3
-		text-tx-light important-text
+		text-tx-dark dark:text-tx-light sm-important-text
 		bg-lcta dark:bg-dcta rounded-md
 		transition-std hover:-rotate-5;
 		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
 	}
+	.inverted-price-tag {
+		@apply pr-5 pl-10 py-3
+		text-tx-dark dark:text-tx-light sm-important-text
+		bg-lcta dark:bg-dcta rounded-md
+		transition-std hover:-rotate-5;
+		clip-path: polygon(0% 50%, 35% 0%, 100% 0%, 100% 100%, 35% 100%);
+	}
 
 	.form {
-		@apply flex flex-col justify-center items-center gap-5 p-5
+		@apply flex flex-col items-center justify-center gap-5 p-5
 		bg-slate-200 dark:bg-slate-700 rounded-xl;
 
 		.floating-input {

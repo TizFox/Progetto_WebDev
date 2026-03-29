@@ -14,9 +14,9 @@
 
 <!------------------------------------------>
 
-<section class="page page-grid">
-	{#if wishlist.length != 0}
-		<h1 class="w-full h-fit text-center col-span-12">Wishlist</h1>
+<section class="page">
+	<h1 class="text-center p-5">WISHLIST</h1>
+	<div class="page-grid">
 		{#each wishlist as i}
 			<Item
 				item={i.products}
@@ -24,10 +24,10 @@
 				{supabase}
 				userId={user?.id}
 			/>
+		{:else}
+			<Empty msg="Empty Wishlist" />
 		{/each}
-	{:else}
-		<Empty msg="Empty Wishlist" />
-	{/if}
+	</div>
 </section>
 
 <!------------------------------------------>
