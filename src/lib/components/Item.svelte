@@ -36,14 +36,7 @@
 
 	<div class="item-info">
 		<a href="/product{item.id}" class="std-btn">View More</a>
-		{#if type === "order"}
-			<button
-				onclick={() => {
-					navigator.clipboard.writeText(orderId);
-				}}
-				class="std-btn">Copy Order Id</button
-			>
-		{:else if type === "cart"}
+		{#if type === "cart"}
 			<button
 				onclick={() =>
 					removeFromCart({

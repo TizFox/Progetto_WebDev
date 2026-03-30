@@ -1,6 +1,5 @@
 import { redirect } from "@sveltejs/kit";
 import {
-	stripe,
 	verifyPayment,
 	getCartTotal,
 	cartToHistory,

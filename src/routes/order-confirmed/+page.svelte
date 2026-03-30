@@ -1,6 +1,7 @@
 <script lang="ts">
 	import Empty from "$lib/components/Empty.svelte";
 	import Item from "$lib/components/Item.svelte";
+	import { formatDate } from "$lib/client/actions";
 
 	const { data } = $props();
 	const { order, paymentIntentId } = $derived(data);
@@ -18,9 +19,17 @@
 	<div class="side-by-side">
 		<div>
 			<h1 class="main-text text-left pl-0 pb-1">ORDER CONFIRMED</h1>
-			<p>[{paymentIntentId}]</p>
+			<p>Created: {formatDate(order[0].products.created_at)}</p>
 		</div>
-		<a href="/" class="std-btn w-1/4">Back to Home</a>
+		<div class="flex flex-row gap-5">
+			<button
+				onclick={() => {
+					navigator.clipboard.writeText(paymentIntentId);
+				}}
+				class="std-btn">Copy Order Id</button
+			>
+			<a href="/" class="std-btn">Back to Home</a>
+		</div>
 	</div>
 
 	<div class="page-grid">
