@@ -1,5 +1,5 @@
 <script lang="ts">
-	import logo from "$lib/assets/logo.svg";
+	const logo = "/logo.svg";
 
 	import User from "$lib/components/User.svelte";
 
@@ -42,11 +42,11 @@
 			<a href="/">Home</a>
 			<a href="/cart">Cart</a>
 			<a href="/wishlist">Wishlist</a>
-			<a href="/chronology">Chronology</a>
+			<a href="/history">History</a>
 			{#if user}
 				<User img={user.user_metadata.image} />
 			{:else}
-				<a href="/login" class="std-btn p-5">Login</a>
+				<a href="/login" class="std-btn p-3">Login</a>
 			{/if}
 		</div>
 	</div>
@@ -66,7 +66,10 @@
 		<div>
 			<h1>Rolling Emporium</h1>
 			<p>
-				By <a target="_blank" href="https://github.com/TizFox">TizFox</a
+				By <a
+					target="_blank"
+					href="https://github.com/TizFox"
+					class="main-text p-0">TizFox</a
 				>
 			</p>
 		</div>
@@ -79,7 +82,7 @@
 	@import "$lib/theme.css";
 
 	a {
-		@apply main-text p-0 hover:underline;
+		@apply hover:underline;
 	}
 
 	.navbar-container {

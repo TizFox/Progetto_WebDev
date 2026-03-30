@@ -1,7 +1,6 @@
 <script lang="ts">
-	import blankIcon from "$lib/assets/blankuser.svg";
-
 	import { goto } from "$app/navigation";
+	import { formatDate } from "$lib/client/actions.js";
 
 	let { data } = $props();
 	let { supabase, user } = $derived(data);
@@ -68,16 +67,14 @@ Type "I want to delete my account" to confirm.`,
 <!------------------------------------------>
 
 <section class="profile-container">
-	<img
-		src={img === "" ? blankIcon : img}
-		alt="Your Avatar"
-		class="profile-picture"
-	/>
+	<img src={img} alt="Your Avatar" class="profile-picture" />
 
 	<div>
-		<span>{nickname}</span>
-		<span>{email}</span>
-		<span>{created_at}</span>
+		<h1 class="w-full main-text">{nickname}</h1>
+		<h2>Email: {email}</h2>
+		<h2>
+			Created: {formatDate(created_at!)}
+		</h2>
 	</div>
 
 	<div class="form page-grid">

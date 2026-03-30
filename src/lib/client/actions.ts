@@ -5,6 +5,13 @@ export function getHEX(variable: string): string {
 		.trim();
 }
 
+function twoDigit(n: number): string {
+	return (Math.floor(n / 10) == 0 ? "0" : "") + n;
+}
+export function formatDate(s: string): string {
+	let date = new Date(s);
+	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth())} / ${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
+}
 import { invalidateAll } from "$app/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -28,8 +35,8 @@ export const removeFromWishlist = async (ap: ActionProps) => {
 	await removeFrom("wishlist", ap);
 };
 
-export const addToChronology = async (ap: ActionProps) => {
-	await addTo("chronology", ap);
+export const addToHistory = async (ap: ActionProps) => {
+	await addTo("history", ap);
 };
 
 const addTo = async (

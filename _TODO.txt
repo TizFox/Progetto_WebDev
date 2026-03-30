@@ -1,2 +1,3 @@
 - Finire il profilo, con relativi cambi di info (soprattutto l'immagine di profilo: prima upload nello storage e poi uso del link per la modifica del record di auth.users)
 - Fare dropdown menu sulla navbar (forse non necessario)
+- Rivedere tutto e scrivere in ts giusto

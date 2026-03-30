@@ -1,10 +1,5 @@
 import { redirect, json } from "@sveltejs/kit";
-import { getCartTotal } from "$lib/server/actions";
-
-import Stripe from "stripe";
-import { SECRET_STRIPE_KEY } from "$env/static/private";
-
-const stripe = new Stripe(SECRET_STRIPE_KEY);
+import { stripe, getCartTotal } from "$lib/server/actions";
 
 export async function POST({ locals: { supabase, safeGetSession } }) {
 	const { session, user } = await safeGetSession();

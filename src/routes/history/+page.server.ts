@@ -7,11 +7,12 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 		throw redirect(303, "/login");
 	}
 
-	const { data: chronology } = await supabase
-		.from("chronology")
-		.select("*, products(*)")
+	const { data: history } = await supabase
+		.from("history")
+		.select("payment_intent_id, created_at, total")
 		.eq("user_id", user.id);
+
 	return {
-		chronology: chronology ?? [],
+		history: history ?? [],
 	};
 }

@@ -36,7 +36,7 @@
 
 	<div class="item-info">
 		<a href="/product{item.id}" class="std-btn">View More</a>
-		{#if type === "order" || type === "chronology"}
+		{#if type === "order"}
 			<button
 				onclick={() => {
 					navigator.clipboard.writeText(orderId);

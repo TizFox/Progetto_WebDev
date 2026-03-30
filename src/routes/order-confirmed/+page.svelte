@@ -6,10 +6,23 @@
 	const { order, paymentIntentId } = $derived(data);
 </script>
 
+<!------------------------------------------>
+
+<svelte:head>
+	<title>Order {paymentIntentId} - Rolling Emporium</title>
+</svelte:head>
+
+<!------------------------------------------>
+
 <section class="page flex flex-col gap-5">
-	<h1 class="main-text">ORDER CONFIRMED</h1>
-	<h2>Order Code: {paymentIntentId}</h2>
-	<a href="/" class="std-btn w-1/4">Back to Home</a>
+	<div class="side-by-side">
+		<div>
+			<h1 class="main-text text-left pl-0 pb-1">ORDER CONFIRMED</h1>
+			<p>[{paymentIntentId}]</p>
+		</div>
+		<a href="/" class="std-btn w-1/4">Back to Home</a>
+	</div>
+
 	<div class="page-grid">
 		{#each order as i}
 			<Item
@@ -23,6 +36,8 @@
 		{/each}
 	</div>
 </section>
+
+<!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
