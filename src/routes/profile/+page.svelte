@@ -164,7 +164,7 @@ Type "I want to delete my account" to confirm.`,
 
 		.profile-picture {
 			@apply w-1/3 aspect-square rounded-full
-			border border-bg-dark dark:border-bg-light;
+			border-3 border-cta;
 		}
 
 		.input-field {
@@ -174,8 +174,7 @@ Type "I want to delete my account" to confirm.`,
 		.std-btn {
 			@apply w-full;
 			&.danger {
-				@apply border-red-600 hover:bg-red-600
-					dark:border-red-400 hover:dark:bg-red-400;
+				@apply border-err hover:bg-err;
 			}
 		}
 

@@ -1,34 +1,40 @@
+export function getHEX(variable: string): string {
+	if (typeof window === "undefined") return "";
+	return getComputedStyle(document.documentElement)
+		.getPropertyValue(variable)
+		.trim();
+}
+
 import { invalidateAll } from "$app/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-interface actionProps {
+interface ActionProps {
 	supabase: SupabaseClient;
 	userId: string | undefined;
 	itemId: string;
 	itemName: string;
 }
-
-export const addToCart = async (ap: actionProps) => {
+export const addToCart = async (ap: ActionProps) => {
 	await addTo("cart", ap);
 };
-export const removeFromCart = async (ap: actionProps) => {
+export const removeFromCart = async (ap: ActionProps) => {
 	await removeFrom("cart", ap);
 };
 
-export const addToWishlist = async (ap: actionProps) => {
+export const addToWishlist = async (ap: ActionProps) => {
 	await addTo("wishlist", ap);
 };
-export const removeFromWishlist = async (ap: actionProps) => {
+export const removeFromWishlist = async (ap: ActionProps) => {
 	await removeFrom("wishlist", ap);
 };
 
-export const addToChronology = async (ap: actionProps) => {
+export const addToChronology = async (ap: ActionProps) => {
 	await addTo("chronology", ap);
 };
 
 const addTo = async (
 	table: string,
-	{ supabase, userId, itemId, itemName }: actionProps,
+	{ supabase, userId, itemId, itemName }: ActionProps,
 ) => {
 	if (!userId) return;
 
@@ -74,7 +80,7 @@ const addTo = async (
 };
 const removeFrom = async (
 	table: string,
-	{ supabase, userId, itemId, itemName }: actionProps,
+	{ supabase, userId, itemId, itemName }: ActionProps,
 ) => {
 	if (!userId) return;
 

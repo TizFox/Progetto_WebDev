@@ -1,0 +1,25 @@
+import { redirect, json } from "@sveltejs/kit";
+import { getCartTotal } from "$lib/server/actions";
+
+import Stripe from "stripe";
+import { SECRET_STRIPE_KEY } from "$env/static/private";
+
+const stripe = new Stripe(SECRET_STRIPE_KEY);
+
+export async function POST({ locals: { supabase, safeGetSession } }) {
+	const { session, user } = await safeGetSession();
+	if (!session || !user) {
+		throw redirect(303, "/login");
+	}
+
+	const { total } = await getCartTotal({ supabase, userId: user.id });
+
+	const paymentIntent = await stripe.paymentIntents.create({
+		amount: Math.round(total * 100),
+		currency: "eur",
+		payment_method_types: ["card"],
+		//automatic_payment_methods: {enabled: true},
+	});
+
+	return json({ clientSecret: paymentIntent.client_secret });
+}

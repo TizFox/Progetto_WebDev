@@ -1,7 +1,11 @@
 <script lang="ts">
 	import Carousel from "$lib/components/Carousel.svelte";
 
-	import { addToCart, addToWishlist, removeFromWishlist } from "$lib/actions";
+	import {
+		addToCart,
+		addToWishlist,
+		removeFromWishlist,
+	} from "$lib/client/actions";
 
 	let { data } = $props();
 	let { supabase, user, products, itemId, cartItem, wishlistItem } =
@@ -88,7 +92,7 @@
 
 		.carousel-wrapper {
 			@apply w-full h-full rounded-xl
-			bg-slate-200 dark:bg-slate-700 shadow-2xl;
+			bg-d1 shadow-2xl;
 		}
 
 		.item-specifics {

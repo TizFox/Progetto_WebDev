@@ -1,6 +1,5 @@
 <script lang="ts">
-	import favicon from "$lib/assets/favicon.svg";
-	import navbarLogo from "$lib/assets/logo.svg";
+	import logo from "$lib/assets/logo.svg";
 
 	import User from "$lib/components/User.svelte";
 
@@ -28,7 +27,7 @@
 <!------------------------------------------>
 
 <svelte:head>
-	<link rel="icon" href={favicon} />
+	<link rel="icon" href={logo} />
 </svelte:head>
 
 <!------------------------------------------>
@@ -36,7 +35,7 @@
 <nav class="navbar-container">
 	<div class="navbar">
 		<a href="/" class="h-full"
-			><img src={navbarLogo} alt="Logo" class="h-full" /></a
+			><img src={logo} alt="Logo" class="h-full" /></a
 		>
 
 		<div class="user-actions">
@@ -62,10 +61,15 @@
 <footer class="footer-container">
 	<div class="footer">
 		<a href="/" class="h-full"
-			><img src={navbarLogo} alt="Logo" class="h-full" /></a
+			><img src={logo} alt="Logo" class="h-full" /></a
 		>
-		<h1>Rolling Emporium</h1>
-		<p>By <a target="_blank" href="https://github.com/TizFox">TizFox</a></p>
+		<div>
+			<h1>Rolling Emporium</h1>
+			<p>
+				By <a target="_blank" href="https://github.com/TizFox">TizFox</a
+				>
+			</p>
+		</div>
 	</div>
 </footer>
 
@@ -75,7 +79,7 @@
 	@import "$lib/theme.css";
 
 	a {
-		@apply hover:underline;
+		@apply main-text p-0 hover:underline;
 	}
 
 	.navbar-container {
@@ -85,7 +89,7 @@
 	.navbar {
 		@apply w-full h-full p-5
 		flex flex-row justify-start items-center gap-5
-		bg-slate-400 dark:bg-slate-600 shadow-2xl;
+		bg-d2 shadow-2xl;
 
 		.user-actions {
 			@apply w-full h-full
@@ -98,11 +102,11 @@
 	}
 
 	.footer-container {
-		@apply w-full z-10;
+		@apply w-full h-(--navbar-size) z-10;
 	}
 	.footer {
-		@apply w-full h-fit p-5 gap-3
-		flex flex-col items-center justify-center
-		bg-slate-400 dark:bg-slate-600 shadow-2xl;
+		@apply w-full h-full p-5 gap-3
+		flex flex-row items-center justify-center
+		bg-d2 shadow-2xl;
 	}
 </style>

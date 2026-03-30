@@ -1,5 +1,3 @@
-import { redirect } from "@sveltejs/kit";
-
 export async function load({ params, locals: { supabase, safeGetSession } }) {
 	let itemId = params.item;
 
@@ -11,13 +9,15 @@ export async function load({ params, locals: { supabase, safeGetSession } }) {
 	const { data: cart } = await supabase
 		.from("cart")
 		.select("*")
-		.eq("product_id", itemId);
+		.eq("product_id", itemId)
+		.eq("user_id", user.id);
 	let cartItem = cart && cart.length === 1 ? cart[0] : null;
 
 	const { data: wishlist } = await supabase
 		.from("wishlist")
 		.select("*")
-		.eq("product_id", itemId);
+		.eq("product_id", itemId)
+		.eq("user_id", user.id);
 	let wishlistItem = wishlist && wishlist.length === 1 ? wishlist[0] : null;
 
 	return { itemId, cartItem, wishlistItem };

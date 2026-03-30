@@ -1,7 +1,2 @@
 - Finire il profilo, con relativi cambi di info (soprattutto l'immagine di profilo: prima upload nello storage e poi uso del link per la modifica del record di auth.users)
-- Implementare pagamento cart (PayPal)
-- Implementare passaggio da cart a chronology
-- Risistemare il css (soprattutto i page-grid per via dei bottoni)
 - Fare dropdown menu sulla navbar (forse non necessario)
-- Fare footer
-- Mettere loghi

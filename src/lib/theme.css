@@ -10,14 +10,17 @@
 
 	--transition-std: all 200ms ease-in-out;
 
-	--color-tx-light: var(--color-slate-950);
-	--color-tx-dark: var(--color-slate-50);
+	--color-disabled: var(--color-red-300);
 
-	--color-bg-light: var(--color-slate-100);
-	--color-bg-dark: var(--color-slate-900);
+	/* Follow the z-index */
+	--color-dark: var(--color-slate-50);
+	--color-light: var(--color-slate-950);
+	--color-cta: var(--color-emerald-500);
+	--color-err: var(--color-red-600);
 
-	--color-lcta: var(--color-yellow-600);
-	--color-dcta: var(--color-yellow-500);
+	--color-d0: var(--color-slate-900);
+	--color-d1: var(--color-slate-700);
+	--color-d2: var(--color-slate-600);
 }
 
 @utility transition-* {
@@ -40,11 +43,18 @@
 	@apply font-light text-base md:text-lg;
 }
 
+@utility main-text {
+	@apply font-bold text-cta text-center p-5;
+}
+@utility error-text {
+	@apply font-bold text-err text-center p-5;
+}
+
 @layer base {
 	body {
 		@apply overflow-x-hidden
-		bg-bg-light dark:bg-bg-dark
-		text-tx-light dark:text-tx-dark
+		bg-d0
+		text-dark
 		base-text;
 	}
 
@@ -80,48 +90,55 @@
 		flex items-center justify-center
 		transition-std
 		rounded-md border
-		hover:text-tx-dark hover:dark:text-tx-light
-		border-tx-light dark:border-tx-dark
 		important-text
 
-		hover:border-lcta hover:bg-lcta
-		hover:dark:border-dcta hover:dark:bg-dcta;
+		border-dark;
+
+		&:hover {
+			@apply text-light
+			border-cta bg-cta;
+		}
+
+		&:disabled {
+			@apply text-light border-disabled bg-disabled;
+			&:hover {
+				@apply text-light border-disabled bg-disabled;
+			}
+		}
 	}
 	.price-tag {
 		@apply pl-5 pr-10 py-3
-		text-tx-dark dark:text-tx-light important-text
-		bg-lcta dark:bg-dcta rounded-md
+		text-light important-text
+		bg-cta rounded-md
 		transition-std hover:-rotate-5;
 		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
 	}
 	.inverted-price-tag {
 		@apply pr-5 pl-10 py-3
-		text-tx-dark dark:text-tx-light important-text
-		bg-lcta dark:bg-dcta rounded-md
+		text-light important-text
+		bg-cta rounded-md
 		transition-std hover:rotate-5;
 		clip-path: polygon(0% 50%, 35% 0%, 100% 0%, 100% 100%, 35% 100%);
 	}
 
 	.form {
 		@apply flex flex-col items-center justify-center gap-5 p-5
-		bg-slate-200 dark:bg-slate-700 rounded-xl;
+		bg-d1 rounded-xl;
 
 		.floating-input {
 			@apply block px-2.5 pb-2.5 pt-4 w-full
 				rounded-md border transition-std
 				focus:outline-none focus:ring-0
 				bg-transparent
-				invalid:text-red-600
-				border-tx-light focus:border-lcta invalid:border-red-600
-				dark:invalid:text-red-400
-				dark:border-tx-dark dark:focus:border-dcta dark:invalid:border-red-400;
+
+				invalid:text-err
+				border-dark focus:border-cta invalid:border-err;
 		}
 		.floating-label {
 			@apply absolute top-2 px-2 z-5 cursor-text
 				transition-std -translate-y-4 scale-75 text-sm
-				bg-slate-200 dark:bg-slate-700
-				peer-focus:text-lcta peer-invalid:text-red-600
-				peer-focus:dark:text-dcta dark:peer-invalid:text-red-400;
+				bg-d1
+				peer-focus:text-cta peer-invalid:text-err;
 		}
 		.std-btn {
 			@apply w-1/2 h-fit;

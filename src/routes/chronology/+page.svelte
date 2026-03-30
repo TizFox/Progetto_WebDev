@@ -3,7 +3,7 @@
 	import Empty from "$lib/components/Empty.svelte";
 
 	let { data } = $props();
-	let { supabase, user, chronology } = $derived(data);
+	let { chronology } = $derived(data);
 </script>
 
 <!------------------------------------------>
@@ -15,14 +15,16 @@
 <!------------------------------------------>
 
 <section class="page">
-	<h1 class="text-center p-5">CHRONOLOGY</h1>
+	{#if chronology.length !== 0}
+		<h1 class="main-text">CHRONOLOGY</h1>
+	{/if}
 	<div class="page-grid">
 		{#each chronology as i}
 			<Item
 				item={i.products}
+				count={i.count}
+				orderId={i.payment_intent_id}
 				type="chronology"
-				{supabase}
-				userId={user?.id}
 			/>
 		{:else}
 			<Empty msg="Empty Chronology" />

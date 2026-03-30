@@ -1,13 +1,20 @@
-<script>
+<script lang="ts">
 	import Carousel from "$lib/components/Carousel.svelte";
 
 	import {
 		addToCart,
 		removeFromCart,
 		removeFromWishlist,
-	} from "$lib/actions";
+	} from "$lib/client/actions";
 
-	let { supabase = null, userId = null, item, count = 0, type } = $props();
+	let {
+		supabase = null,
+		userId = null,
+		item,
+		count = 0,
+		orderId = null,
+		type,
+	} = $props();
 </script>
 
 <!------------------------------------------>
@@ -29,7 +36,14 @@
 
 	<div class="item-info">
 		<a href="/product{item.id}" class="std-btn">View More</a>
-		{#if type === "cart"}
+		{#if type === "order" || type === "chronology"}
+			<button
+				onclick={() => {
+					navigator.clipboard.writeText(orderId);
+				}}
+				class="std-btn">Copy Order Id</button
+			>
+		{:else if type === "cart"}
 			<button
 				onclick={() =>
 					removeFromCart({
@@ -74,17 +88,17 @@
 		@apply w-full h-fit p-3
 		flex flex-col gap-3
 		col-span-12 md:col-span-6 lg:col-span-4
-		bg-slate-200 dark:bg-slate-700 rounded-xl;
+		bg-d1 rounded-xl;
 	}
 	.cart-col-span {
 		@apply col-span-12 md:col-span-6;
 	}
 	.item-name {
-		@apply side-by-side p-3 bg-slate-300 dark:bg-slate-600 rounded-lg;
+		@apply side-by-side p-3 bg-d2 rounded-lg;
 	}
 	.item-info {
 		@apply w-full h-fit p-3 gap-3
 		flex flex-row justify-between items-center
-		bg-slate-300 dark:bg-slate-600 rounded-lg;
+		bg-d2 rounded-lg;
 	}
 </style>

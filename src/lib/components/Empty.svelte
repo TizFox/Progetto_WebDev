@@ -7,8 +7,8 @@
 <!------------------------------------------>
 
 <div class="sad-message">
-	<Frown size="100px" class="text-lcta dark:text-dcta" />
-	<h1 class="font-bold text-lcta dark:text-dcta">{msg}</h1>
+	<Frown size="100px" class="text-cta" />
+	<h1 class="main-text">{msg}</h1>
 </div>
 
 <!------------------------------------------>
