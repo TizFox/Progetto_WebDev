@@ -61,7 +61,7 @@
 		const result = await stripe.confirmPayment({
 			elements,
 			confirmParams: {
-				return_url: `${window.location.origin}/order-confirmed`,
+				return_url: `${window.location.origin}/orderNEW`,
 			},
 		});
 
@@ -80,13 +80,18 @@
 
 <!------------------------------------------>
 
-<section class="page flex flex-col gap-5">
+<section class="page page-col">
 	{#if cart.length != 0}
 		<h1 class="main-text">CART</h1>
 	{/if}
 	{#if cart.length != 0}
-		<div class="check-out">
-			<div class="info-check-out">
+		<div
+			class="mx-auto p-5 flex-1 w-full md:w-1/2 h-fit flex flex-col gap-5
+		bg-d1 shadow-2xl rounded-xl border-3 border-cta"
+		>
+			<div
+				class="w-full flex flex-row items-center justify-between md:flex-col md:items-start"
+			>
 				<h2>CheckOut</h2>
 				<p class="important-text">
 					Total: €{total}
@@ -122,7 +127,7 @@
 			</form>
 		</div>
 	{/if}
-	<div class="page-grid">
+	<div class="page page-grid">
 		{#each cart as i}
 			<Item
 				item={i.products}
@@ -143,11 +148,10 @@
 	@import "$lib/theme.css";
 
 	.check-out {
-		@apply mx-auto p-5 flex-1 w-full md:w-1/2 h-fit flex flex-col gap-5
-		bg-d1 shadow-2xl rounded-xl border-3 border-cta;
+		@apply;
 
 		.info-check-out {
-			@apply w-full flex flex-row items-center justify-between md:flex-col md:items-start;
+			@apply;
 		}
 		.payment {
 			@apply w-full flex flex-col gap-5;

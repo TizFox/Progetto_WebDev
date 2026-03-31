@@ -4,85 +4,30 @@
 	let { data } = $props();
 	let { supabase } = $derived(data);
 
-	let loginEmail = $state("");
-	let loginPassword = $state("");
-
-	let registerNickname = $state("");
-	let registerEmail = $state("");
-	let registerPassword1 = $state("");
-	let registerPassword2 = $state("");
+	let email = $state("");
+	let password = $state("");
 
 	let loading = $state(false);
 
 	const handleLogin = async () => {
 		if (loading) return;
 
-		console.log("LOGIN: " + loginEmail + " - " + loginPassword);
+		console.log("LOGIN: " + email + " - " + password);
 
-		if (!loginEmail || !loginPassword) {
+		if (!email || !password) {
 			alert("Error: Invalid Inputs");
 			return;
 		}
 
 		loading = true;
 		const { error } = await supabase.auth.signInWithPassword({
-			email: loginEmail,
-			password: loginPassword,
+			email: email,
+			password: password,
 		});
 		if (error) {
 			alert(error.message);
 			loading = false;
 		} else {
-			goto("/");
-		}
-	};
-
-	const handleRegister = async () => {
-		if (loading) return;
-
-		console.log(
-			"REGISTER: " +
-				registerNickname +
-				" : " +
-				registerEmail +
-				" - " +
-				registerPassword1 +
-				" == " +
-				registerPassword2,
-		);
-
-		if (
-			registerNickname == "" ||
-			registerEmail == "" ||
-			registerPassword1 == "" ||
-			registerPassword2 == "" ||
-			registerPassword1 != registerPassword2
-		) {
-			alert("Error: Invalid Inputs");
-			return;
-		}
-
-		// Load the Image in the bucked and take the url
-		let imageUrl =
-			"https://cqvkscgotmwgvwvpvjcp.supabase.co/storage/v1/object/public/user_images/blankuser.svg";
-
-		loading = true;
-		const { data, error } = await supabase.auth.signUp({
-			email: registerEmail,
-			password: registerPassword1,
-			options: {
-				data: {
-					nickname: registerNickname,
-					image: imageUrl,
-				},
-			},
-		});
-		if (error) {
-			alert(error.message);
-			loading = false;
-		} else {
-			alert("Check your Email! (Not Active 2 email/h)");
-			loading = false;
 			goto("/");
 		}
 	};
@@ -96,9 +41,9 @@
 
 <!------------------------------------------>
 
-<section class="form-container">
+<section class="page page-col">
 	<div class="form">
-		<h1>Login</h1>
+		<h1 class="part main-text">Login</h1>
 
 		<div class="relative">
 			<input
@@ -107,7 +52,7 @@
 				type="email"
 				placeholder="..."
 				autocomplete="off"
-				bind:value={loginEmail}
+				bind:value={email}
 			/>
 			<label class="floating-label" for="email">Email</label>
 		</div>
@@ -119,83 +64,26 @@
 				type="password"
 				placeholder="..."
 				autocomplete="off"
-				bind:value={loginPassword}
+				bind:value={password}
 			/>
 			<label class="floating-label" for="password">Password</label>
 		</div>
 
-		<button type="submit" class="std-btn" onclick={handleLogin}>
+		<button
+			type="submit"
+			class="std-btn"
+			onclick={handleLogin}
+			disabled={loading}
+		>
 			{loading ? "Loading..." : "Login"}
 		</button>
 	</div>
-	<div class="form">
-		<h1>Register</h1>
 
-		<div class="relative">
-			<input
-				id="registerNickname"
-				class="floating-input peer"
-				type="text"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={registerNickname}
-			/>
-			<label class="floating-label" for="registerNickname">Nickname</label
-			>
-		</div>
-
-		<div class="relative">
-			<input
-				id="registerEmail"
-				class="floating-input peer"
-				type="email"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={registerEmail}
-			/>
-			<label class="floating-label" for="registerEmail">Email</label>
-		</div>
-
-		<div class="relative">
-			<input
-				id="registerPassword1"
-				class="floating-input peer"
-				type="password"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={registerPassword1}
-			/>
-			<label class="floating-label" for="registerPassword1"
-				>Password</label
-			>
-		</div>
-
-		<div class="relative">
-			<input
-				id="registerPassword2"
-				class="floating-input peer"
-				type="password"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={registerPassword2}
-			/>
-			<label class="floating-label" for="registerPassword2">
-				Repeat Password
-			</label>
-		</div>
-
-		<button class="std-btn" onclick={handleRegister}>
-			{loading ? "Loading..." : "Register"}
-		</button>
-	</div>
+	<a href="/signup" class="main-text p-0 hover:underline">Create Account</a>
 </section>
 
 <!------------------------------------------>
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.form-container {
-		@apply page page-col page-row-md;
-	}
 </style>

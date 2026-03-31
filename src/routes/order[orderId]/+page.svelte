@@ -4,27 +4,31 @@
 	import { formatDate } from "$lib/client/actions";
 
 	const { data } = $props();
-	const { order, paymentIntentId } = $derived(data);
+	const { historyId, orderItems, historyCreatedAt, historyTotal } =
+		$derived(data);
 </script>
 
 <!------------------------------------------>
 
 <svelte:head>
-	<title>Order {paymentIntentId} - Rolling Emporium</title>
+	<title>Order {historyId} - Rolling Emporium</title>
 </svelte:head>
 
 <!------------------------------------------>
 
-<section class="page flex flex-col gap-5">
+<section class="page page-col">
 	<div class="side-by-side">
 		<div>
 			<h1 class="main-text text-left pl-0 pb-1">ORDER CONFIRMED</h1>
-			<p>Created: {formatDate(order[0].products.created_at)}</p>
+			<p>Created: {formatDate(historyCreatedAt!)}</p>
 		</div>
-		<div class="flex flex-row gap-5">
+		<div class="page page-row">
+			<p class="inverted-price-tag">
+				€{historyTotal}
+			</p>
 			<button
 				onclick={() => {
-					navigator.clipboard.writeText(paymentIntentId);
+					navigator.clipboard.writeText(historyId!);
 				}}
 				class="std-btn">Copy Order Id</button
 			>
@@ -32,14 +36,9 @@
 		</div>
 	</div>
 
-	<div class="page-grid">
-		{#each order as i}
-			<Item
-				item={i.products}
-				count={i.count}
-				orderId={paymentIntentId}
-				type="order"
-			/>
+	<div class="page page-grid">
+		{#each orderItems as i}
+			<Item item={i.products} count={i.count} type="order" />
 		{:else}
 			<Empty msg="Empty Order (?)" />
 		{/each}

@@ -22,19 +22,22 @@
 
 <!------------------------------------------>
 
-<section class="item-info">
-	<div class="carousel-wrapper">
+<section class="page page-col md:page-row">
+	<div
+		class="w-full h-full rounded-xl
+		bg-d1 shadow-2xl"
+	>
 		<Carousel imgs={item.images} alt="Images of {item.name}" />
 	</div>
 
-	<div class="item-specifics">
+	<div class="w-full md:max-w-[33dvw] page page-col">
 		<div class="side-by-side">
 			<h1>{item.name}</h1>
 			<p class="inverted-price-tag">
 				€{item.cost - item.cost * (item.discount ?? 0)}
 			</p>
 		</div>
-		<p>{item.description}</p>
+		<p class="w-full text-left">{item.description}</p>
 
 		{#if user}
 			<div class="side-by-side">
@@ -86,18 +89,4 @@
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.item-info {
-		@apply page page-col page-row-md;
-
-		.carousel-wrapper {
-			@apply w-full h-full rounded-xl
-			bg-d1 shadow-2xl;
-		}
-
-		.item-specifics {
-			@apply w-full md:max-w-[33vw] gap-5
-			flex flex-col justify-start items-start;
-		}
-	}
 </style>

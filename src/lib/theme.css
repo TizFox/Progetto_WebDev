@@ -2,11 +2,10 @@
 @plugin '@tailwindcss/forms';
 
 @theme {
-	--navbar-size: 10vh;
-	--main-size: 80vh;
-	--footer-size: 10vh;
+	--main-size: 80dvh;
+	--bars-size: 10dvh;
 
-	--item-size: 30vh;
+	--item-size: 30dvh;
 
 	--transition-std: all 200ms ease-in-out;
 
@@ -66,20 +65,22 @@
 	}
 }
 
-@utility page {
+@utility scene {
 	@apply w-full max-w-7xl min-h-(--main-size) p-5;
 }
-@utility page-grid {
-	@apply grid gap-5
-	auto-rows-fr grid-cols-12;
+@utility page {
+	@apply flex gap-5;
+	&.page-grid {
+		@apply grid auto-rows-fr grid-cols-12;
+	}
 }
 @utility page-col {
-	@apply mt-10 flex gap-5
-	flex-col justify-start items-center;
+	@apply flex-col items-center justify-start;
 }
-@utility page-row-md {
-	@apply md:flex-row md:justify-center md:items-start;
+@utility page-row {
+	@apply flex-row items-start justify-center;
 }
+
 @utility side-by-side {
 	@apply w-full flex flex-row items-center justify-between;
 }
@@ -124,6 +125,10 @@
 	.form {
 		@apply flex flex-col items-center justify-center gap-5 p-5
 		bg-d1 rounded-xl;
+
+		.part {
+			@apply w-full bg-d2 rounded-lg;
+		}
 
 		.floating-input {
 			@apply block px-2.5 pb-2.5 pt-4 w-full

@@ -14,11 +14,11 @@
 
 <!------------------------------------------>
 
-<section class="page">
+<section>
 	{#if wishlist.length !== 0}
 		<h1 class="main-text">WISHLIST</h1>
 	{/if}
-	<div class="page-grid">
+	<div class="page page-grid">
 		{#each wishlist as i}
 			<Item
 				item={i.products}
@@ -26,11 +26,15 @@
 				{supabase}
 				userId={user?.id}
 			/>
-		{:else}
-			<Empty msg="Empty Wishlist" />
 		{/each}
 	</div>
 </section>
+
+{#if wishlist.length === 0}
+	<div class="w-full h-full flex items-center justify-center">
+		<Empty msg="Empty History" />
+	</div>
+{/if}
 
 <!------------------------------------------>
 

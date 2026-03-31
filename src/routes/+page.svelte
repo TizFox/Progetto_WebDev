@@ -11,7 +11,7 @@
 	<title>Rolling Emporium</title>
 </svelte:head>
 
-<section class="items-container">
+<section class="page page-grid">
 	{#each data.products as i}
 		<Item item={i} type="home" />
 	{:else}
@@ -23,8 +23,4 @@
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.items-container {
-		@apply page page-grid;
-	}
 </style>

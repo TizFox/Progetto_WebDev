@@ -54,9 +54,11 @@
 
 <section class="divider"></section>
 
-<main class="flex flex-col items-center justify-center">
-	{@render children()}
-</main>
+<div class="flex items-center justify-center">
+	<main class="scene">
+		{@render children()}
+	</main>
+</div>
 
 <footer class="footer-container">
 	<div class="footer">
@@ -86,7 +88,7 @@
 	}
 
 	.navbar-container {
-		@apply w-full h-(--navbar-size) z-10
+		@apply w-full h-(--bars-size) z-10
 		fixed top-0 left-0;
 	}
 	.navbar {
@@ -101,11 +103,11 @@
 	}
 
 	.divider {
-		@apply h-(--navbar-size);
+		@apply h-(--bars-size);
 	}
 
 	.footer-container {
-		@apply w-full h-(--navbar-size) z-10;
+		@apply w-full h-(--bars-size) z-10;
 	}
 	.footer {
 		@apply w-full h-full p-5 gap-3

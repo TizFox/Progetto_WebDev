@@ -1,5 +1,10 @@
-export async function load({ params, locals: { supabase, safeGetSession } }) {
-	let itemId = params.item;
+import type { PageServerLoad } from "./$types";
+
+export const load: PageServerLoad = async ({
+	params,
+	locals: { supabase, safeGetSession },
+}) => {
+	let itemId = params.itemId;
 
 	const { session, user } = await safeGetSession();
 	if (!session || !user) {
@@ -21,4 +26,4 @@ export async function load({ params, locals: { supabase, safeGetSession } }) {
 	let wishlistItem = wishlist && wishlist.length === 1 ? wishlist[0] : null;
 
 	return { itemId, cartItem, wishlistItem };
-}
+};

@@ -1,7 +1,11 @@
+import type { PageServerLoad } from "./$types";
+
 import { redirect } from "@sveltejs/kit";
 import { getCartTotal } from "$lib/server/actions.js";
 
-export async function load({ locals: { supabase, safeGetSession } }) {
+export const load: PageServerLoad = async ({
+	locals: { supabase, safeGetSession },
+}) => {
 	const { session, user } = await safeGetSession();
 	if (!session || !user) {
 		throw redirect(303, "/login");
@@ -13,4 +17,4 @@ export async function load({ locals: { supabase, safeGetSession } }) {
 		cart,
 		total,
 	};
-}
+};

@@ -15,33 +15,32 @@
 
 <!------------------------------------------>
 
-<section class="page">
+<section class="page page-col flex-col-reverse">
 	{#if history.length !== 0}
 		<h1 class="main-text">HISTORY</h1>
 	{/if}
-	<div class="page-col flex-col-reverse">
-		{#each history as i}
-			<button
-				class="std-btn w-full
+	{#each history as h}
+		<button
+			class="std-btn w-full
 				hover:border-d2 hover:bg-d2 hover:text-dark"
-				onclick={() =>
-					goto(
-						`/order-confirmed?payment_intent=${i.payment_intent_id}`,
-					)}
-			>
-				<div class="side-by-side">
-					<p class="text-left">
-						Order Id: {i.payment_intent_id}<br />
-						Created: {formatDate(i.created_at)}
-					</p>
-					<p class="inverted-price-tag">Total: €{i.total}</p>
-				</div>
-			</button>
-		{:else}
-			<Empty msg="Empty History" />
-		{/each}
-	</div>
+			onclick={() => goto(`/order${h.id}`)}
+		>
+			<div class="side-by-side">
+				<p class="text-left">
+					Order Id: {h.id}<br />
+					Created: {formatDate(h.created_at)}
+				</p>
+				<p class="inverted-price-tag">Total: €{h.total}</p>
+			</div>
+		</button>
+	{/each}
 </section>
+
+{#if history.length === 0}
+	<div class="w-full h-full">
+		<Empty msg="Empty History" />
+	</div>
+{/if}
 
 <!------------------------------------------>
 

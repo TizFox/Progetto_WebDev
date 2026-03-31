@@ -1,5 +1,8 @@
+// Utils
 export function getHEX(variable: string): string {
-	if (typeof window === "undefined") return "";
+	if (typeof window === "undefined") {
+		return "";
+	}
 	return getComputedStyle(document.documentElement)
 		.getPropertyValue(variable)
 		.trim();
@@ -10,8 +13,11 @@ function twoDigit(n: number): string {
 }
 export function formatDate(s: string): string {
 	let date = new Date(s);
-	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth())} / ${date.getFullYear()} - ${date.getHours()}:${date.getMinutes()}`;
+	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth())} / ${date.getFullYear()} - ${twoDigit(date.getHours())}:${twoDigit(date.getMinutes())}`;
 }
+
+// -------------------------------------
+
 import { invalidateAll } from "$app/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
@@ -21,28 +27,28 @@ interface ActionProps {
 	itemId: string;
 	itemName: string;
 }
-export const addToCart = async (ap: ActionProps) => {
+export const addToCart = async (ap: ActionProps): Promise<void> => {
 	await addTo("cart", ap);
 };
-export const removeFromCart = async (ap: ActionProps) => {
+export const removeFromCart = async (ap: ActionProps): Promise<void> => {
 	await removeFrom("cart", ap);
 };
 
-export const addToWishlist = async (ap: ActionProps) => {
+export const addToWishlist = async (ap: ActionProps): Promise<void> => {
 	await addTo("wishlist", ap);
 };
-export const removeFromWishlist = async (ap: ActionProps) => {
+export const removeFromWishlist = async (ap: ActionProps): Promise<void> => {
 	await removeFrom("wishlist", ap);
 };
 
-export const addToHistory = async (ap: ActionProps) => {
+export const addToHistory = async (ap: ActionProps): Promise<void> => {
 	await addTo("history", ap);
 };
 
 const addTo = async (
 	table: string,
 	{ supabase, userId, itemId, itemName }: ActionProps,
-) => {
+): Promise<void> => {
 	if (!userId) return;
 
 	let { data: item } = await supabase
@@ -88,7 +94,7 @@ const addTo = async (
 const removeFrom = async (
 	table: string,
 	{ supabase, userId, itemId, itemName }: ActionProps,
-) => {
+): Promise<void> => {
 	if (!userId) return;
 
 	let { data: item } = await supabase

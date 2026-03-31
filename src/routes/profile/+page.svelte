@@ -66,7 +66,7 @@ Type "I want to delete my account" to confirm.`,
 
 <!------------------------------------------>
 
-<section class="profile-container">
+<section class="page page-col">
 	<img src={img} alt="Your Avatar" class="profile-picture" />
 
 	<div>
@@ -77,7 +77,7 @@ Type "I want to delete my account" to confirm.`,
 		</h2>
 	</div>
 
-	<div class="form page-grid">
+	<div class="page page-grid form">
 		<div class="input-field">
 			<input
 				id="newNickname"
@@ -156,27 +156,23 @@ Type "I want to delete my account" to confirm.`,
 <style lang="postcss">
 	@import "$lib/theme.css";
 
-	.profile-container {
-		@apply page page-col;
-
-		.profile-picture {
-			@apply w-1/3 aspect-square rounded-full
+	.profile-picture {
+		@apply w-1/3 aspect-square rounded-full
 			border-3 border-cta;
-		}
+	}
 
-		.input-field {
-			@apply relative col-span-6 md:col-span-3;
-		}
+	.input-field {
+		@apply relative col-span-6 md:col-span-3;
+	}
 
-		.std-btn {
-			@apply w-full;
-			&.danger {
-				@apply border-err hover:bg-err;
-			}
+	.std-btn {
+		@apply w-full;
+		&.danger {
+			@apply border-err hover:bg-err;
 		}
+	}
 
-		.danger-zone {
-			@apply w-full flex flex-row px-5 gap-5;
-		}
+	.danger-zone {
+		@apply w-full flex flex-row px-5 gap-5;
 	}
 </style>
