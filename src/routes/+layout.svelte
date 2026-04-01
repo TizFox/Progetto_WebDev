@@ -72,7 +72,7 @@
 				By <a
 					target="_blank"
 					href="https://github.com/TizFox"
-					class="main-text p-0">TizFox</a
+					class="main-text">TizFox</a
 				>
 			</p>
 		</div>

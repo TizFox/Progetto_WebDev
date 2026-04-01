@@ -17,7 +17,7 @@
 
 <section>
 	{#if wishlist.length !== 0}
-		<h1 class="main-text">WISHLIST</h1>
+		<h1 class="main-text pt-5">WISHLIST</h1>
 	{/if}
 	<div class="page page-grid">
 		{#each wishlist as i}

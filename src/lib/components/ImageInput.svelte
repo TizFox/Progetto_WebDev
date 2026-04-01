@@ -6,7 +6,7 @@
 		setImage,
 		placeholder,
 	}: {
-		wClass: string;
+		wClass?: string;
 		setImage: (x: File | null) => void;
 		placeholder: string | null;
 	} = $props();
@@ -17,12 +17,13 @@
 
 <!------------------------------------------>
 
-<div class="{wClass} h-full relative group shadow-d0 shadow-lg rounded-lg">
+<!--  shadow-d0 shadow-lg -->
+<div class="{wClass} h-full relative group rounded-lg">
 	<button
 		type="button"
 		onclick={() => fileInput?.click()}
 		class="
-		w-full h-full pl-11 py-3 bg-d1 rounded-lg
+		w-full h-full px-11 py-3 bg-d1 rounded-lg
 		border-2 border-dark transition-std
 		hover:border-cta
 		base-text text-left truncate

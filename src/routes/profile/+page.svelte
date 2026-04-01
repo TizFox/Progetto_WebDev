@@ -8,8 +8,8 @@
 	let { data } = $props();
 	let { supabase, user }: PageData = $derived(data);
 
-	let img = $derived(user?.user_metadata.image);
 	let nickname = $derived(user?.user_metadata.nickname);
+	let img = $derived(user?.user_metadata.image);
 	let email = $derived(user?.email);
 	let created_at = $derived(user?.created_at);
 
@@ -17,6 +17,9 @@
 	let newImage = $state(<File | null>{});
 	let newEmail = $state("");
 	let newPassword = $state("");
+	let validNewNickname = $state(true);
+	let validNewEmail = $state(true);
+	let validNewPassword = $state(true);
 
 	const changeNickname = async () => {
 		console.log(newNickname);
@@ -69,72 +72,87 @@ Type "I want to delete my account" to confirm.`,
 <!------------------------------------------>
 
 <section class="page page-col">
-	<img src={img} alt="Your Avatar" class="profile-picture" />
+	<img
+		src={img}
+		alt="Your Avatar"
+		class="w-1/2 md:w-3/10 aspect-square rounded-full
+		border-2 border-cta"
+	/>
 
 	<div>
-		<h1 class="w-full main-text">{nickname}</h1>
-		<h2>Email: {email}</h2>
+		<h1 class="w-full main-text p-5">{nickname}</h1>
+		<h2><span class="main-text">Email</span>: {email}</h2>
 		<h2>
-			Created: {formatDate(created_at!)}
+			<span class="main-text">Created</span>: {formatDate(created_at!)}
 		</h2>
 	</div>
 
 	<div class="page page-grid form">
-		<Input
-			type="text"
-			wClass="col-span-3"
-			placeholder="New Nickname"
-			setValue={(x: string) => (newNickname = x)}
-		/>
+		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+			<Input
+				type="text"
+				placeholder="New Nickname"
+				setValue={(x: string) => (newNickname = x)}
+				setValid={(x: boolean) => (validNewNickname = x)}
+			/>
+			<button
+				type="button"
+				onclick={changeNickname}
+				class="std-btn w-full"
+			>
+				Change Nickname
+			</button>
+		</div>
 
-		<ImageInput
-			wClass="col-span-3"
-			placeholder="New Image"
-			setImage={(x: File | null) => (newImage = x)}
-		/>
+		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+			<ImageInput
+				placeholder="New Image"
+				setImage={(x: File | null) => (newImage = x)}
+			/>
+			<button type="button" onclick={changeImage} class="std-btn w-full">
+				Change Image
+			</button>
+		</div>
 
-		<Input
-			type="email"
-			wClass="col-span-3"
-			placeholder="New Email"
-			setValue={(x: string) => (newEmail = x)}
-		/>
+		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+			<Input
+				type="email"
+				placeholder="New Email"
+				setValue={(x: string) => (newEmail = x)}
+				setValid={(x: boolean) => (validNewEmail = x)}
+			/>
+			<button type="button" onclick={changeEmail} class="std-btn w-full">
+				Change Email
+			</button>
+		</div>
 
-		<Input
-			type="password"
-			wClass="col-span-3"
-			placeholder="New Password"
-			setValue={(x: string) => (newPassword = x)}
-		/>
-		<button
-			type="button"
-			onclick={changeNickname}
-			class="std-btn col-span-3"
-		>
-			Change Nickname
-		</button>
-
-		<button type="button" onclick={changeImage} class="std-btn col-span-3">
-			Change Image
-		</button>
-
-		<button type="button" onclick={changeEmail} class="std-btn col-span-3">
-			Change Email
-		</button>
-
-		<button
-			type="button"
-			onclick={changePassword}
-			class="std-btn col-span-3"
-		>
-			Change Password
-		</button>
+		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+			<Input
+				type="password"
+				placeholder="New Password"
+				setValue={(x: string) => (newPassword = x)}
+				setValid={(x: boolean) => (validNewPassword = x)}
+			/>
+			<button
+				type="button"
+				onclick={changePassword}
+				class="std-btn w-full"
+			>
+				Change Password
+			</button>
+		</div>
 	</div>
 
-	<div class="danger-zone">
-		<button type="button" onclick={logout} class="std-btn"> Logout </button>
+	<div class="w-full page page-row px-5">
+		<button type="button" onclick={logout} class="std-btn w-full">
+			Logout
+		</button>
 
-		<button type="button" onclick={deleteAccount} class="std-btn danger">
+		<button
+			type="button"
+			onclick={deleteAccount}
+			class="std-btn w-full border-err hover:bg-err"
+		>
 			Delete Account
 		</button>
 	</div>
@@ -144,24 +162,4 @@ Type "I want to delete my account" to confirm.`,
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.profile-picture {
-		@apply w-1/3 aspect-square rounded-full
-			border-2 border-cta;
-	}
-
-	.input-field {
-		@apply relative col-span-6 md:col-span-3;
-	}
-
-	.std-btn {
-		@apply w-full;
-		&.danger {
-			@apply border-err hover:bg-err;
-		}
-	}
-
-	.danger-zone {
-		@apply w-full flex flex-row px-5 gap-5;
-	}
 </style>

@@ -17,7 +17,7 @@
 
 <section class="page page-col">
 	{#if history.length !== 0}
-		<h1 class="main-text">HISTORY</h1>
+		<h1 class="main-text pt-5">HISTORY</h1>
 	{/if}
 	<div class="page page-col flex-col-reverse">
 		{#each history as h}
@@ -28,9 +28,8 @@
 			>
 				<div class="side-by-side">
 					<p class="text-left">
-						<span class="main-text p-0">Order Id</span>: {h.id}<br
-						/>
-						<span class="main-text p-0">Created</span>: {formatDate(
+						<span class="main-text">Order Id</span>: {h.id}<br />
+						<span class="main-text">Created</span>: {formatDate(
 							h.created_at,
 						)}
 					</p>

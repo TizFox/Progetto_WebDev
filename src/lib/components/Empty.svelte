@@ -12,7 +12,7 @@
 
 <div class="sad-message">
 	<Frown size="100px" class="text-cta" />
-	<h1 class="main-text">{msg}</h1>
+	<h1 class="main-text p-5">{msg}</h1>
 </div>
 
 <!------------------------------------------>

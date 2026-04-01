@@ -6,11 +6,13 @@
 	let { data } = $props();
 	let { supabase }: PageData = $derived(data);
 
+	let loading = $state(false);
+
 	let email = $state("");
 	let password = $state("");
+	let validEmail = $state(true);
+	let validPassword = $state(true);
 	let error: string | null = $state(null);
-
-	let loading = $state(false);
 
 	const handleLogin = async (event: SubmitEvent) => {
 		event.preventDefault();
@@ -18,7 +20,7 @@
 
 		console.log("LOGIN: " + email + " - " + password);
 
-		if (!email || !password) {
+		if (!email || !password || !validEmail || !validPassword) {
 			alert("Error: Invalid Inputs");
 			return;
 		}
@@ -46,28 +48,27 @@
 <!------------------------------------------>
 
 <section class="page page-col">
+	<h1 class="main-text pt-5">LOGIN</h1>
 	<form class="form" onsubmit={handleLogin}>
-		<h1 class="part main-text">Login</h1>
-
 		<Input
 			type="email"
-			wClass="mx-5"
 			placeholder="Email"
 			setValue={(x: string) => (email = x)}
+			setValid={(x: boolean) => (validEmail = x)}
 		/>
 		<Input
 			type="password"
-			wClass="mx-5"
 			placeholder="Password"
 			setValue={(x: string) => (password = x)}
+			setValid={(x: boolean) => (validPassword = x)}
 		/>
 
-		<button type="submit" class="std-btn" disabled={loading}>
+		<button type="submit" class="std-btn w-full mt-3" disabled={loading}>
 			{loading ? "Loading..." : "Login"}
 		</button>
 	</form>
 
-	<a href="/signup" class="main-text p-0 hover:underline">Create Account</a>
+	<a href="/signup" class="main-text hover:underline">Create Account</a>
 </section>
 
 <!------------------------------------------>

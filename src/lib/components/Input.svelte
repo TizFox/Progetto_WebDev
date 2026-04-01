@@ -19,12 +19,14 @@
 		type = "text",
 		wClass = "w-full",
 		setValue,
+		setValid = (v: boolean) => {},
 		placeholder,
 	}: {
 		inputElement?: HTMLInputElement | null;
 		type: InputType;
-		wClass: string;
+		wClass?: string;
 		setValue: (v: string) => void;
+		setValid?: (v: boolean) => void;
 		placeholder: string | null;
 	} = $props();
 
@@ -46,8 +48,8 @@
 <!------------------------------------------>
 
 <div
-	class="{wClass} h-full relative group shadow-d0 shadow-lg
-	{type === 'search' ? 'rounded-full' : 'rounded-lg'}"
+	class="{wClass} h-full relative group
+	{type === 'search' ? 'rounded-full shadow-d0 shadow-xl' : 'rounded-lg'}"
 >
 	{#key inputValid}
 		<div
@@ -57,6 +59,7 @@
 			{#if inputValid}
 				<Icon
 					class="w-full h-full transition-std
+					group-has-hover:text-cta
 					{inputFocus ? 'text-cta' : 'text-dark'}"
 				/>
 			{:else}
@@ -69,11 +72,12 @@
 		bind:this={inputElement}
 		oninput={(e) => {
 			setValue(e.currentTarget.value);
+			setValid(inputValid);
 		}}
-		class="w-full pl-11 py-3 bg-d1 outline-none focus:ring-0
+		class="w-full px-11 py-3 bg-d1 outline-none focus:ring-0
 		{type === 'search' ? 'rounded-full' : 'rounded-lg'}
 		border-2 border-dark transition-std
-		focus:border-cta
+		group-hover:border-cta focus:border-cta
 		base-text text-left truncate"
 		type={inputType === "password"
 			? passVisible
@@ -99,15 +103,15 @@
 			>
 				{#if passVisible}
 					<EyeOff
-						class="transition-std {inputFocus
-							? 'text-cta'
-							: 'text-dark'}"
+						class="w-full h-full transition-std
+						group-has-hover:text-cta
+						{inputFocus ? 'text-cta' : 'text-dark'}"
 					/>
 				{:else}
 					<Eye
-						class="transition-std {inputFocus
-							? 'text-cta'
-							: 'text-dark'}"
+						class="w-full h-full transition-std
+						group-has-hover:text-cta
+						{inputFocus ? 'text-cta' : 'text-dark'}"
 					/>
 				{/if}
 			</button>

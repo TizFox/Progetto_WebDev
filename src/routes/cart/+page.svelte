@@ -87,7 +87,7 @@
 
 <section class="page page-col">
 	{#if cart.length != 0}
-		<h1 class="main-text">CART</h1>
+		<h1 class="main-text pt-5">CART</h1>
 	{/if}
 	{#if cart.length != 0}
 		<div

@@ -31,12 +31,12 @@
 			<Input
 				type="search"
 				wClass="w-3/4"
-				placeholder="Search bt Name"
+				placeholder="Search by Name"
 				setValue={(x: string) => (filter = x)}
 			/>
 		</div>
 	{/if}
-	<div class="page page-grid pt-15">
+	<div class="page page-grid mt-20">
 		{#each filteredProducts as i}
 			<Item item={i} type="home" />
 		{:else}

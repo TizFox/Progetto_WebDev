@@ -6,12 +6,17 @@
 	let { data } = $props();
 	let { supabase }: PageData = $derived(data);
 
+	let loading: boolean = $state(false);
+
 	let nickname: string = $state("");
 	let email: string = $state("");
 	let password1: string = $state("");
 	let password2: string = $state("");
-
-	let loading: boolean = $state(false);
+	let validNickname = $state(true);
+	let validEmail = $state(true);
+	let validPassword1 = $state(true);
+	let validPassword2 = $state(true);
+	let error: string | null = $state(null);
 
 	const handleSignup = async (event: SubmitEvent) => {
 		event.preventDefault();
@@ -33,7 +38,11 @@
 			email == "" ||
 			password1 == "" ||
 			password2 == "" ||
-			password1 != password2
+			password1 != password2 ||
+			!validNickname ||
+			!validEmail ||
+			!validPassword1 ||
+			!validPassword2
 		) {
 			alert("Error: Invalid Inputs");
 			return;
@@ -73,35 +82,35 @@
 <!------------------------------------------>
 
 <section class="page page-col">
-	<form class="form" onsubmit={handleSignup}>
-		<h1 class="part main-text">Signup</h1>
+	<h1 class="main-text pt-5">SIGNUP</h1>
 
+	<form class="form" onsubmit={handleSignup}>
 		<Input
 			type="text"
-			wClass="mx-5"
 			placeholder="Nickname"
 			setValue={(x: string) => (nickname = x)}
+			setValid={(x: boolean) => (validNickname = x)}
 		/>
 		<Input
 			type="email"
-			wClass="mx-5"
 			placeholder="Email"
 			setValue={(x: string) => (email = x)}
+			setValid={(x: boolean) => (validEmail = x)}
 		/>
 		<Input
 			type="password"
-			wClass="mx-5"
 			placeholder="Password"
 			setValue={(x: string) => (password1 = x)}
+			setValid={(x: boolean) => (validPassword1 = x)}
 		/>
 		<Input
 			type="password"
-			wClass="mx-5"
 			placeholder="Repeat Password"
 			setValue={(x: string) => (password2 = x)}
+			setValid={(x: boolean) => (validPassword2 = x)}
 		/>
 
-		<button type="submit" class="std-btn" disabled={loading}>
+		<button type="submit" class="std-btn w-full mt-3" disabled={loading}>
 			{loading ? "Loading..." : "Signup"}
 		</button>
 	</form>

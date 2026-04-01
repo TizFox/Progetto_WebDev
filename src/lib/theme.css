@@ -43,7 +43,7 @@
 }
 
 @utility main-text {
-	@apply font-bold text-cta text-center p-5;
+	@apply font-bold text-cta text-center;
 }
 @utility error-text {
 	@apply font-bold text-err text-center p-5;
@@ -122,15 +122,6 @@
 	}
 
 	.form {
-		@apply flex flex-col items-center justify-center gap-5 p-5
-		bg-d1 rounded-xl;
-
-		.part {
-			@apply w-full bg-d2 rounded-lg;
-		}
-
-		.std-btn {
-			@apply w-1/2 h-fit;
-		}
+		@apply page page-col gap-1 p-5 bg-d1 rounded-xl;
 	}
 }

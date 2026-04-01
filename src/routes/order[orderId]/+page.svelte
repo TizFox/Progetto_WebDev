@@ -19,9 +19,9 @@
 
 <section class="page page-col">
 	<div class="w-full page page-col gap-5">
-		<div class="side-by-side">
+		<div class="side-by-side pt-5">
 			<div>
-				<h1 class="main-text text-left pb-1 pl-0">ORDER CONFIRMED</h1>
+				<h1 class="main-text text-left pb-1">ORDER CONFIRMED</h1>
 				<p>Created: {formatDate(historyCreatedAt)}</p>
 			</div>
 			<p class="inverted-price-tag">
