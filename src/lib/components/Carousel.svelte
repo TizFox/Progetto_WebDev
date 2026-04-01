@@ -3,9 +3,15 @@
 
 	import { getHEX } from "$lib/client/actions";
 
-	let { imgs = [], alt = "Image of Product" } = $props();
+	let {
+		imgs,
+		alt = "Image of Product",
+	}: {
+		imgs: string[] | null;
+		alt: string;
+	} = $props();
 
-	let currI = $state(0);
+	let currI: number = $state(0);
 
 	const prev = () => {
 		currI = (currI - 1 + imgs.length) % imgs.length;
@@ -18,7 +24,7 @@
 
 <!------------------------------------------>
 
-<div class="imgs-container">
+<div class="relative w-full h-(--item-size)">
 	{#each imgs as img, i}
 		<img
 			id={i.toString()}
@@ -49,10 +55,6 @@
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.imgs-container {
-		@apply relative w-full h-(--item-size);
-	}
 
 	.item-img {
 		@apply absolute top-0 left-1/2 -translate-x-1/2 h-full

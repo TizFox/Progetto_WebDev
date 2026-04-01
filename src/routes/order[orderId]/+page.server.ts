@@ -30,6 +30,9 @@ export const load: PageServerLoad = async ({
 			.eq("payment_id", paymentId)
 			.eq("user_id", user.id)
 			.single();
+		if (result.error) {
+			console.error("Error History:", result.error.message);
+		}
 		const existingHistory: HistoryxOrderxProduct | null = result.data;
 
 		if (existingHistory) {
@@ -83,6 +86,9 @@ export const load: PageServerLoad = async ({
 		.eq("id", paramHistoryId)
 		.eq("user_id", user.id)
 		.single();
+	if (result.error) {
+		console.error("Error History:", result.error.message);
+	}
 	const history: HistoryxOrderxProduct | null = result.data;
 	if (!history) {
 		console.log("OrderId not Found");

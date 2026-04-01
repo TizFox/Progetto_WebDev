@@ -1,4 +1,5 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
 	const logo = "/logo.svg";
 
 	import User from "$lib/components/User.svelte";
@@ -7,7 +8,7 @@
 	import { onMount } from "svelte";
 
 	let { data, children } = $props();
-	let { supabase, session, user } = $derived(data);
+	let { supabase, session, user }: PageData = $derived(data);
 
 	// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")
 	onMount(() => {

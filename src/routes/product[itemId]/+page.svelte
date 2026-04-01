@@ -1,4 +1,6 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
+
 	import Carousel from "$lib/components/Carousel.svelte";
 
 	import {
@@ -8,10 +10,8 @@
 	} from "$lib/client/actions";
 
 	let { data } = $props();
-	let { supabase, user, products, itemId, cartItem, wishlistItem } =
+	let { supabase, user, item, inCartCount, inWishlist }: PageData =
 		$derived(data);
-
-	let item = $derived(products?.find((i: any) => i.id == itemId));
 </script>
 
 <!------------------------------------------>
@@ -34,7 +34,7 @@
 		<div class="side-by-side">
 			<h1>{item.name}</h1>
 			<p class="inverted-price-tag">
-				€{item.cost - item.cost * (item.discount ?? 0)}
+				€{item.cost}
 			</p>
 		</div>
 		<p class="w-full text-left">{item.description}</p>
@@ -46,39 +46,39 @@
 					onclick={() =>
 						addToCart({
 							supabase,
-							userId: user?.id,
+							userId: user.id,
 							itemId: item.id,
 							itemName: item.name,
 						})}>Add To Cart</button
 				>
-				{#if cartItem}
-					<p>Already in Cart (x{cartItem.count})</p>
+				{#if inCartCount}
+					<p>Already in Cart (x{inCartCount})</p>
 				{/if}
 			</div>
 
 			<button
 				class="std-btn w-full"
 				onclick={() => {
-					if (!wishlistItem)
-						addToWishlist({
+					if (inWishlist)
+						removeFromWishlist({
 							supabase,
-							userId: user?.id,
+							userId: user.id,
 							itemId: item.id,
 							itemName: item.name,
 						});
 					else
-						removeFromWishlist({
+						addToWishlist({
 							supabase,
-							userId: user?.id,
+							userId: user.id,
 							itemId: item.id,
 							itemName: item.name,
 						});
 				}}
 			>
-				{#if !wishlistItem}
-					Add To
-				{:else}
+				{#if inWishlist}
 					Remove From
+				{:else}
+					Add To
 				{/if} Wishlist
 			</button>
 		{/if}

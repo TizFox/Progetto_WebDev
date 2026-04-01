@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
 	import Empty from "$lib/components/Empty.svelte";
 	import Item from "$lib/components/Item.svelte";
 	import { formatDate } from "$lib/client/actions";
 
 	const { data } = $props();
-	const { historyId, orderItems, historyCreatedAt, historyTotal } =
+	const { historyId, orderItems, historyCreatedAt, historyTotal }: PageData =
 		$derived(data);
 </script>
 
@@ -17,22 +18,24 @@
 <!------------------------------------------>
 
 <section class="page page-col">
-	<div class="side-by-side">
-		<div>
-			<h1 class="main-text text-left pl-0 pb-1">ORDER CONFIRMED</h1>
-			<p>Created: {formatDate(historyCreatedAt!)}</p>
-		</div>
-		<div class="page page-row">
+	<div class="w-full page page-col gap-5">
+		<div class="side-by-side">
+			<div>
+				<h1 class="main-text text-left pb-1 pl-0">ORDER CONFIRMED</h1>
+				<p>Created: {formatDate(historyCreatedAt)}</p>
+			</div>
 			<p class="inverted-price-tag">
 				€{historyTotal}
 			</p>
+		</div>
+		<div class="side-by-side gap-5">
 			<button
 				onclick={() => {
 					navigator.clipboard.writeText(historyId!);
 				}}
-				class="std-btn">Copy Order Id</button
+				class="std-btn w-full">Copy Order Id</button
 			>
-			<a href="/" class="std-btn">Back to Home</a>
+			<a href="/" class="std-btn w-full">Back to Home</a>
 		</div>
 	</div>
 

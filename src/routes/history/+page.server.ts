@@ -16,6 +16,9 @@ export const load: PageServerLoad = async ({
 		.from("history")
 		.select("*")
 		.eq("user_id", user.id);
+	if (result.error) {
+		console.error("Error History:", result.error.message);
+	}
 	const history: History[] = result.data ?? [];
 
 	return {

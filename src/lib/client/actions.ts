@@ -13,7 +13,7 @@ function twoDigit(n: number): string {
 }
 export function formatDate(s: string): string {
 	let date = new Date(s);
-	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth())} / ${date.getFullYear()} - ${twoDigit(date.getHours())}:${twoDigit(date.getMinutes())}`;
+	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth() + 1)} / ${date.getFullYear()} - ${twoDigit(date.getHours())}:${twoDigit(date.getMinutes())}`;
 }
 
 // -------------------------------------
@@ -21,12 +21,12 @@ export function formatDate(s: string): string {
 import { invalidateAll } from "$app/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
 
-interface ActionProps {
+export type ActionProps = {
 	supabase: SupabaseClient;
-	userId: string | undefined;
+	userId: string;
 	itemId: string;
 	itemName: string;
-}
+};
 export const addToCart = async (ap: ActionProps): Promise<void> => {
 	await addTo("cart", ap);
 };
@@ -41,21 +41,23 @@ export const removeFromWishlist = async (ap: ActionProps): Promise<void> => {
 	await removeFrom("wishlist", ap);
 };
 
-export const addToHistory = async (ap: ActionProps): Promise<void> => {
-	await addTo("history", ap);
-};
-
+type MutableTable = "cart" | "wishlist";
 const addTo = async (
-	table: string,
+	table: MutableTable,
 	{ supabase, userId, itemId, itemName }: ActionProps,
 ): Promise<void> => {
-	if (!userId) return;
+	if (!supabase || !userId) {
+		return;
+	}
 
-	let { data: item } = await supabase
+	let { data: item, error } = await supabase
 		.from(table)
 		.select("*")
 		.eq("product_id", itemId)
 		.eq("user_id", userId);
+	if (error) {
+		console.error(`Error ${table}:`, error.message);
+	}
 
 	if (!item || !item[0]) {
 		let { error } = await supabase.from(table).insert([
@@ -95,13 +97,18 @@ const removeFrom = async (
 	table: string,
 	{ supabase, userId, itemId, itemName }: ActionProps,
 ): Promise<void> => {
-	if (!userId) return;
+	if (!supabase || !userId) {
+		return;
+	}
 
-	let { data: item } = await supabase
+	let { data: item, error } = await supabase
 		.from(table)
 		.select("*")
 		.eq("product_id", itemId)
 		.eq("user_id", userId);
+	if (error) {
+		console.error(`Error ${table}:`, error.message);
+	}
 
 	if (item && item[0])
 		if (table == "cart" && item[0].count > 1) {

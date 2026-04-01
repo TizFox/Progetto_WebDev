@@ -1,10 +1,11 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
 	import Item from "$lib/components/Item.svelte";
 	import Empty from "$lib/components/Empty.svelte";
 	import { getHEX } from "$lib/client/actions";
 
 	let { data } = $props();
-	let { supabase, user, cart, total } = $derived(data);
+	let { supabase, user, cart, total }: PageData = $derived(data);
 
 	import { onMount } from "svelte";
 	import type { Stripe, StripeElements } from "@stripe/stripe-js";
@@ -15,11 +16,13 @@
 
 	let stripe = $state<Stripe | null>();
 	let clientSecret = $state<string | null>(null);
-	let error = $state<String | null>();
+	let error = $state<string | null>();
 	let elements = $state<StripeElements | undefined>(undefined);
+	let elementsReady = $state(false);
+
 	let processing = $state(false);
 
-	const appearance = $derived({
+	const appearance = {
 		theme: "night" as const,
 		labels: "floating" as const,
 		variables: {
@@ -36,18 +39,20 @@
 				outline: "none",
 			},
 		},
-	});
+	};
 
 	onMount(async () => {
+		processing = true;
 		stripe = await loadStripe(PUBLIC_STRIPE_KEY);
 		if (cart.length > 0) {
-			const res = await fetch("/create-payment-intent", {
+			const res = await fetch("/api/create-payment-intent", {
 				method: "POST",
 			});
 
 			const result = await res.json();
 			clientSecret = result.clientSecret;
 		}
+		processing = false;
 	});
 
 	async function handleSubmit() {
@@ -86,8 +91,8 @@
 	{/if}
 	{#if cart.length != 0}
 		<div
-			class="mx-auto p-5 flex-1 w-full md:w-1/2 h-fit flex flex-col gap-5
-		bg-d1 shadow-2xl rounded-xl border-3 border-cta"
+			class="mx-auto p-5 w-full md:w-1/2 h-fit flex flex-col gap-5
+		bg-d1 shadow-2xl rounded-xl border-2 border-cta"
 		>
 			<div
 				class="w-full flex flex-row items-center justify-between md:flex-col md:items-start"
@@ -97,7 +102,7 @@
 					Total: €{total}
 				</p>
 			</div>
-			<form onsubmit={handleSubmit} class="payment">
+			<form onsubmit={handleSubmit} class="w-full flex flex-col gap-5">
 				{#if stripe && clientSecret}
 					<Elements
 						{stripe}
@@ -105,14 +110,16 @@
 						{appearance}
 						bind:elements
 					>
-						<PaymentElement />
+						<PaymentElement
+							onready={() => (elementsReady = true)}
+						/>
 					</Elements>
 				{:else}
 					<p>Loading...</p>
 				{/if}
 
 				{#if error}
-					<p class="w-full error-text">
+					<p class="w-full error-text p-0 text-left">
 						{error}
 					</p>
 				{/if}
@@ -120,7 +127,10 @@
 				<button
 					class="std-btn w-full"
 					type="submit"
-					disabled={processing || !stripe || !clientSecret}
+					disabled={processing ||
+						!elementsReady ||
+						!stripe ||
+						!clientSecret}
 				>
 					{processing ? "Loading..." : `Pay €${total}`}
 				</button>
@@ -134,7 +144,7 @@
 				count={i.count}
 				type="cart"
 				{supabase}
-				userId={user?.id}
+				userId={user ? user.id : null}
 			/>
 		{:else}
 			<Empty msg="Empty Cart" />
@@ -146,15 +156,4 @@
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	.check-out {
-		@apply;
-
-		.info-check-out {
-			@apply;
-		}
-		.payment {
-			@apply w-full flex flex-col gap-5;
-		}
-	}
 </style>

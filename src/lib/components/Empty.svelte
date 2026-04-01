@@ -1,7 +1,11 @@
 <script lang="ts">
 	import { Frown } from "@lucide/svelte";
 
-	let { msg } = $props();
+	let {
+		msg,
+	}: {
+		msg: string;
+	} = $props();
 </script>
 
 <!------------------------------------------>

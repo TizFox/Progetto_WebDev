@@ -1,9 +1,10 @@
-<script>
+<script lang="ts">
+	import type { PageData } from "./$types.js";
 	import Item from "$lib/components/Item.svelte";
 	import Empty from "$lib/components/Empty.svelte";
 
 	let { data } = $props();
-	let { supabase, user, wishlist } = $derived(data);
+	let { supabase, user, wishlist }: PageData = $derived(data);
 </script>
 
 <!------------------------------------------>

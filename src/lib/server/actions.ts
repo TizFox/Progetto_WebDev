@@ -10,18 +10,14 @@ export async function verifyPayment(paymentIntentId: string): Promise<boolean> {
 	return paymentIntent.status === "succeeded";
 }
 
-interface CartProps {
+interface GetCartProps {
 	supabase: SupabaseClient;
-	userId: string | undefined;
-	paymentId?: string;
-	cart?: CartXProduct[];
-	total?: number;
+	userId: string;
 }
-
 export const getCartTotal = async ({
 	supabase,
 	userId,
-}: CartProps): Promise<{ cart: CartXProduct[]; total: number }> => {
+}: GetCartProps): Promise<{ cart: CartXProduct[]; total: number }> => {
 	if (!userId) {
 		return { cart: [], total: NaN };
 	}
@@ -30,6 +26,9 @@ export const getCartTotal = async ({
 		.from("cart")
 		.select("*, products(*)")
 		.eq("user_id", userId);
+	if (result.error) {
+		console.error("Error Cart:", result.error.message);
+	}
 	const cart: CartXProduct[] = result.data ?? [];
 
 	let total = 0;
@@ -43,13 +42,20 @@ export const getCartTotal = async ({
 	};
 };
 
+interface CartToOrderProps {
+	supabase: SupabaseClient;
+	userId: string;
+	paymentId: string;
+	cart: CartXProduct[];
+	total: number;
+}
 export const cartToOrder = async ({
 	supabase,
 	userId,
 	paymentId,
 	cart,
 	total,
-}: CartProps): Promise<{
+}: CartToOrderProps): Promise<{
 	historyId: string | null;
 	createdAt: string | null;
 }> => {

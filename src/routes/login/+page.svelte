@@ -1,15 +1,19 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
 	import { goto } from "$app/navigation";
+	import Input from "$lib/components/Input.svelte";
 
 	let { data } = $props();
-	let { supabase } = $derived(data);
+	let { supabase }: PageData = $derived(data);
 
 	let email = $state("");
 	let password = $state("");
+	let error: string | null = $state(null);
 
 	let loading = $state(false);
 
-	const handleLogin = async () => {
+	const handleLogin = async (event: SubmitEvent) => {
+		event.preventDefault();
 		if (loading) return;
 
 		console.log("LOGIN: " + email + " - " + password);
@@ -42,42 +46,26 @@
 <!------------------------------------------>
 
 <section class="page page-col">
-	<div class="form">
+	<form class="form" onsubmit={handleLogin}>
 		<h1 class="part main-text">Login</h1>
 
-		<div class="relative">
-			<input
-				id="email"
-				class="floating-input peer"
-				type="email"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={email}
-			/>
-			<label class="floating-label" for="email">Email</label>
-		</div>
+		<Input
+			type="email"
+			wClass="mx-5"
+			placeholder="Email"
+			setValue={(x: string) => (email = x)}
+		/>
+		<Input
+			type="password"
+			wClass="mx-5"
+			placeholder="Password"
+			setValue={(x: string) => (password = x)}
+		/>
 
-		<div class="relative">
-			<input
-				id="password"
-				class="floating-input peer"
-				type="password"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={password}
-			/>
-			<label class="floating-label" for="password">Password</label>
-		</div>
-
-		<button
-			type="submit"
-			class="std-btn"
-			onclick={handleLogin}
-			disabled={loading}
-		>
+		<button type="submit" class="std-btn" disabled={loading}>
 			{loading ? "Loading..." : "Login"}
 		</button>
-	</div>
+	</form>
 
 	<a href="/signup" class="main-text p-0 hover:underline">Create Account</a>
 </section>

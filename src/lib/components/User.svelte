@@ -1,5 +1,9 @@
 <script lang="ts">
-	let { img } = $props();
+	let {
+		img,
+	}: {
+		img: string;
+	} = $props();
 </script>
 
 <!------------------------------------------>

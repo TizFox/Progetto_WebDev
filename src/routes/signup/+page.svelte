@@ -1,17 +1,20 @@
 <script lang="ts">
+	import type { PageData } from "./$types.js";
 	import { goto } from "$app/navigation";
+	import Input from "$lib/components/Input.svelte";
 
 	let { data } = $props();
-	let { supabase } = $derived(data);
+	let { supabase }: PageData = $derived(data);
 
-	let nickname = $state("");
-	let email = $state("");
-	let password1 = $state("");
-	let password2 = $state("");
+	let nickname: string = $state("");
+	let email: string = $state("");
+	let password1: string = $state("");
+	let password2: string = $state("");
 
-	let loading = $state(false);
+	let loading: boolean = $state(false);
 
-	const handleSignup = async () => {
+	const handleSignup = async (event: SubmitEvent) => {
+		event.preventDefault();
 		if (loading) return;
 
 		console.log(
@@ -41,7 +44,7 @@
 			"https://cqvkscgotmwgvwvpvjcp.supabase.co/storage/v1/object/public/user_images/blankuser.svg";
 
 		loading = true;
-		const { data, error } = await supabase.auth.signUp({
+		const { error } = await supabase.auth.signUp({
 			email: email,
 			password: password1,
 			options: {
@@ -51,12 +54,11 @@
 				},
 			},
 		});
+		loading = false;
 		if (error) {
 			alert(error.message);
-			loading = false;
 		} else {
 			alert("Check your Email! (Not Active 2 email/h)");
-			loading = false;
 			goto("/");
 		}
 	};
@@ -71,63 +73,38 @@
 <!------------------------------------------>
 
 <section class="page page-col">
-	<div class="form">
+	<form class="form" onsubmit={handleSignup}>
 		<h1 class="part main-text">Signup</h1>
 
-		<div class="relative">
-			<input
-				id="nickname"
-				class="floating-input peer"
-				type="text"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={nickname}
-			/>
-			<label class="floating-label" for="nickname">Nickname</label>
-		</div>
+		<Input
+			type="text"
+			wClass="mx-5"
+			placeholder="Nickname"
+			setValue={(x: string) => (nickname = x)}
+		/>
+		<Input
+			type="email"
+			wClass="mx-5"
+			placeholder="Email"
+			setValue={(x: string) => (email = x)}
+		/>
+		<Input
+			type="password"
+			wClass="mx-5"
+			placeholder="Password"
+			setValue={(x: string) => (password1 = x)}
+		/>
+		<Input
+			type="password"
+			wClass="mx-5"
+			placeholder="Repeat Password"
+			setValue={(x: string) => (password2 = x)}
+		/>
 
-		<div class="relative">
-			<input
-				id="email"
-				class="floating-input peer"
-				type="email"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={email}
-			/>
-			<label class="floating-label" for="email">Email</label>
-		</div>
-
-		<div class="relative">
-			<input
-				id="password1"
-				class="floating-input peer"
-				type="password"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={password1}
-			/>
-			<label class="floating-label" for="password1">Password</label>
-		</div>
-
-		<div class="relative">
-			<input
-				id="password2"
-				class="floating-input peer"
-				type="password"
-				placeholder="..."
-				autocomplete="off"
-				bind:value={password2}
-			/>
-			<label class="floating-label" for="password2">
-				Repeat Password
-			</label>
-		</div>
-
-		<button class="std-btn" onclick={handleSignup} disabled={loading}>
+		<button type="submit" class="std-btn" disabled={loading}>
 			{loading ? "Loading..." : "Signup"}
 		</button>
-	</div>
+	</form>
 </section>
 
 <!------------------------------------------>

@@ -16,6 +16,10 @@ export const load: PageServerLoad = async ({
 		.from("wishlist")
 		.select("*, products(*)")
 		.eq("user_id", user.id);
+	if (result.error) {
+		console.error("Error Wishlist:", result.error.message);
+	}
+
 	const wishlist: WishlistXProduct[] = result.data ?? [];
 
 	return {

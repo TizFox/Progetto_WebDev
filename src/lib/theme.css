@@ -87,12 +87,11 @@
 
 @layer components {
 	.std-btn {
-		@apply p-2
+		@apply p-3
 		flex items-center justify-center
-		transition-std
-		rounded-md border
-		important-text
-
+		transition-std important-text
+		rounded-lg
+		border-2
 		border-dark;
 
 		&:hover {
@@ -110,14 +109,14 @@
 	.price-tag {
 		@apply pl-5 pr-10 py-3
 		text-light important-text
-		bg-cta rounded-md
+		bg-cta rounded-lg
 		transition-std hover:-rotate-5;
 		clip-path: polygon(0% 0%, 65% 0%, 100% 50%, 65% 100%, 0 100%);
 	}
 	.inverted-price-tag {
 		@apply pr-5 pl-10 py-3
 		text-light important-text
-		bg-cta rounded-md
+		bg-cta rounded-lg
 		transition-std hover:rotate-5;
 		clip-path: polygon(0% 50%, 35% 0%, 100% 0%, 100% 100%, 35% 100%);
 	}
@@ -130,21 +129,6 @@
 			@apply w-full bg-d2 rounded-lg;
 		}
 
-		.floating-input {
-			@apply block px-2.5 pb-2.5 pt-4 w-full
-				rounded-md border transition-std
-				focus:outline-none focus:ring-0
-				bg-transparent
-
-				invalid:text-err
-				border-dark focus:border-cta invalid:border-err;
-		}
-		.floating-label {
-			@apply absolute top-2 px-2 z-5 cursor-text
-				transition-std -translate-y-4 scale-75 text-sm
-				bg-d1
-				peer-focus:text-cta peer-invalid:text-err;
-		}
 		.std-btn {
 			@apply w-1/2 h-fit;
 		}

@@ -1,4 +1,5 @@
 import type { LayoutServerLoad } from "./$types";
+import type { Product } from "$lib/types";
 
 export const load: LayoutServerLoad = async ({
 	locals: { supabase, safeGetSession },
@@ -9,8 +10,11 @@ export const load: LayoutServerLoad = async ({
 
 	const { session, user } = await safeGetSession();
 
-	const { data: products } = await supabase.from("products").select("*");
-
+	const result = await supabase.from("products").select("*");
+	if (result.error) {
+		console.error("Error Products:", result.error.message);
+	}
+	const products: Product[] = result.data ?? [];
 	return {
 		session,
 		user,
