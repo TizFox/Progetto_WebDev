@@ -1,12 +1,11 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
-import Stripe from "stripe";
-import { SECRET_STRIPE_KEY } from "$env/static/private";
 import type { CartXProduct } from "$lib/types";
 
-export const stripe = new Stripe(SECRET_STRIPE_KEY);
+import { stripeAdmin } from "$lib/server/stripeAdmin";
 
 export async function verifyPayment(paymentIntentId: string): Promise<boolean> {
-	const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+	const paymentIntent =
+		await stripeAdmin.paymentIntents.retrieve(paymentIntentId);
 	return paymentIntent.status === "succeeded";
 }
 

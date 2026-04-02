@@ -71,15 +71,18 @@
 		>
 			{#if type === "cart"}
 				<button
+					type="button"
 					onclick={() => actionsInfo && removeFromCart(actionsInfo)}
 					class="std-btn">Remove</button
 				>
 			{:else if type === "wishlist"}
 				<button
+					type="button"
 					onclick={() => actionsInfo && addToCart(actionsInfo)}
 					class="std-btn">Add To Cart</button
 				>
 				<button
+					type="button"
 					onclick={() =>
 						actionsInfo && removeFromWishlist(actionsInfo)}
 					class="std-btn">Remove</button

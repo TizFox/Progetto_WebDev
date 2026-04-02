@@ -8,12 +8,16 @@
 
 <!------------------------------------------>
 
-<a href="/profile" class="h-full aspect-square">
+<a
+	href="/profile"
+	class="h-full aspect-square
+	rounded-full border-2 border-cta
+	overflow-hidden"
+>
 	<img
 		src={img}
 		alt="User Icon"
-		class="w-full h-full rounded-full
-		border-2 border-cta"
+		class="w-full h-full object-cover object-center"
 	/>
 </a>
 

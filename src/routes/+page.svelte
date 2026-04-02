@@ -29,7 +29,7 @@
 		>
 			<Input
 				type="search"
-				wClass="w-3/4"
+				wClass="w-3/4 max-w-7xl"
 				placeholder="Search by Name"
 				setValue={(x: string) => (filter = x)}
 			/>

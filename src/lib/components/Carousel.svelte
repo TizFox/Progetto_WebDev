@@ -35,14 +35,14 @@
 		/>
 	{/each}
 
-	<button class="prev group" aria-label="Prev Button" onclick={prev}>
+	<button onclick={prev} class="prev group" aria-label="Prev Button">
 		<ArrowBigLeft
 			size="36"
 			fill={getHEX("--color-cta")}
 			class="transition-std group-hover:-translate-x-1 text-cta"
 		/>
 	</button>
-	<button class="next group" aria-label="Next Button" onclick={next}>
+	<button onclick={next} class="next group" aria-label="Next Button">
 		<ArrowBigRight
 			size="36"
 			fill={getHEX("--color-cta")}

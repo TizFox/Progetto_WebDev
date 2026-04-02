@@ -42,14 +42,15 @@
 		{#if user}
 			<div class="side-by-side">
 				<button
-					class="std-btn"
+					type="button"
 					onclick={() =>
 						addToCart({
 							supabase,
 							userId: user.id,
 							itemId: item.id,
 							itemName: item.name,
-						})}>Add To Cart</button
+						})}
+					class="std-btn">Add To Cart</button
 				>
 				{#if inCartCount}
 					<p>Already in Cart (x{inCartCount})</p>
@@ -57,7 +58,7 @@
 			</div>
 
 			<button
-				class="std-btn w-full"
+				type="button"
 				onclick={() => {
 					if (inWishlist)
 						removeFromWishlist({
@@ -74,6 +75,7 @@
 							itemName: item.name,
 						});
 				}}
+				class="std-btn w-full"
 			>
 				{#if inWishlist}
 					Remove From

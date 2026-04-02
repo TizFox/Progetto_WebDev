@@ -15,14 +15,14 @@
 	type InputType = "text" | "search" | "email" | "password";
 
 	let {
-		inputElement = $bindable(null),
+		handle = $bindable(null),
 		type = "text",
 		wClass = "w-full",
 		setValue,
 		setValid = (v: boolean) => {},
 		placeholder,
 	}: {
-		inputElement?: HTMLInputElement | null;
+		handle?: { clear: () => void } | null;
 		type: InputType;
 		wClass?: string;
 		setValue: (v: string) => void;
@@ -30,9 +30,35 @@
 		placeholder: string | null;
 	} = $props();
 
+	$effect(() => {
+		handle = {
+			clear: () => {
+				inputValue = "";
+				setValue("");
+				setValid(true);
+			},
+		};
+	});
+
+	let inputValue = $state("");
 	let inputValid = $state(true);
 	let inputFocus = $state(false);
 	let passVisible = $state(false);
+
+	const validate = (value: string): boolean => {
+		if (value === "") {
+			return true;
+		}
+		switch (type) {
+			case "email":
+				return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+			case "password":
+				return value.length >= 6;
+			case "search":
+			case "text":
+				return true;
+		}
+	};
 
 	const iconMap: Record<InputType, Component<IconProps>> = {
 		text: TextCursorInput,
@@ -58,7 +84,8 @@
 		>
 			{#if inputValid}
 				<Icon
-					class="w-full h-full transition-std
+					class="w-full h-full
+					transition-std
 					group-has-hover:text-cta
 					{inputFocus ? 'text-cta' : 'text-dark'}"
 				/>
@@ -69,9 +96,12 @@
 	{/key}
 
 	<input
-		bind:this={inputElement}
-		oninput={(e) => {
-			setValue(e.currentTarget.value);
+		bind:value={inputValue}
+		onfocus={() => (inputFocus = true)}
+		onblur={() => (inputFocus = false)}
+		oninput={() => {
+			inputValid = validate(inputValue);
+			setValue(inputValue);
 			setValid(inputValid);
 		}}
 		class="w-full px-11 py-3 bg-d1 outline-none focus:ring-0
@@ -85,37 +115,30 @@
 				: "password"
 			: inputType}
 		{placeholder}
-		minlength={type === "password" ? 6 : 0}
 		autocomplete="off"
-		onfocus={() => (inputFocus = true)}
-		onblur={() => {
-			inputFocus = false;
-			inputValid = inputElement?.validity.valid ?? true;
-		}}
 	/>
 	{#if inputType === "password"}
-		{#key passVisible}
-			<button
-				type="button"
-				onclick={() => (passVisible = !passVisible)}
-				class="h-1/2 absolute top-1/4 right-3"
-				transition:fade={{ duration: 100 }}
-			>
-				{#if passVisible}
-					<EyeOff
-						class="w-full h-full transition-std
+		<button
+			type="button"
+			onclick={() => (passVisible = !passVisible)}
+			class="h-1/2 absolute top-1/4 right-3"
+		>
+			{#if passVisible}
+				<EyeOff
+					class="w-full h-full
+						transition-std
 						group-has-hover:text-cta
 						{inputFocus ? 'text-cta' : 'text-dark'}"
-					/>
-				{:else}
-					<Eye
-						class="w-full h-full transition-std
+				/>
+			{:else}
+				<Eye
+					class="w-full h-full
+						transition-std
 						group-has-hover:text-cta
 						{inputFocus ? 'text-cta' : 'text-dark'}"
-					/>
-				{/if}
-			</button>
-		{/key}
+				/>
+			{/if}
+		</button>
 	{/if}
 </div>
 

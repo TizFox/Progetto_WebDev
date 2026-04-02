@@ -107,6 +107,10 @@
 		@apply h-(--bars-size);
 	}
 
+	.scene {
+		@apply w-full max-w-7xl min-h-(--main-size) p-5;
+	}
+
 	.footer-container {
 		@apply w-full h-(--bars-size) z-10;
 	}

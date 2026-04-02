@@ -125,8 +125,8 @@
 				{/if}
 
 				<button
-					class="std-btn w-full"
 					type="submit"
+					class="std-btn w-full"
 					disabled={processing ||
 						!elementsReady ||
 						!stripe ||

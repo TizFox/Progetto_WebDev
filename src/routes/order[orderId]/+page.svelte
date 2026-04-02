@@ -30,6 +30,7 @@
 		</div>
 		<div class="side-by-side gap-5">
 			<button
+				type="button"
 				onclick={() => {
 					navigator.clipboard.writeText(historyId!);
 				}}

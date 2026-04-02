@@ -1,5 +1,7 @@
 import { redirect, json } from "@sveltejs/kit";
-import { stripe, getCartTotal } from "$lib/server/actions";
+
+import { stripeAdmin } from "$lib/server/stripeAdmin";
+import { getCartTotal } from "$lib/server/actions";
 
 export async function POST({ locals: { supabase, safeGetSession } }) {
 	const { session, user } = await safeGetSession();
@@ -9,7 +11,7 @@ export async function POST({ locals: { supabase, safeGetSession } }) {
 
 	const { total } = await getCartTotal({ supabase, userId: user.id });
 
-	const paymentIntent = await stripe.paymentIntents.create({
+	const paymentIntent = await stripeAdmin.paymentIntents.create({
 		amount: Math.round(total * 100),
 		currency: "eur",
 		payment_method_types: ["card"],

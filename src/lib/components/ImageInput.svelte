@@ -2,14 +2,26 @@
 	import { X, Image } from "@lucide/svelte";
 
 	let {
+		handle = $bindable(null),
 		wClass = "w-full",
 		setImage,
 		placeholder,
 	}: {
+		handle?: { clear: () => void } | null;
 		wClass?: string;
 		setImage: (x: File | null) => void;
 		placeholder: string | null;
 	} = $props();
+
+	$effect(() => {
+		handle = {
+			clear: () => {
+				fileInput!.value = "";
+				fileName = null;
+				setImage(null);
+			},
+		};
+	});
 
 	let fileInput = $state<HTMLInputElement | null>(null);
 	let fileName = $state<string | null>(null);
@@ -38,7 +50,7 @@
 	<input
 		bind:this={fileInput}
 		oninput={(e) => {
-			let file = e.currentTarget.files?.[0] ?? null;
+			let file = fileInput?.files?.[0] ?? null;
 			fileName = file?.name ?? null;
 			setImage(file);
 		}}

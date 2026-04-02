@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { PageData } from "./$types.js";
-	import { goto } from "$app/navigation";
+	import { invalidateAll, goto } from "$app/navigation";
 	import Input from "$lib/components/Input.svelte";
 	import ImageInput from "$lib/components/ImageInput.svelte";
-	import { formatDate } from "$lib/client/actions.js";
+	import { formatDate, imageToWebp } from "$lib/client/actions.js";
 
 	let { data } = $props();
 	let { supabase, user }: PageData = $derived(data);
@@ -14,24 +14,84 @@
 	let created_at = $derived(user?.created_at);
 
 	let newNickname = $state("");
-	let newImage = $state(<File | null>{});
-	let newEmail = $state("");
+	let newNicknameValid = $state(true);
+	let newNicknameHandle = $state<{ clear: () => void } | null>(null);
+	let newImage = $state<File | null>(null);
+	let newImageHandle = $state<{ clear: () => void } | null>(null);
 	let newPassword = $state("");
-	let validNewNickname = $state(true);
-	let validNewEmail = $state(true);
-	let validNewPassword = $state(true);
+	let newPasswordValid = $state(true);
+	let newPasswordHandle = $state<{ clear: () => void } | null>(null);
 
 	const changeNickname = async () => {
+		if (newNickname == "" || !newNicknameHandle) {
+			return;
+		}
 		console.log(newNickname);
+
+		const { error } = await supabase.auth.updateUser({
+			data: { nickname: newNickname },
+		});
+		if (error) {
+			alert(error.message);
+		} else {
+			alert("Success: New Nickname Saved");
+			newNicknameHandle?.clear();
+			await invalidateAll();
+		}
 	};
 	const changeImage = async () => {
-		console.log(newImage);
-	};
-	const changeEmail = async () => {
-		console.log(newEmail);
+		if (!newImage) {
+			return;
+		}
+
+		// Image => Webp
+		const webpImage = await imageToWebp(newImage, 0.8);
+		const filePath = `${user!.id}/profileImage.webp`;
+
+		// Upload to Bucket
+		const { error: storageError } = await supabase.storage
+			.from("user_images")
+			.upload(filePath, webpImage, {
+				contentType: "image/webp",
+				upsert: true,
+			});
+		if (storageError) {
+			alert(storageError.message);
+			return;
+		}
+
+		// Get public url
+		const { data: newImageUrl } = supabase.storage
+			.from("user_images")
+			.getPublicUrl(filePath);
+
+		// Update user info
+		const { error } = await supabase.auth.updateUser({
+			data: { image: newImageUrl.publicUrl + `?t=${Date.now()}` },
+		});
+		if (error) {
+			alert(error.message);
+		} else {
+			alert("Success: New Image Saved");
+			newImageHandle?.clear();
+			await invalidateAll();
+		}
 	};
 	const changePassword = async () => {
+		if (newPassword == "" || !newPasswordValid) {
+			return;
+		}
 		console.log(newPassword);
+		const { error } = await supabase.auth.updateUser({
+			password: newPassword,
+		});
+		if (error) {
+			alert(error.message);
+		} else {
+			alert("Success: New Password Saved");
+			newPasswordHandle?.clear();
+			await invalidateAll();
+		}
 	};
 
 	const logout = async () => {
@@ -48,17 +108,24 @@
 			`DELEATING YOUR ACCOUNT
 This action is not reversible!
 Type "I want to delete my account" to confirm.`,
-		)?.toUpperCase();
+		)
+			?.trim()
+			.toUpperCase();
 
-		if (confirm !== "I want to delete my account".toUpperCase() || !user) {
+		if (confirm !== "I WANT TO DELETE MY ACCOUNT") {
 			return;
 		}
 
-		const { data, error } = await supabase.auth.admin.deleteUser(user.id);
-		if (error) {
-			alert(error.message);
+		const res = await fetch("/api/delete-account", {
+			method: "POST",
+		});
+		const result = await res.json();
+
+		if (result.success) {
+			alert(`Account ${user!.id} Deleated`);
+			invalidateAll();
 		} else {
-			goto("/");
+			alert(result.error);
 		}
 	};
 </script>
@@ -72,12 +139,17 @@ Type "I want to delete my account" to confirm.`,
 <!------------------------------------------>
 
 <section class="page page-col">
-	<img
-		src={img}
-		alt="Your Avatar"
-		class="w-1/2 md:w-3/10 aspect-square rounded-full
-		border-2 border-cta"
-	/>
+	<div
+		class="w-1/2 md:w-3/10 aspect-square
+		rounded-full border-2 border-cta
+		overflow-hidden"
+	>
+		<img
+			src={img}
+			class="w-full h-full object-cover object-center"
+			alt="Your Avatar"
+		/>
+	</div>
 
 	<div>
 		<h1 class="w-full main-text p-5">{nickname}</h1>
@@ -88,55 +160,53 @@ Type "I want to delete my account" to confirm.`,
 	</div>
 
 	<div class="page page-grid form">
-		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+		<div class="page page-col gap-1 col-span-6 md:col-span-4">
 			<Input
 				type="text"
 				placeholder="New Nickname"
 				setValue={(x: string) => (newNickname = x)}
-				setValid={(x: boolean) => (validNewNickname = x)}
+				setValid={(x: boolean) => (newNicknameValid = x)}
+				bind:handle={newNicknameHandle}
 			/>
 			<button
 				type="button"
 				onclick={changeNickname}
 				class="std-btn w-full"
+				disabled={newNickname === "" || !newNicknameValid}
 			>
 				Change Nickname
 			</button>
 		</div>
 
-		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+		<div class="page page-col gap-1 col-span-6 md:col-span-4">
 			<ImageInput
 				placeholder="New Image"
 				setImage={(x: File | null) => (newImage = x)}
+				bind:handle={newImageHandle}
 			/>
-			<button type="button" onclick={changeImage} class="std-btn w-full">
+			<button
+				type="button"
+				onclick={changeImage}
+				class="std-btn w-full"
+				disabled={!newImage}
+			>
 				Change Image
 			</button>
 		</div>
 
-		<div class="page page-col gap-1 col-span-6 md:col-span-3">
-			<Input
-				type="email"
-				placeholder="New Email"
-				setValue={(x: string) => (newEmail = x)}
-				setValid={(x: boolean) => (validNewEmail = x)}
-			/>
-			<button type="button" onclick={changeEmail} class="std-btn w-full">
-				Change Email
-			</button>
-		</div>
-
-		<div class="page page-col gap-1 col-span-6 md:col-span-3">
+		<div class="page page-col gap-1 col-span-12 md:col-span-4">
 			<Input
 				type="password"
 				placeholder="New Password"
 				setValue={(x: string) => (newPassword = x)}
-				setValid={(x: boolean) => (validNewPassword = x)}
+				setValid={(x: boolean) => (newPasswordValid = x)}
+				bind:handle={newPasswordHandle}
 			/>
 			<button
 				type="button"
 				onclick={changePassword}
 				class="std-btn w-full"
+				disabled={newPassword === "" || !newPasswordValid}
 			>
 				Change Password
 			</button>
