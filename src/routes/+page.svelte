@@ -10,7 +10,6 @@
 	let filter = $state("");
 	let filteredProducts = $derived(products);
 	$effect(() => {
-		console.log(filter);
 		filteredProducts = products.filter((p) =>
 			p.name.toLowerCase().includes(filter.trim().toLowerCase()),
 		);

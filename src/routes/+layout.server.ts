@@ -19,6 +19,6 @@ export const load: LayoutServerLoad = async ({
 		session,
 		user,
 		cookies: cookies.getAll(),
-		products,
+		products: products satisfies Product[],
 	};
 };
