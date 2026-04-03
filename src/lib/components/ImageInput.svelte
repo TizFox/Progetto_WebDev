@@ -29,7 +29,6 @@
 
 <!------------------------------------------>
 
-<!--  shadow-d0 shadow-lg -->
 <div class="{wClass} h-full relative group rounded-lg">
 	<button
 		type="button"

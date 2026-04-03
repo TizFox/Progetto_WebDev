@@ -10,9 +10,10 @@
 
 <a
 	href="/profile"
-	class="h-full aspect-square
-	rounded-full border-2 border-cta
-	overflow-hidden"
+	class="h-full aspect-square overflow-hidden
+	rounded-full border-2
+	border-dark transition-std
+	hover:border-cta"
 >
 	<img
 		src={img}

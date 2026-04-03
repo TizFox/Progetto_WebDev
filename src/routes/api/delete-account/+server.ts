@@ -8,21 +8,28 @@ export async function POST({ locals: { safeGetSession } }) {
 		throw redirect(303, "/login");
 	}
 
-	const { error: storageError } = await supabaseAdmin.storage
-		.from("user_images")
-		.remove([`${user!.id}/profileImage.webp`]);
-	if (storageError) {
-		return json({ success: false, error: storageError.message });
-	}
-	logger.log(user.id, "Image Deleated");
-
 	const { error: deleteError } = await supabaseAdmin.auth.admin.deleteUser(
-		user!.id,
+		user.id,
 	);
 	if (deleteError) {
+		logger.error(
+			user.id,
+			`Auth[${user.id}] delete failed: ${deleteError.message}`,
+		);
 		return json({ success: false, error: deleteError.message });
 	}
-	logger.log(user.id, "Account Deleated");
+
+	const { error: storageError } = await supabaseAdmin.storage
+		.from("user_images")
+		.remove([`${user.id}/profileImage.webp`]);
+	if (storageError) {
+		logger.error(
+			user.id,
+			`Storage[user_images] delete failed: ${storageError.message}`,
+		);
+	}
+
+	logger.success(user.id, "Account & Image Deleted");
 
 	return json({ success: true, error: "" });
 }

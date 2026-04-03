@@ -1,42 +1,75 @@
-# sv
+<p align="center">
+  <img src="./static/logo.svg" alt="Rolling Emporium Logo" width="200"/>
+</p>
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+# 🎲 Rolling Emporium
 
-## Creating a project
+An e-commerce platform for selling dice and tabletop role-playing game accessories, developed as a university exam project.
 
-If you're seeing this, you've probably already done this step. Congrats!
+---
 
-```sh
-# create a new project
-npx sv create my-app
+## Features
+
+- **Product Catalog** — visible to all visitors, with real-time search by name
+- **Authentication** — registration and login via Supabase Auth
+- **Cart** — add, remove, and update product quantities
+- **Wishlist** — save favourite products
+- **Order History** — view past orders with product details and total
+- **User Profile** — update username, profile picture, and password
+- **Payments** — Stripe integration for secure checkout
+- **PWA** — installable application with push notification support *(in development)*
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | [SvelteKit](https://svelte.dev/docs/kit) |
+| Database & Auth | [Supabase](https://supabase.com/) |
+| Payments | [Stripe](https://stripe.com/) |
+| Styling | [Tailwind CSS](https://tailwindcss.com/) |
+| Language | TypeScript |
+
+---
+
+## Project Structure
+
+```
+static/                     # Static assets (logo, icons, manifest)
+src/
+├── app.html                # HTML entry point
+├── app.d.ts                # Global TypeScript declarations
+├── hooks.client.ts         # Client-side hooks (Service Worker)
+├── hooks.server.ts         # Server-side hooks (session handling)
+├── lib/
+│   ├── client/             # Client-side utilities and actions (on cart, wishlist)
+│   ├── server/             # Server-side logic (Stripe, Supabase actions)
+│   ├── components/         # Reusable Svelte components
+│   ├── database.types.ts   # Auto-generated Supabase types
+│   ├── logs.ts             # Logging utility
+│   ├── theme.css           # Global theme variables
+│   └── types.ts            # Shared TypeScript types
+└── routes/
+    ├── +layout.server.ts   # Global session and products
+    ├── +layout.svelte      # Main layout
+    ├── +layout.ts          # Layout load function
+    ├── +page.svelte        # Home page (product catalog)
+    ├── login/              # Login page
+    ├── signup/             # Registration page
+    ├── cart/               # Cart and Stripe checkout
+    ├── wishlist/           # Wishlist page
+    ├── history/            # Order history
+    ├── order[orderId]/     # Order detail after payment
+    ├── product[itemId]/    # Product detail page
+    ├── profile/            # User profile management
+    └── api/                # API endpoints (Stripe payment intent & user deletion)
 ```
 
-To recreate this project with the same configuration:
+---
 
-```sh
-# recreate this project
-bun x sv create --template minimal --types ts --add tailwindcss="plugins:forms" --install bun Progetto_2026
-```
+## Notes
 
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```sh
-npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
-```
-
-## Building
-
-To create a production version of your app:
-
-```sh
-npm run build
-```
-
-You can preview the production build with `npm run preview`.
-
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- The project uses Stripe in **test mode** — no real payments are processed.
+- To test the payment flow, use the Stripe test card: `4242 4242 4242 4242`, `12/34`, `123`.
+- Deployment is not included in the scope of this project.
