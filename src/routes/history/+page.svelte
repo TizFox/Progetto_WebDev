@@ -1,7 +1,8 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
+
 	import Empty from "$lib/components/Empty.svelte";
-	import { formatDate } from "$lib/client/actions";
+	import HistoryRecord from "$lib/components/HistoryRecord.svelte";
 
 	let { data } = $props();
 	let { history }: PageData = $derived(data);
@@ -15,35 +16,22 @@
 
 <!------------------------------------------>
 
-<section class="page page-col">
-	{#if history.length !== 0}
+{#if history.length !== 0}
+	<section class="page page-col">
 		<h1 class="main-text pt-5">HISTORY</h1>
-	{/if}
-	<div class="page page-col flex-col-reverse">
-		{#each history as h}
-			<a
-				href="/order{h.id}"
-				class="std-btn w-full
-				hover:border-d2 hover:bg-d2 hover:text-dark"
-			>
-				<div class="side-by-side">
-					<p class="text-left">
-						<span class="main-text">Order Id</span>: {h.id}<br />
-						<span class="main-text">Created</span>: {formatDate(
-							h.created_at,
-						)}
-					</p>
-					<p class="inverted-price-tag">Total: €{h.total}</p>
-				</div>
-			</a>
-		{/each}
-	</div>
-</section>
 
-{#if history.length === 0}
-	<div class="w-full h-full">
-		<Empty msg="Empty History" />
-	</div>
+		<div class="page page-col flex-col-reverse">
+			{#each history as h}
+				<HistoryRecord
+					id={h.id}
+					createdAt={h.created_at}
+					total={h.total}
+				/>
+			{/each}
+		</div>
+	</section>
+{:else}
+	<Empty msg="Empty History" />
 {/if}
 
 <!------------------------------------------>

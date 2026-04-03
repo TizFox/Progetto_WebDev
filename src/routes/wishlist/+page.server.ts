@@ -1,7 +1,8 @@
-import type { PageServerLoad } from "./$types.js";
-import type { WishlistXProduct } from "$lib/types.js";
+import type { PageServerLoad } from "./$types";
+import type { WishlistXProduct } from "$lib/types";
 
 import { redirect } from "@sveltejs/kit";
+import { logger } from "$lib/logs";
 
 export const load: PageServerLoad = async ({
 	locals: { supabase, safeGetSession },
@@ -17,7 +18,10 @@ export const load: PageServerLoad = async ({
 		.select("*, products(*)")
 		.eq("user_id", user.id);
 	if (result.error) {
-		console.error("Error Wishlist:", result.error.message);
+		logger.error(
+			user.id,
+			`[wishlist] select failed: ${result.error.message}`,
+		);
 	}
 
 	const wishlist: WishlistXProduct[] = result.data ?? [];

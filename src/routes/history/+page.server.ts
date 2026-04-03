@@ -2,6 +2,7 @@ import type { PageServerLoad } from "./$types";
 import type { History } from "$lib/types";
 
 import { redirect } from "@sveltejs/kit";
+import { logger } from "$lib/logs";
 
 export const load: PageServerLoad = async ({
 	locals: { supabase, safeGetSession },
@@ -17,8 +18,12 @@ export const load: PageServerLoad = async ({
 		.select("*")
 		.eq("user_id", user.id);
 	if (result.error) {
-		console.error("Error History:", result.error.message);
+		logger.error(
+			user.id,
+			`[history] select failed: ${result.error.message}`,
+		);
 	}
+
 	const history: History[] = result.data ?? [];
 
 	return {

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	import Empty from "$lib/components/Empty.svelte";
 	import Item from "$lib/components/Item.svelte";
-	import { formatDate } from "$lib/client/actions";
+	import { formatDate } from "$lib/client/utils";
 
 	const { data } = $props();
 	const { historyId, orderItems, historyCreatedAt, historyTotal }: PageData =

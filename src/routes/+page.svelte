@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	import Input from "$lib/components/Input.svelte";
 	import Item from "$lib/components/Item.svelte";
 	import Empty from "$lib/components/Empty.svelte";
@@ -24,8 +24,8 @@
 
 <!------------------------------------------>
 
-<section>
-	{#if products.length !== 0}
+{#if products.length !== 0}
+	<section>
 		<div
 			class="fixed z-10 top-(--bars-size) left-0 w-full flex items-center justify-center py-5"
 		>
@@ -36,19 +36,16 @@
 				setValue={(x: string) => (filter = x)}
 			/>
 		</div>
-	{/if}
-	<div class="page page-grid mt-20">
-		{#each filteredProducts as i}
-			<Item item={i} type="home" />
-		{:else}
-			<Empty msg="Nothing Found" />
-		{/each}
-	</div>
-</section>
-{#if products.length === 0}
-	<div class="w-full h-full flex items-center justify-center">
-		<Empty msg="No Products" />
-	</div>
+		<div class="page page-grid mt-20">
+			{#each filteredProducts as i}
+				<Item item={i} type="home" />
+			{:else}
+				<Empty msg="Nothing Found" />
+			{/each}
+		</div>
+	</section>
+{:else}
+	<Empty msg="No Products" />
 {/if}
 
 <!------------------------------------------>

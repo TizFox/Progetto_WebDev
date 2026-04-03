@@ -1,60 +1,6 @@
-// Utils
-export function getHEX(variable: string): string {
-	if (typeof window === "undefined") {
-		return "";
-	}
-	return getComputedStyle(document.documentElement)
-		.getPropertyValue(variable)
-		.trim();
-}
-
-function twoDigit(n: number): string {
-	return (Math.floor(n / 10) == 0 ? "0" : "") + n;
-}
-export function formatDate(s: string): string {
-	let date = new Date(s);
-	return `${twoDigit(date.getDate())} / ${twoDigit(date.getMonth() + 1)} / ${date.getFullYear()} - ${twoDigit(date.getHours())}:${twoDigit(date.getMinutes())}`;
-}
-
-export function imageToWebp(file: File, quality = 0.8): Promise<Blob> {
-	return new Promise((res, rej) => {
-		const img = new Image();
-		const url = URL.createObjectURL(file);
-
-		img.onload = () => {
-			const canvas = document.createElement("canvas");
-			canvas.width = img.naturalWidth;
-			canvas.height = img.naturalHeight;
-
-			const ctx = canvas.getContext("2d");
-			ctx?.drawImage(img, 0, 0);
-
-			canvas.toBlob(
-				(blob) => {
-					URL.revokeObjectURL(url);
-					if (blob) {
-						res(blob);
-					} else {
-						rej(new Error("Conversion Failed"));
-					}
-				},
-				"image/webp",
-				quality,
-			);
-		};
-
-		img.onerror = () => {
-			URL.revokeObjectURL(url);
-			rej(new Error("Upload Failed"));
-		};
-
-		img.src = url;
-	});
-}
-// -------------------------------------
-
-import { invalidateAll } from "$app/navigation";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import { invalidateAll } from "$app/navigation";
+import { logger } from "$lib/logs";
 
 export type ActionProps = {
 	supabase: SupabaseClient;
@@ -91,7 +37,7 @@ const addTo = async (
 		.eq("product_id", itemId)
 		.eq("user_id", userId);
 	if (error) {
-		console.error(`Error ${table}:`, error.message);
+		logger.error(userId, `[${table}]: ${error.message}`);
 	}
 
 	if (!item || !item[0]) {
@@ -103,9 +49,12 @@ const addTo = async (
 		]);
 
 		if (error) {
+			logger.error(
+				userId,
+				`[${table}] insert failed for Product(${itemId}): ${error.message}`,
+			);
 			alert(
-				`Product (${itemName}) already in ${table.toUpperCase()}\n\n` +
-					error.message,
+				`Product (${itemName}) cant be inserted in ${table.toUpperCase()}`,
 			);
 		} else {
 			alert(`Product (${itemName}) inserted to ${table.toUpperCase()}`);
@@ -119,10 +68,16 @@ const addTo = async (
 			.eq("user_id", userId);
 
 		if (error) {
-			alert(error.message);
+			logger.error(
+				userId,
+				`[${table}] update failed for Product(${itemId}): ${error.message}`,
+			);
+			alert(
+				`Product (${itemName}) cant be updated (+1) from ${table.toUpperCase()}`,
+			);
 		} else {
 			alert(
-				`Product (${itemName}) updated (+1) to ${table.toUpperCase()}`,
+				`Product (${itemName}) updated (+1) from ${table.toUpperCase()}`,
 			);
 			await invalidateAll();
 		}
@@ -142,7 +97,7 @@ const removeFrom = async (
 		.eq("product_id", itemId)
 		.eq("user_id", userId);
 	if (error) {
-		console.error(`Error ${table}:`, error.message);
+		logger.error(userId, `[${table}]: ${error.message}`);
 	}
 
 	if (item && item[0])
@@ -154,10 +109,16 @@ const removeFrom = async (
 				.eq("user_id", userId);
 
 			if (error) {
-				alert(error.message);
+				logger.error(
+					userId,
+					`[${table}] update failed for Product(${itemId}): ${error.message}`,
+				);
+				alert(
+					`Product (${itemName}) cant be updated (-1) from ${table.toUpperCase()}`,
+				);
 			} else {
 				alert(
-					`Product (${itemName}) updated (-1) from your ${table.toUpperCase()}`,
+					`Product (${itemName}) updated (-1) from ${table.toUpperCase()}`,
 				);
 				await invalidateAll();
 			}
@@ -169,10 +130,16 @@ const removeFrom = async (
 				.eq("user_id", userId);
 
 			if (error) {
-				alert(error.message);
+				logger.error(
+					userId,
+					`[${table}] remove failed for Product(${itemId}): ${error.message}`,
+				);
+				alert(
+					`Product (${itemName}) cant be removed from ${table.toUpperCase()}`,
+				);
 			} else {
 				alert(
-					`Product (${itemName}) removed from your ${table.toUpperCase()}`,
+					`Product (${itemName}) removed from ${table.toUpperCase()}`,
 				);
 				await invalidateAll();
 			}

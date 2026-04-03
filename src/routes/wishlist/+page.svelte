@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	import Item from "$lib/components/Item.svelte";
 	import Empty from "$lib/components/Empty.svelte";
 
@@ -15,26 +15,23 @@
 
 <!------------------------------------------>
 
-<section>
-	{#if wishlist.length !== 0}
+{#if wishlist.length !== 0}
+	<section>
 		<h1 class="main-text pt-5">WISHLIST</h1>
-	{/if}
-	<div class="page page-grid">
-		{#each wishlist as i}
-			<Item
-				item={i.products}
-				type="wishlist"
-				{supabase}
-				userId={user?.id}
-			/>
-		{/each}
-	</div>
-</section>
 
-{#if wishlist.length === 0}
-	<div class="w-full h-full flex items-center justify-center">
-		<Empty msg="Empty Wishlist" />
-	</div>
+		<div class="page page-grid">
+			{#each wishlist as i}
+				<Item
+					item={i.products}
+					type="wishlist"
+					{supabase}
+					userId={user?.id}
+				/>
+			{/each}
+		</div>
+	</section>
+{:else}
+	<Empty msg="Empty Wishlist" />
 {/if}
 
 <!------------------------------------------>

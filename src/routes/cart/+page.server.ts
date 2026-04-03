@@ -1,7 +1,7 @@
 import type { PageServerLoad } from "./$types";
 
 import { redirect } from "@sveltejs/kit";
-import { getCartTotal } from "$lib/server/actions.js";
+import { getCartTotal } from "$lib/server/actions";
 
 export const load: PageServerLoad = async ({
 	locals: { supabase, safeGetSession },

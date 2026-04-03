@@ -1,6 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import type { CartXProduct } from "$lib/types";
 
+import { logger } from "$lib/logs";
+
 import { stripeAdmin } from "$lib/server/stripeAdmin";
 
 export async function verifyPayment(paymentIntentId: string): Promise<boolean> {
@@ -26,7 +28,8 @@ export const getCartTotal = async ({
 		.select("*, products(*)")
 		.eq("user_id", userId);
 	if (result.error) {
-		console.error("Error Cart:", result.error.message);
+		logger.error(userId, `[cart] select failed: ${result.error.message}`);
+		return { cart: [], total: 0 };
 	}
 	const cart: CartXProduct[] = result.data ?? [];
 
@@ -58,7 +61,14 @@ export const cartToOrder = async ({
 	historyId: string | null;
 	createdAt: string | null;
 }> => {
-	if (!cart || cart.length === 0 || !paymentId) {
+	// Questa funzione dovrebbe essere una transazione di supabase
+	// per evitare problemi in caso che una delle operazioni fallisca
+	// la mantengo cosi per mantenere la logica sul server
+	//
+	// Dopo aver spostato la logica sarebbero da gestire le
+	// transazioni fallite riprovando oppure risarcendo l'utente
+
+	if (cart.length === 0 || !paymentId) {
 		return { historyId: null, createdAt: null };
 	}
 
@@ -75,33 +85,36 @@ export const cartToOrder = async ({
 		.select("id, created_at")
 		.single();
 	if (!data || error) {
-		console.error("Error inserting in History:", error?.message);
+		logger.error(userId, `[history] insert failed: ${error?.message}`);
 		return { historyId: null, createdAt: null };
 	}
 
 	const historyId = data.id;
 	const createdAt = data.created_at;
 
-	for (let item of cart) {
-		let { error } = await supabase.from("orders").insert([
-			{
-				user_id: userId,
-				history_id: historyId,
-				product_id: item.product_id,
-				count: item.count,
-			},
-		]);
-		if (error) {
-			console.error("Error inserting in Orders:", error?.message);
-		}
+	// Add cart items into orders
+	const orderItems = cart.map((item) => ({
+		user_id: userId,
+		history_id: historyId,
+		product_id: item.product_id,
+		count: item.count,
+	}));
+
+	let { error: insertError } = await supabase
+		.from("orders")
+		.insert(orderItems);
+	if (insertError) {
+		logger.error(userId, `[orders] insert failed: ${insertError.message}`);
+		return { historyId: null, createdAt: null };
 	}
 
+	// Delete cart items
 	let { error: deleteError } = await supabase
 		.from("cart")
 		.delete()
 		.eq("user_id", userId);
 	if (deleteError) {
-		console.error("Error clearing cart:", deleteError.message);
+		logger.error(userId, `[cart] delete failed: ${deleteError.message}`);
 	}
 
 	return { historyId: historyId, createdAt: createdAt };

@@ -1,13 +1,13 @@
 <script lang="ts">
 	import { ArrowBigLeft, ArrowBigRight } from "@lucide/svelte";
 
-	import { getHEX } from "$lib/client/actions";
+	import { getHEX } from "$lib/client/utils";
 
 	let {
 		imgs,
 		alt = "Image of Product",
 	}: {
-		imgs: string[] | null;
+		imgs: string[];
 		alt: string;
 	} = $props();
 

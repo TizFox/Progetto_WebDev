@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	const logo = "/logo.svg";
 
 	import User from "$lib/components/User.svelte";

@@ -1,8 +1,8 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	import Item from "$lib/components/Item.svelte";
 	import Empty from "$lib/components/Empty.svelte";
-	import { getHEX } from "$lib/client/actions";
+	import { getHEX } from "$lib/client/utils";
 
 	let { data } = $props();
 	let { supabase, user, cart, total }: PageData = $derived(data);
@@ -85,11 +85,9 @@
 
 <!------------------------------------------>
 
-<section class="page page-col">
-	{#if cart.length != 0}
+{#if cart.length !== 0}
+	<section class="page page-col">
 		<h1 class="main-text pt-5">CART</h1>
-	{/if}
-	{#if cart.length != 0}
 		<div
 			class="mx-auto p-5 w-full md:w-1/2 h-fit flex flex-col gap-5
 		bg-d1 shadow-2xl rounded-xl border-2 border-cta"
@@ -102,7 +100,13 @@
 					Total: €{total}
 				</p>
 			</div>
-			<form onsubmit={handleSubmit} class="w-full flex flex-col gap-5">
+			<form
+				onsubmit={(e) => {
+					e.preventDefault();
+					handleSubmit();
+				}}
+				class="w-full flex flex-col gap-5"
+			>
 				{#if stripe && clientSecret}
 					<Elements
 						{stripe}
@@ -136,21 +140,22 @@
 				</button>
 			</form>
 		</div>
-	{/if}
-	<div class="page page-grid">
-		{#each cart as i}
-			<Item
-				item={i.products}
-				count={i.count}
-				type="cart"
-				{supabase}
-				userId={user ? user.id : null}
-			/>
-		{:else}
-			<Empty msg="Empty Cart" />
-		{/each}
-	</div>
-</section>
+
+		<div class="page page-grid">
+			{#each cart as i}
+				<Item
+					item={i.products}
+					count={i.count}
+					type="cart"
+					{supabase}
+					userId={user ? user.id : null}
+				/>
+			{/each}
+		</div>
+	</section>
+{:else}
+	<Empty msg="Empty Cart" />
+{/if}
 
 <!------------------------------------------>
 

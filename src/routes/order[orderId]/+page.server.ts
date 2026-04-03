@@ -3,6 +3,7 @@ import type { HistoryxOrderxProduct } from "$lib/types";
 
 import { redirect } from "@sveltejs/kit";
 import { verifyPayment, getCartTotal, cartToOrder } from "$lib/server/actions";
+import { logger } from "$lib/logs";
 
 export const load: PageServerLoad = async ({
 	params,
@@ -20,6 +21,7 @@ export const load: PageServerLoad = async ({
 	if (paramHistoryId === "NEW") {
 		let paymentId = url.searchParams.get("payment_intent");
 		if (!paymentId) {
+			logger.error(user.id, "PaymentId not Found");
 			throw redirect(303, "/");
 		}
 
@@ -28,15 +30,16 @@ export const load: PageServerLoad = async ({
 			.from("history")
 			.select("*, orders(*, products(*))")
 			.eq("payment_id", paymentId)
-			.eq("user_id", user.id)
-			.single();
+			.eq("user_id", user.id);
 		if (result.error) {
-			console.error("Error History:", result.error.message);
+			logger.error(user.id, result.error.message);
+			throw redirect(303, "/");
 		}
-		const existingHistory: HistoryxOrderxProduct | null = result.data;
+		const existingHistory: HistoryxOrderxProduct | null = result.data
+			? result.data[0]
+			: null;
 
 		if (existingHistory) {
-			console.log("Order Found by PaymentId");
 			return {
 				historyId: existingHistory.id,
 				orderItems: existingHistory.orders,
@@ -46,9 +49,9 @@ export const load: PageServerLoad = async ({
 		}
 
 		// New Order
-		const succeeded = await verifyPayment(paymentId);
-		if (!succeeded) {
-			console.log("Payment Not Succeeded: " + paymentId);
+		const ok = await verifyPayment(paymentId);
+		if (!ok) {
+			logger.warn(user.id, `Payment(${paymentId}) not Succeeded`);
 			throw redirect(303, "/");
 		}
 
@@ -66,10 +69,10 @@ export const load: PageServerLoad = async ({
 			total: total,
 		});
 		if (!historyId || !createdAt) {
-			console.log("History not Found");
+			logger.error(user.id, "Failed to create new History");
 			throw redirect(303, "/");
 		}
-		console.log("Creating New History: " + historyId);
+		logger.success(user.id, `Created new History (${historyId})`);
 
 		return {
 			historyId,
@@ -87,15 +90,17 @@ export const load: PageServerLoad = async ({
 		.eq("user_id", user.id)
 		.single();
 	if (result.error) {
-		console.error("Error History:", result.error.message);
+		logger.error(user.id, result.error.message);
 	}
 	const history: HistoryxOrderxProduct | null = result.data;
 	if (!history) {
-		console.log("OrderId not Found");
+		logger.error(
+			user.id,
+			`History not found by HistoryId (${paramHistoryId})`,
+		);
 		throw redirect(303, "/");
 	}
 
-	console.log("Order Found by OrderId");
 	return {
 		historyId: history.id,
 		orderItems: history.orders,

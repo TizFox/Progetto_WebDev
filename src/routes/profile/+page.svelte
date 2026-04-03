@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { PageData } from "./$types.js";
+	import type { PageData } from "./$types";
 	import { invalidateAll, goto } from "$app/navigation";
 	import Input from "$lib/components/Input.svelte";
 	import ImageInput from "$lib/components/ImageInput.svelte";
-	import { formatDate, imageToWebp } from "$lib/client/actions.js";
+	import { formatDate, imageToWebp } from "$lib/client/utils";
 
 	let { data } = $props();
 	let { supabase, user }: PageData = $derived(data);
@@ -26,7 +26,6 @@
 		if (newNickname == "" || !newNicknameHandle) {
 			return;
 		}
-		console.log(newNickname);
 
 		const { error } = await supabase.auth.updateUser({
 			data: { nickname: newNickname },
@@ -81,7 +80,7 @@
 		if (newPassword == "" || !newPasswordValid) {
 			return;
 		}
-		console.log(newPassword);
+
 		const { error } = await supabase.auth.updateUser({
 			password: newPassword,
 		});
