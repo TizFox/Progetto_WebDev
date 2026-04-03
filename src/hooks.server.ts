@@ -24,23 +24,26 @@ export const handle: Handle = async ({ event, resolve }) => {
 	);
 
 	event.locals.safeGetSession = async () => {
-		// Controlla se c'è già una sessione usando i cookie
-		const {
-			data: { session },
-		} = await event.locals.supabase.auth.getSession();
-		if (!session) {
-			return {
-				session: null,
-				user: null,
-			};
-		}
+		// Prima va controllato l'utente in modo da poter autenticarlo
+		// poi successivamente si controlla la sessione tramite i cookies, che non assicurano l'autenticazione
 
 		// Controlla l'utente
 		const {
 			data: { user },
 			error,
 		} = await event.locals.supabase.auth.getUser();
-		if (error) {
+		if (error || !user) {
+			return {
+				session: null,
+				user: null,
+			};
+		}
+
+		// Controlla se c'è già una sessione usando i cookie
+		const {
+			data: { session },
+		} = await event.locals.supabase.auth.getSession();
+		if (!session) {
 			return {
 				session: null,
 				user: null,

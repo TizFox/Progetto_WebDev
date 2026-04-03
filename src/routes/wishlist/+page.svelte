@@ -33,7 +33,7 @@
 
 {#if wishlist.length === 0}
 	<div class="w-full h-full flex items-center justify-center">
-		<Empty msg="Empty History" />
+		<Empty msg="Empty Wishlist" />
 	</div>
 {/if}
 

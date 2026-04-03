@@ -22,6 +22,8 @@
 	<title>Rolling Emporium</title>
 </svelte:head>
 
+<!------------------------------------------>
+
 <section>
 	{#if products.length !== 0}
 		<div
