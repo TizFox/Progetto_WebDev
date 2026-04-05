@@ -40,14 +40,14 @@
 		>
 
 		<div class="user-actions">
-			<a href="/">Home</a>
-			<a href="/cart">Cart</a>
-			<a href="/wishlist">Wishlist</a>
-			<a href="/history">History</a>
+			<a href="/" class="link">Home</a>
+			<a href="/cart" class="link">Cart</a>
+			<a href="/wishlist" class="link">Wishlist</a>
+			<a href="/history" class="link">History</a>
 			{#if user}
 				<User img={user.user_metadata.image} />
 			{:else}
-				<a href="/login" class="std-btn p-3">Login</a>
+				<a href="/login" class="std-btn font-bold">Login</a>
 			{/if}
 		</div>
 	</div>
@@ -83,10 +83,6 @@
 
 <style lang="postcss">
 	@import "$lib/theme.css";
-
-	a {
-		@apply hover:underline;
-	}
 
 	.navbar-container {
 		@apply w-full h-(--bars-size) z-10

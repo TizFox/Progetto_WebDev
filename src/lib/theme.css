@@ -83,13 +83,18 @@
 }
 
 @layer components {
+	.link {
+		@apply font-bold
+		border-b-2 border-transparent
+		transition-std
+		hover:text-cta hover:border-cta;
+	}
 	.std-btn {
 		@apply p-3
 		flex items-center justify-center
 		transition-std important-text
 		rounded-lg
-		border-2
-		border-dark;
+		border-2 border-dark;
 
 		&:hover {
 			@apply text-light

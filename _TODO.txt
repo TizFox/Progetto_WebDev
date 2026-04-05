@@ -5,3 +5,4 @@ Extra:
 - Fare dropdown menu sulla navbar (forse non necessario)
 - cambiare le alert con dei toast / notifiche
 - mettere i <p>error</p> dove necessari (login, signup, ...)
+- password dimenticata (con una domanda di sicurezza)
