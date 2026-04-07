@@ -2,7 +2,7 @@
   <img src="./static/logo.svg" alt="Rolling Emporium Logo" width="200"/>
 </p>
 
-# 🎲 Rolling Emporium
+# Rolling Emporium
 
 An e-commerce platform for selling dice and tabletop role-playing game accessories, developed as a university exam project.
 
