@@ -41,6 +41,7 @@ export const load: PageServerLoad = async ({
 
 		if (existingHistory) {
 			return {
+				isNewOrder: false,
 				historyId: existingHistory.id,
 				orderItems: existingHistory.orders,
 				historyCreatedAt: existingHistory.created_at,
@@ -75,6 +76,7 @@ export const load: PageServerLoad = async ({
 		logger.success(user.id, `Created new History (${historyId})`);
 
 		return {
+			isNewOrder: true,
 			historyId,
 			orderItems: cart,
 			historyCreatedAt: createdAt,
@@ -102,6 +104,7 @@ export const load: PageServerLoad = async ({
 	}
 
 	return {
+		isNewOrder: false,
 		historyId: history.id,
 		orderItems: history.orders,
 		historyCreatedAt: history.created_at,

@@ -4,9 +4,22 @@
 	import Item from "$lib/components/Item.svelte";
 	import { formatDate } from "$lib/client/utils";
 
+	import { notifyWhen } from "$lib/client/notifications.js";
+
 	const { data } = $props();
-	const { historyId, orderItems, historyCreatedAt, historyTotal }: PageData =
-		$derived(data);
+	const {
+		isNewOrder,
+		historyId,
+		orderItems,
+		historyCreatedAt,
+		historyTotal,
+	}: PageData = $derived(data);
+
+	$effect(() => {
+		notifyWhen(isNewOrder, "Ordine Creato", {
+			body: "Il tuo ordine è stao creato correttamente.",
+		});
+	});
 </script>
 
 <!------------------------------------------>

@@ -9,7 +9,7 @@
 
 	--transition-std: all 200ms ease-in-out;
 
-	--color-disabled: var(--color-red-300);
+	--color-disabled: var(--color-slate-50);
 
 	/* Follow the z-index */
 	--color-dark: var(--color-slate-50);

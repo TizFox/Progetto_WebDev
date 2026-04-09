@@ -16,7 +16,7 @@ export async function POST({ locals: { safeGetSession } }) {
 			user.id,
 			`Auth[${user.id}] delete failed: ${deleteError.message}`,
 		);
-		return json({ success: false, error: deleteError.message });
+		return json({ ok: false, error: deleteError.message });
 	}
 
 	const { error: storageError } = await supabaseAdmin.storage
@@ -31,5 +31,5 @@ export async function POST({ locals: { safeGetSession } }) {
 
 	logger.success(user.id, "Account & Image Deleted");
 
-	return json({ success: true, error: "" });
+	return json({ ok: true, error: "" });
 }

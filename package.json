@@ -21,6 +21,7 @@
 		"@sveltejs/vite-plugin-svelte": "^6.2.4",
 		"@tailwindcss/forms": "^0.5.11",
 		"@tailwindcss/vite": "^4.1.18",
+		"@types/web-push": "^3.6.4",
 		"@vite-pwa/sveltekit": "^1.1.0",
 		"svelte": "^5.48.2",
 		"svelte-check": "^4.3.5",
@@ -36,6 +37,7 @@
 		"@supabase/supabase-js": "^2.97.0",
 		"glob": "^13.0.6",
 		"stripe": "^21.0.1",
-		"svelte-stripe": "^2.0.0"
+		"svelte-stripe": "^2.0.0",
+		"web-push": "^3.6.7"
 	}
 }

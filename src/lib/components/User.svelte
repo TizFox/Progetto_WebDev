@@ -11,7 +11,7 @@
 <a
 	href="/profile"
 	class="h-full aspect-square overflow-hidden
-	rounded-full border-2
+	rounded-full border-3
 	border-dark transition-std
 	hover:border-cta"
 >

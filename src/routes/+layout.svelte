@@ -2,17 +2,32 @@
 	import type { PageData } from "./$types";
 	const logo = "/logo.svg";
 
+	import { Bell, BellOff } from "@lucide/svelte";
 	import User from "$lib/components/User.svelte";
+	import {
+		subscribePush,
+		unsubscribePush,
+		isSubscribed,
+	} from "$lib/client/notifications.js";
 
 	import { invalidate } from "$app/navigation";
 	import { onMount } from "svelte";
+	import { logger } from "$lib/logs.js";
 
 	let { data, children } = $props();
 	let { supabase, session, user }: PageData = $derived(data);
 
-	// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")
+	let subscribed = $state(false);
+
 	onMount(() => {
-		supabase.auth.getUser();
+		isSubscribed().then((v) => (subscribed = v));
+
+		// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")
+		try {
+			supabase.auth.getUser();
+		} catch (e) {
+			logger.warn(null, `getUser Failed: ${e}`);
+		}
 		const {
 			data: { subscription },
 		} = data.supabase.auth.onAuthStateChange((event, _session) => {
@@ -23,6 +38,15 @@
 
 		return () => subscription.unsubscribe();
 	});
+
+	async function toggle() {
+		if (subscribed) {
+			unsubscribePush();
+		} else {
+			subscribePush();
+		}
+		subscribed = !subscribed;
+	}
 </script>
 
 <!------------------------------------------>
@@ -38,6 +62,14 @@
 		<a href="/" class="h-full"
 			><img src={logo} alt="Logo" class="h-full" /></a
 		>
+
+		<button onclick={toggle}>
+			{#if subscribed}
+				<Bell />
+			{:else}
+				<BellOff />
+			{/if}
+		</button>
 
 		<div class="user-actions">
 			<a href="/" class="link">Home</a>

@@ -120,7 +120,7 @@ Type "I want to delete my account" to confirm.`,
 		});
 		const result = await res.json();
 
-		if (result.success) {
+		if (result.ok) {
 			alert(`Account ${user!.id} Deleated`);
 			invalidateAll();
 		} else {
@@ -140,7 +140,7 @@ Type "I want to delete my account" to confirm.`,
 <section class="page page-col">
 	<div
 		class="w-1/2 md:w-3/10 aspect-square
-		rounded-full border-2 border-cta
+		rounded-full border-3 border-cta
 		overflow-hidden"
 	>
 		<img

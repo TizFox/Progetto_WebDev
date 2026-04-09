@@ -10,6 +10,13 @@ export default defineConfig({
 		SvelteKitPWA({
 			registerType: "autoUpdate",
 			devOptions: { enabled: true },
+
+			strategies: "injectManifest",
+			srcDir: "src",
+			filename: "service-worker.ts",
+			injectManifest: {
+				injectionPoint: undefined,
+			},
 			manifest: {
 				name: "Rolling Emporium",
 				short_name: "RE",
