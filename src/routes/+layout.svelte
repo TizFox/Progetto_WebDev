@@ -20,6 +20,7 @@
 	let subscribed = $state(false);
 
 	onMount(() => {
+		subscribePush();
 		isSubscribed().then((v) => (subscribed = v));
 
 		// In caso di cambiamenti nella Sessione obbliga il Load di tutte le funzioni con depends("supabase:auth")

@@ -1,5 +1,8 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { invalidateAll } from "$app/navigation";
+
+import { notifyPush } from "./notifications";
+
 import { logger } from "$lib/logs";
 
 export type ActionProps = {
@@ -7,25 +10,59 @@ export type ActionProps = {
 	userId: string;
 	itemId: string;
 	itemName: string;
+	count?: number;
 };
-export const addToCart = async (ap: ActionProps): Promise<void> => {
-	await addTo("cart", ap);
+
+let timeoutHandle = setTimeout(() => {});
+
+export const addToCart = async ({
+	supabase,
+	userId,
+	itemId,
+	itemName,
+}: ActionProps): Promise<void> => {
+	// Notifica per ricordare degli item nel cart
+	clearTimeout(timeoutHandle);
+	timeoutHandle = setTimeout(
+		notifyPush,
+		5000,
+		"Cart",
+		"Non dimenticarti dei tuo carrello.",
+		"/cart",
+	);
+
+	await addTo("cart", { supabase, userId, itemId, itemName });
 };
 export const removeFromCart = async (ap: ActionProps): Promise<void> => {
 	await removeFrom("cart", ap);
 };
 
-export const addToWishlist = async (ap: ActionProps): Promise<void> => {
-	await addTo("wishlist", ap);
+export const addToWishlist = async ({
+	supabase,
+	userId,
+	itemId,
+	itemName,
+}: ActionProps): Promise<void> => {
+	await addTo("wishlist", { supabase, userId, itemId, itemName });
 };
-export const removeFromWishlist = async (ap: ActionProps): Promise<void> => {
-	await removeFrom("wishlist", ap);
+export const removeFromWishlist = async ({
+	supabase,
+	userId,
+	itemId,
+	itemName,
+}: ActionProps): Promise<void> => {
+	await removeFrom("wishlist", {
+		supabase,
+		userId,
+		itemId,
+		itemName,
+	});
 };
 
 type MutableTable = "cart" | "wishlist";
 const addTo = async (
 	table: MutableTable,
-	{ supabase, userId, itemId, itemName }: ActionProps,
+	{ supabase, userId, itemId, itemName, count = 1 }: ActionProps,
 ): Promise<void> => {
 	if (!supabase || !userId) {
 		return;
@@ -63,7 +100,7 @@ const addTo = async (
 	} else if (table === "cart") {
 		let { error } = await supabase
 			.from(table)
-			.update({ count: item[0].count + 1 })
+			.update({ count: item[0].count + count })
 			.eq("product_id", itemId)
 			.eq("user_id", userId);
 
@@ -73,11 +110,11 @@ const addTo = async (
 				`[${table}] update failed for Product(${itemId}): ${error.message}`,
 			);
 			alert(
-				`Product (${itemName}) cant be updated (+1) from ${table.toUpperCase()}`,
+				`Product (${itemName}) cant be updated (+${count}) from ${table.toUpperCase()}`,
 			);
 		} else {
 			alert(
-				`Product (${itemName}) updated (+1) from ${table.toUpperCase()}`,
+				`Product (${itemName}) updated (+${count}) from ${table.toUpperCase()}`,
 			);
 			await invalidateAll();
 		}
@@ -85,7 +122,7 @@ const addTo = async (
 };
 const removeFrom = async (
 	table: string,
-	{ supabase, userId, itemId, itemName }: ActionProps,
+	{ supabase, userId, itemId, itemName, count = 1 }: ActionProps,
 ): Promise<void> => {
 	if (!supabase || !userId) {
 		return;
@@ -101,10 +138,10 @@ const removeFrom = async (
 	}
 
 	if (item && item[0])
-		if (table == "cart" && item[0].count > 1) {
+		if (table == "cart" && item[0].count > count) {
 			let { error } = await supabase
 				.from(table)
-				.update({ count: item[0].count - 1 })
+				.update({ count: item[0].count - count })
 				.eq("product_id", itemId)
 				.eq("user_id", userId);
 
@@ -114,11 +151,11 @@ const removeFrom = async (
 					`[${table}] update failed for Product(${itemId}): ${error.message}`,
 				);
 				alert(
-					`Product (${itemName}) cant be updated (-1) from ${table.toUpperCase()}`,
+					`Product (${itemName}) cant be updated (-${count}) from ${table.toUpperCase()}`,
 				);
 			} else {
 				alert(
-					`Product (${itemName}) updated (-1) from ${table.toUpperCase()}`,
+					`Product (${itemName}) updated (-${count}) from ${table.toUpperCase()}`,
 				);
 				await invalidateAll();
 			}

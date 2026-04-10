@@ -75,6 +75,15 @@
 					onclick={() => actionsInfo && removeFromCart(actionsInfo)}
 					class="std-btn">Remove</button
 				>
+				{#if count > 1}
+					<button
+						type="button"
+						onclick={() =>
+							actionsInfo &&
+							removeFromCart({ ...actionsInfo, count })}
+						class="std-btn">Remove All</button
+					>
+				{/if}
 			{:else if type === "wishlist"}
 				<button
 					type="button"
