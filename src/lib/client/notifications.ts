@@ -1,6 +1,8 @@
 import { browser } from "$app/environment";
 import { PUBLIC_VAPID_KEY } from "$env/static/public";
 
+import { logger } from "$lib/logs";
+
 // -----------------------------
 
 function urlBase64ToUint8Array(base64: string): ArrayBuffer {
@@ -19,6 +21,7 @@ export async function subscribePush(): Promise<void> {
 	if (!granted) {
 		return;
 	}
+
 	// Create Subscription
 	try {
 		const reg = await navigator.serviceWorker.ready;
@@ -27,9 +30,13 @@ export async function subscribePush(): Promise<void> {
 			applicationServerKey: urlBase64ToUint8Array(PUBLIC_VAPID_KEY),
 		});
 
-		console.log("subscribePush() =>", sub ? "true" : "false");
+		// Si potrebbe salvare "sub" in supabase
+		// in modo che l'utente abbia salvate le
+		// sue preferenze su tutti i dispositivi
+		// però per semplicità ho evitato.
+		// Essa viene recuperata dal serviceWorker.
 	} catch (e) {
-		console.error("subscribePush() erro:", e);
+		logger.error(null, `subscribePush(): ${e}`);
 	}
 }
 
@@ -37,18 +44,19 @@ export async function unsubscribePush(): Promise<void> {
 	if (!browser) {
 		return;
 	}
-	// Delete Subscription
+
+	// Get Subscription
 	const reg = await navigator.serviceWorker.ready;
 	const sub = await reg.pushManager.getSubscription();
-	let ok = true;
-	if (sub) {
-		ok = await sub.unsubscribe();
+	if (!sub) {
+		logger.error(null, "Not Subscribed");
+		return;
 	}
 
+	// Delete Subscription
+	let ok = await sub.unsubscribe();
 	if (!ok) {
-		console.log("unsubscribePush() => false");
-	} else {
-		console.log("unsubscribePush() => true");
+		logger.error(null, "unsubscribePush() Failed");
 	}
 }
 
@@ -56,9 +64,10 @@ export async function isSubscribed(): Promise<boolean> {
 	if (!browser) {
 		return false;
 	}
+
+	// Get Subscription
 	const reg = await navigator.serviceWorker.ready;
 	const sub = await reg.pushManager.getSubscription();
-	console.log("isSubscribed() =>", sub !== null);
 	return sub !== null;
 }
 
@@ -67,12 +76,14 @@ export async function notifyPush(
 	body: string,
 	url: string = "/",
 ): Promise<void> {
+	// Get Subscription
 	const reg = await navigator.serviceWorker.ready;
 	const sub = await reg.pushManager.getSubscription();
 	if (!sub) {
 		return;
 	}
 
+	// Send Push Notification
 	await fetch("/api/push", {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -88,16 +99,20 @@ export async function notifyPush(
 // -----------------------------
 
 export async function requestPermission(): Promise<boolean> {
+	// If not on browser | if it doesn't supports Notification
 	if (!browser || !("Notification" in window)) {
 		return false;
 	}
+	// Already Granted
 	if (Notification.permission === "granted") {
 		return true;
 	}
 
+	// Request Permission
 	return (await Notification.requestPermission()) === "granted";
 }
 
+// Local Notification
 export function notify(title: string, options?: NotificationOptions): void {
 	if (!browser || Notification.permission !== "granted") {
 		return;
