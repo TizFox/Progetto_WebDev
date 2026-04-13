@@ -75,6 +75,7 @@ export async function notifyPush(
 	title: string,
 	body: string,
 	url: string = "/",
+	timeout: number,
 ): Promise<void> {
 	// Get Subscription
 	const reg = await navigator.serviceWorker.ready;
@@ -92,6 +93,7 @@ export async function notifyPush(
 			title,
 			body,
 			url,
+			timeout,
 		}),
 	});
 }

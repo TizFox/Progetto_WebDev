@@ -2,7 +2,12 @@
 const sw = self as unknown as ServiceWorkerGlobalScope;
 
 sw.addEventListener("install", (e: ExtendableEvent) => {
-	e.waitUntil(caches.open("offline").then((cache) => cache.add("/offline")));
+	e.waitUntil(
+		caches
+			.open("offline")
+			.then((cache) => cache.addAll(["/offline", "/logo.svg"])),
+	);
+	sw.skipWaiting();
 });
 
 sw.addEventListener("fetch", (e: FetchEvent) => {
@@ -13,6 +18,11 @@ sw.addEventListener("fetch", (e: FetchEvent) => {
 			),
 		);
 	}
+
+	// Per la richiesta
+	e.respondWith(
+		caches.match(e.request).then((cached) => cached ?? fetch(e.request)),
+	);
 });
 
 sw.addEventListener("push", (e: PushEvent) => {

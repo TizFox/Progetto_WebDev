@@ -1,7 +1,7 @@
 import type { SupabaseClient } from "@supabase/supabase-js";
 import { invalidateAll } from "$app/navigation";
 
-import { notifyPush } from "./notifications";
+import { notifyPush } from "$lib/client/notifications";
 
 import { logger } from "$lib/logs";
 
@@ -13,23 +13,13 @@ export type ActionProps = {
 	count?: number;
 };
 
-let timeoutHandle = setTimeout(() => {});
-
 export const addToCart = async ({
 	supabase,
 	userId,
 	itemId,
 	itemName,
 }: ActionProps): Promise<void> => {
-	// Notifica per ricordare degli item nel cart
-	clearTimeout(timeoutHandle);
-	timeoutHandle = setTimeout(
-		notifyPush,
-		5000,
-		"Cart",
-		"Non dimenticarti dei tuo carrello.",
-		"/cart",
-	);
+	notifyPush("Cart", "Non dimenticarti del tuo carrello", "/cart", 5000);
 
 	await addTo("cart", { supabase, userId, itemId, itemName });
 };

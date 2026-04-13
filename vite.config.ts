@@ -19,8 +19,11 @@ export default defineConfig({
 			},
 			manifest: {
 				name: "Rolling Emporium",
-				short_name: "RE",
-				theme_color: "#ffffff",
+				short_name: "R.E.",
+				theme_color: "#0f172a", // bg-d0
+				scope: "/",
+				start_url: "/",
+				display: "standalone",
 				icons: [
 					{
 						src: "/pwa-192x192.png",
