@@ -1,9 +1,11 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import { invalidateAll, goto } from "$app/navigation";
+	import { formatDate, imageToWebp } from "$lib/client/utils";
+	import { showToast } from "$lib/client/actions.js";
+
 	import Input from "$lib/components/Input.svelte";
 	import ImageInput from "$lib/components/ImageInput.svelte";
-	import { formatDate, imageToWebp } from "$lib/client/utils";
 
 	let { data } = $props();
 	let { supabase, user }: PageData = $derived(data);
@@ -31,9 +33,9 @@
 			data: { nickname: newNickname },
 		});
 		if (error) {
-			alert(error.message);
+			showToast("error", "PROFILE", error.message);
 		} else {
-			alert("Success: New Nickname Saved");
+			showToast("info", "PROFILE", "New Nickname Saved");
 			newNicknameHandle?.clear();
 			await invalidateAll();
 		}
@@ -55,7 +57,7 @@
 				upsert: true,
 			});
 		if (storageError) {
-			alert(storageError.message);
+			showToast("error", "PROFILE", storageError.message);
 			return;
 		}
 
@@ -69,9 +71,9 @@
 			data: { image: newImageUrl.publicUrl + `?t=${Date.now()}` },
 		});
 		if (error) {
-			alert(error.message);
+			showToast("error", "PROFILE", error.message);
 		} else {
-			alert("Success: New Image Saved");
+			showToast("info", "PROFILE", "New Image Saved");
 			newImageHandle?.clear();
 			await invalidateAll();
 		}
@@ -85,9 +87,9 @@
 			password: newPassword,
 		});
 		if (error) {
-			alert(error.message);
+			showToast("error", "PROFILE", error.message);
 		} else {
-			alert("Success: New Password Saved");
+			showToast("info", "PROFILE", "New Password Saved");
 			newPasswordHandle?.clear();
 			await invalidateAll();
 		}
@@ -96,8 +98,9 @@
 	const logout = async () => {
 		const { error } = await supabase.auth.signOut();
 		if (error) {
-			alert(error.message);
+			showToast("error", "PROFILE", error.message);
 		} else {
+			showToast("success", "PROFILE", "Logged Out");
 			goto("/");
 		}
 	};
@@ -121,10 +124,11 @@ Type "I want to delete my account" to confirm.`,
 		const result = await res.json();
 
 		if (result.ok) {
-			alert(`Account ${user!.id} Deleated`);
+			showToast("success", "PROFILE", "Account Deleated");
+
 			invalidateAll();
 		} else {
-			alert(result.error);
+			showToast("error", "PROFILE", result.error);
 		}
 	};
 </script>
@@ -220,7 +224,7 @@ Type "I want to delete my account" to confirm.`,
 		<button
 			type="button"
 			onclick={deleteAccount}
-			class="std-btn w-full border-err hover:bg-err"
+			class="std-btn w-full border-error hover:bg-error"
 		>
 			Delete Account
 		</button>

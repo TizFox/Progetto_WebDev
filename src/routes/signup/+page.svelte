@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
+	import { showToast } from "$lib/client/actions.js";
+
 	import Input from "$lib/components/Input.svelte";
 
 	let { data } = $props();
@@ -44,7 +46,7 @@
 			!validPassword1 ||
 			!validPassword2
 		) {
-			alert("Error: Invalid Inputs");
+			showToast("error", "SIGNUP", "Invalid Inputs");
 			return;
 		}
 
@@ -65,9 +67,14 @@
 		});
 		loading = false;
 		if (error) {
-			alert(error.message);
+			showToast("error", "SIGNUP", error.message);
 		} else {
-			alert("Check your Email! (Not Active 2 email/h)");
+			showToast(
+				"success",
+				"SIGNUP",
+				"Signed Up<br>Check your Email! (Not Active 2 email/h)",
+			);
+
 			goto("/");
 		}
 	};

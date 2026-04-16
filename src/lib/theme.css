@@ -15,11 +15,15 @@
 	--color-dark: var(--color-slate-50);
 	--color-light: var(--color-slate-950);
 	--color-cta: var(--color-emerald-500);
-	--color-err: var(--color-red-600);
 
 	--color-d0: var(--color-slate-900);
 	--color-d1: var(--color-slate-700);
 	--color-d2: var(--color-slate-600);
+
+	--color-success: var(--color-green-500);
+	--color-info: var(--color-sky-500);
+	--color-warning: var(--color-yellow-500);
+	--color-error: var(--color-red-500);
 }
 
 @utility transition-* {
@@ -46,7 +50,7 @@
 	@apply font-bold text-cta text-center;
 }
 @utility error-text {
-	@apply font-bold text-err text-center p-5;
+	@apply font-bold text-error text-center p-5;
 }
 
 @layer base {

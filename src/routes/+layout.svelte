@@ -10,6 +10,8 @@
 		isSubscribed,
 	} from "$lib/client/notifications.js";
 
+	import { Toaster } from "svelte-sonner";
+
 	import { invalidate } from "$app/navigation";
 	import { onMount } from "svelte";
 	import { logger } from "$lib/logs.js";
@@ -67,9 +69,9 @@
 
 		<button onclick={toggle}>
 			{#if subscribed}
-				<Bell />
+				<Bell class="size-7" />
 			{:else}
-				<BellOff />
+				<BellOff class="size-7" />
 			{/if}
 		</button>
 
@@ -94,6 +96,8 @@
 		{@render children()}
 	</main>
 </div>
+
+<Toaster richColors position="bottom-right" expand={false} />
 
 <footer class="footer-container">
 	<div class="footer">

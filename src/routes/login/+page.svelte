@@ -1,6 +1,8 @@
 <script lang="ts">
 	import type { PageData } from "./$types";
 	import { goto } from "$app/navigation";
+	import { showToast } from "$lib/client/actions.js";
+
 	import Input from "$lib/components/Input.svelte";
 
 	let { data } = $props();
@@ -21,7 +23,7 @@
 		console.log("LOGIN: " + email + " - " + password);
 
 		if (!email || !password || !validEmail || !validPassword) {
-			alert("Error: Invalid Inputs");
+			showToast("error", "LOGIN", "Invalid Inputs");
 			return;
 		}
 
@@ -31,9 +33,10 @@
 			password: password,
 		});
 		if (error) {
-			alert(error.message);
+			showToast("error", "LOGIN", error.message);
 			loading = false;
 		} else {
+			showToast("success", "LOGIN", "Logged In");
 			goto("/");
 		}
 	};

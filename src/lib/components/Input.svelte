@@ -84,13 +84,13 @@
 		>
 			{#if inputValid}
 				<Icon
-					class="w-full h-full
+					class="size-7
 					transition-std
 					group-has-hover:text-cta
 					{inputFocus ? 'text-cta' : 'text-dark'}"
 				/>
 			{:else}
-				<X class="w-full h-full text-err" />
+				<X class="size-8 text-error" />
 			{/if}
 		</div>
 	{/key}
@@ -125,14 +125,14 @@
 		>
 			{#if passVisible}
 				<EyeOff
-					class="w-full h-full
+					class="size-7
 						transition-std
 						group-has-hover:text-cta
 						{inputFocus ? 'text-cta' : 'text-dark'}"
 				/>
 			{:else}
 				<Eye
-					class="w-full h-full
+					class="size-7
 						transition-std
 						group-has-hover:text-cta
 						{inputFocus ? 'text-cta' : 'text-dark'}"

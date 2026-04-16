@@ -2,8 +2,24 @@ import type { SupabaseClient } from "@supabase/supabase-js";
 import { invalidateAll } from "$app/navigation";
 
 import { notifyPush } from "$lib/client/notifications";
+import { toast } from "svelte-sonner";
 
 import { logger } from "$lib/logs";
+import Toast from "$lib/components/Toast.svelte";
+
+export const showToast = (
+	type: "success" | "error" | "info" | "warning",
+	title: string,
+	message: string,
+): void => {
+	toast.custom(Toast, {
+		componentProps: {
+			type,
+			title,
+			message,
+		},
+	});
+};
 
 export type ActionProps = {
 	supabase: SupabaseClient;
@@ -19,7 +35,7 @@ export const addToCart = async ({
 	itemId,
 	itemName,
 }: ActionProps): Promise<void> => {
-	notifyPush("Cart", "Non dimenticarti del tuo carrello", "/cart", 5000);
+	notifyPush("Cart", "Non dimenticarti del tuo carrello", "/cart", 5000); // 5sec (sarebbe da fare tipo 5min)
 
 	await addTo("cart", { supabase, userId, itemId, itemName });
 };
@@ -80,11 +96,17 @@ const addTo = async (
 				userId,
 				`[${table}] insert failed for Product(${itemId}): ${error.message}`,
 			);
-			alert(
-				`Product (${itemName}) cant be inserted in ${table.toUpperCase()}`,
+			showToast(
+				"error",
+				table.toUpperCase(),
+				`Can't insert Product (${itemName})`,
 			);
 		} else {
-			alert(`Product (${itemName}) inserted to ${table.toUpperCase()}`);
+			showToast(
+				"info",
+				table.toUpperCase(),
+				`Inserted  Product (${itemName})`,
+			);
 			await invalidateAll();
 		}
 	} else if (table === "cart") {
@@ -99,12 +121,16 @@ const addTo = async (
 				userId,
 				`[${table}] update failed for Product(${itemId}): ${error.message}`,
 			);
-			alert(
-				`Product (${itemName}) cant be updated (+${count}) from ${table.toUpperCase()}`,
+			showToast(
+				"error",
+				table.toUpperCase(),
+				`Can't update (+${count}) Product (${itemName})`,
 			);
 		} else {
-			alert(
-				`Product (${itemName}) updated (+${count}) from ${table.toUpperCase()}`,
+			showToast(
+				"info",
+				table.toUpperCase(),
+				`Updated (+${count}) Product (${itemName})`,
 			);
 			await invalidateAll();
 		}
@@ -140,12 +166,16 @@ const removeFrom = async (
 					userId,
 					`[${table}] update failed for Product(${itemId}): ${error.message}`,
 				);
-				alert(
-					`Product (${itemName}) cant be updated (-${count}) from ${table.toUpperCase()}`,
+				showToast(
+					"error",
+					table.toUpperCase(),
+					`Can't update (-${count}) Product (${itemName})`,
 				);
 			} else {
-				alert(
-					`Product (${itemName}) updated (-${count}) from ${table.toUpperCase()}`,
+				showToast(
+					"info",
+					table.toUpperCase(),
+					`Updated (-${count}) Product (${itemName})`,
 				);
 				await invalidateAll();
 			}
@@ -161,12 +191,16 @@ const removeFrom = async (
 					userId,
 					`[${table}] remove failed for Product(${itemId}): ${error.message}`,
 				);
-				alert(
-					`Product (${itemName}) cant be removed from ${table.toUpperCase()}`,
+				showToast(
+					"error",
+					table.toUpperCase(),
+					`Can't remove Product (${itemName})`,
 				);
 			} else {
-				alert(
-					`Product (${itemName}) removed from ${table.toUpperCase()}`,
+				showToast(
+					"info",
+					table.toUpperCase(),
+					`Removed Product (${itemName})`,
 				);
 				await invalidateAll();
 			}

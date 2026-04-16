@@ -11,7 +11,7 @@
 	let filteredProducts = $derived(products);
 	$effect(() => {
 		filteredProducts = products.filter((p) =>
-			p.name.toLowerCase().includes(filter.trim().toLowerCase()),
+			p.name.toUpperCase().includes(filter.trim().toUpperCase()),
 		);
 	});
 </script>
