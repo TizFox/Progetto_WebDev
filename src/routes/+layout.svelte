@@ -11,6 +11,7 @@
 	} from "$lib/client/notifications.js";
 
 	import { Toaster } from "svelte-sonner";
+	import { showToast } from "$lib/client/actions.js";
 
 	import { invalidate } from "$app/navigation";
 	import { onMount } from "svelte";
@@ -46,8 +47,10 @@
 	async function toggle() {
 		if (subscribed) {
 			unsubscribePush();
+			showToast("info", "NOTIFICATIONS", "Unsubscribed");
 		} else {
 			subscribePush();
+			showToast("info", "NOTIFICATIONS", "Subscribed");
 		}
 		subscribed = !subscribed;
 	}
@@ -67,7 +70,7 @@
 			><img src={logo} alt="Logo" class="h-full" /></a
 		>
 
-		<button onclick={toggle}>
+		<button class="transition-std hover:text-cta" onclick={toggle}>
 			{#if subscribed}
 				<Bell class="size-7" />
 			{:else}
