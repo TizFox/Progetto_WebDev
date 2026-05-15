@@ -13,11 +13,11 @@ An e-commerce platform for selling dice and tabletop role-playing game accessori
 - **Product Catalog** — visible to all visitors, with real-time search by name
 - **Authentication** — registration and login via Supabase Auth
 - **Cart** — add, remove, and update product quantities
-- **Wishlist** — save favourite products
+- **Wishlist** — save favourite products or items to buy
 - **Order History** — view past orders with product details and total
 - **User Profile** — update username, profile picture, and password
 - **Payments** — Stripe integration for secure checkout
-- **PWA** — installable application with push notification support *(in development)*
+- **PWA** — installable application with push notification support
 
 ---
 
@@ -36,11 +36,11 @@ An e-commerce platform for selling dice and tabletop role-playing game accessori
 ## Project Structure
 
 ```
-static/                     # Static assets (logo, icons, manifest)
+static/                     # Static assets (logo, icons)
 src/
 ├── app.html                # HTML entry point
 ├── app.d.ts                # Global TypeScript declarations
-├── hooks.client.ts         # Client-side hooks (Service Worker)
+├── service-worker.ts       # Service Worker
 ├── hooks.server.ts         # Server-side hooks (session handling)
 ├── lib/
 │   ├── client/             # Client-side utilities and actions (on cart, wishlist)
@@ -63,6 +63,7 @@ src/
     ├── order[orderId]/     # Order detail after payment
     ├── product[itemId]/    # Product detail page
     ├── profile/            # User profile management
+    ├── offline/            # Fallback page for offline PWA
     └── api/                # API endpoints (Stripe payment intent & user deletion)
 ```
 
