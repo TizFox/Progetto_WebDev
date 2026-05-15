@@ -69,6 +69,16 @@ src/
 
 ---
 
+## Install & Running
+
+1. Clone the repository.
+2. Download the ".env" from email and put it in "./" of the project.
+3. Run "npm install".
+4. Run "npm run dev".
+5. Open "localhost" link printed in the console.
+
+---
+
 ## Notes
 
 - The project uses Stripe in **test mode** — no real payments are processed.
