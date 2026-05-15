@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { fade } from "svelte/transition";
 	import type { Component } from "svelte";
 	import type { IconProps } from "@lucide/svelte";
-	import { fade } from "svelte/transition";
 	import {
 		X,
 		TextCursorInput,
