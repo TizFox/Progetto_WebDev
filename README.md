@@ -25,11 +25,11 @@ An e-commerce platform for selling dice and tabletop role-playing game accessori
 
 | Layer | Technology |
 |---|---|
-| Framework | [SvelteKit](https://svelte.dev/docs/kit) |
-| Database & Auth | [Supabase](https://supabase.com/) |
-| Payments | [Stripe](https://stripe.com/) |
-| Styling | [Tailwind CSS](https://tailwindcss.com/) |
-| Language | TypeScript |
+| Framework | ![Svelte](https://img.shields.io/badge/sveltekit-%23f1413d.svg?style=for-the-badge&logo=svelte&logoColor=white) |
+| Database & Auth | ![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white) |
+| Payments | ![Stripe](https://img.shields.io/badge/Stripe-5469d4?style=for-the-badge&logo=stripe&logoColor=ffffff) |
+| Styling | ![TailwindCSS](https://img.shields.io/badge/tailwindcss-%2338B2AC.svg?style=for-the-badge&logo=tailwind-css&logoColor=white) |
+| Language | ![TypeScript](https://img.shields.io/badge/typescript-%23007ACC.svg?style=for-the-badge&logo=typescript&logoColor=white) |
 
 ---
 
