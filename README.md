@@ -64,7 +64,7 @@ src/
     ├── product[itemId]/    # Product detail page
     ├── profile/            # User profile management
     ├── offline/            # Fallback page for offline PWA
-    └── api/                # API endpoints (Stripe payment intent, push notification & user deletion)
+    └── api/                # API endpoints (payment intent, push notification & user deletion)
 ```
 
 ---
