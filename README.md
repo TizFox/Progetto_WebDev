@@ -43,7 +43,7 @@ src/
 ├── service-worker.ts       # Service Worker
 ├── hooks.server.ts         # Server-side hooks (session handling)
 ├── lib/
-│   ├── client/             # Client-side utilities and actions (on cart, wishlist)
+│   ├── client/             # Client-side utilities and actions
 │   ├── server/             # Server-side logic (Stripe, Supabase actions)
 │   ├── components/         # Reusable Svelte components
 │   ├── database.types.ts   # Auto-generated Supabase types
@@ -64,7 +64,7 @@ src/
     ├── product[itemId]/    # Product detail page
     ├── profile/            # User profile management
     ├── offline/            # Fallback page for offline PWA
-    └── api/                # API endpoints (Stripe payment intent & user deletion)
+    └── api/                # API endpoints (Stripe payment intent, push notification & user deletion)
 ```
 
 ---
