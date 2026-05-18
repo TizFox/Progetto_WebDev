@@ -45,29 +45,25 @@
 		col-span-12 md:col-span-6 lg:col-span-4
 		bg-d1 rounded-xl relative"
 >
-	<a
-		href="/product{item.id}"
-		class="side-by-side p-3 bg-d2 rounded-lg
-		transition-std border-2 border-d2 hover:border-dark"
-	>
+	<div class="side-by-side p-3 bg-d2 rounded-lg">
 		<h1>
 			{item.name}
 			{#if count != 0}
 				(x{count})
 			{/if}
 		</h1>
-		<p class="inverted-price-tag">
+		<p class="inverted-price-tag z-10">
 			€{item.cost}
 		</p>
-	</a>
+	</div>
 
 	<Carousel imgs={item.images ?? []} alt="Images of {item.name}" />
 
 	{#if type === "cart" || type === "wishlist"}
 		<div
 			class="w-full h-fit p-3 gap-3
-	flex flex-row items-center justify-end
-	bg-d2 rounded-lg"
+				flex flex-row items-center justify-end
+				bg-d2 rounded-lg"
 		>
 			{#if type === "cart"}
 				<button
@@ -99,6 +95,14 @@
 			{/if}
 		</div>
 	{/if}
+
+	<a
+		href="/product{item.id}"
+		class="absolute top-0 left-0 w-full h-full
+			rounded-xl border-2 border-d1
+			transition-std hover:border-dark"
+		aria-label={item.name}
+	></a>
 </div>
 
 <!------------------------------------------>
