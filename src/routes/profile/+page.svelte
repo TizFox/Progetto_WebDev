@@ -25,7 +25,7 @@
 	let newPasswordHandle = $state<{ clear: () => void } | null>(null);
 
 	const changeNickname = async () => {
-		if (newNickname == "" || !newNicknameHandle) {
+		if (newNickname === "" || !newNicknameHandle) {
 			return;
 		}
 
@@ -79,7 +79,7 @@
 		}
 	};
 	const changePassword = async () => {
-		if (newPassword == "" || !newPasswordValid) {
+		if (newPassword === "" || !newPasswordValid) {
 			return;
 		}
 

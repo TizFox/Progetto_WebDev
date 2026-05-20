@@ -8,7 +8,7 @@ export function getHEX(variable: string): string {
 }
 
 function twoDigit(n: number): string {
-	return (Math.floor(n / 10) == 0 ? "0" : "") + n;
+	return (Math.floor(n / 10) === 0 ? "0" : "") + n;
 }
 export function formatDate(s: string): string {
 	let date = new Date(s);

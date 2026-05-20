@@ -36,11 +36,11 @@
 		);
 
 		if (
-			nickname == "" ||
-			email == "" ||
-			password1 == "" ||
-			password2 == "" ||
-			password1 != password2 ||
+			nickname === "" ||
+			email === "" ||
+			password1 === "" ||
+			password2 === "" ||
+			password1 !== password2 ||
 			!validNickname ||
 			!validEmail ||
 			!validPassword1 ||

@@ -154,7 +154,7 @@ const removeFrom = async (
 	}
 
 	if (item && item[0])
-		if (table == "cart" && item[0].count > count) {
+		if (table === "cart" && item[0].count > count) {
 			let { error } = await supabase
 				.from(table)
 				.update({ count: item[0].count - count })
