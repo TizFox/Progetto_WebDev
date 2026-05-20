@@ -62,7 +62,7 @@
 	{#if type === "cart" || type === "wishlist"}
 		<div
 			class="w-full h-fit p-3 gap-3
-				flex flex-row items-center justify-end
+				flex flex-row justify-end items-center
 				bg-d2 rounded-lg"
 		>
 			{#if type === "cart"}

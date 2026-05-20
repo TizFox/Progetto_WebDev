@@ -93,7 +93,7 @@
 		bg-d1 shadow-2xl rounded-xl border-2 border-cta"
 		>
 			<div
-				class="w-full flex flex-row items-center justify-between md:flex-col md:items-start"
+				class="w-full flex flex-row justify-between items-center md:flex-col md:items-start"
 			>
 				<h2>CheckOut</h2>
 				<p class="important-text">

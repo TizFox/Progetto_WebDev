@@ -27,7 +27,7 @@
 {#if products.length !== 0}
 	<section>
 		<div
-			class="fixed z-10 top-(--bars-size) left-0 w-full flex items-center justify-center py-5"
+			class="fixed z-10 top-(--bars-size) left-0 w-full flex justify-center items-center py-5"
 		>
 			<Input
 				type="search"

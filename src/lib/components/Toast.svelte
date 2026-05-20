@@ -53,12 +53,12 @@
 	}
 	.toast {
 		@apply w-full h-full p-3 gap-3
-		flex flex-row items-center justify-center
+		flex flex-row justify-center items-center
 		rounded-xl border-2 transition-std
 		border-dark/30 hover:border-dark;
 	}
 	.toast-msg {
 		@apply flex-1
-		flex flex-col items-start justify-center;
+		flex flex-col justify-center items-start;
 	}
 </style>

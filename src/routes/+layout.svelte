@@ -94,7 +94,7 @@
 
 <section class="divider"></section>
 
-<div class="flex items-center justify-center">
+<div class="flex justify-center items-center">
 	<main class="scene">
 		{@render children()}
 	</main>
@@ -153,7 +153,7 @@
 	}
 	.footer {
 		@apply w-full h-full p-5 gap-3
-		flex flex-row items-center justify-center
+		flex flex-row justify-center items-center
 		bg-d2 shadow-2xl;
 	}
 </style>

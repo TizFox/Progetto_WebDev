@@ -22,6 +22,6 @@
 
 	.sad-message {
 		@apply absolute top-0 left-0 w-screen h-screen
-		flex items-center justify-center gap-5;
+		flex justify-center items-center gap-5;
 	}
 </style>

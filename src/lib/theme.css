@@ -76,14 +76,14 @@
 	}
 }
 @utility page-col {
-	@apply flex-col items-center justify-start;
+	@apply flex-col justify-start items-center;
 }
 @utility page-row {
-	@apply flex-row items-start justify-center;
+	@apply flex-row justify-center items-start;
 }
 
 @utility side-by-side {
-	@apply w-full flex flex-row items-center justify-between;
+	@apply w-full flex flex-row justify-between items-center;
 }
 
 @layer components {
@@ -95,7 +95,7 @@
 	}
 	.std-btn {
 		@apply p-3
-		flex items-center justify-center
+		flex justify-center items-center
 		transition-std important-text
 		rounded-lg
 		border-2 border-dark;
