@@ -52,7 +52,7 @@
 				(x{count})
 			{/if}
 		</h1>
-		<p class="inverted-price-tag z-10">
+		<p class="inverted-price-tag z-1">
 			€{item.cost}
 		</p>
 	</div>
@@ -63,7 +63,7 @@
 		<div
 			class="w-full h-fit p-3 gap-3
 				flex flex-row justify-end items-center
-				bg-d2 rounded-lg"
+				bg-d2 rounded-lg z-1"
 		>
 			{#if type === "cart"}
 				<button
